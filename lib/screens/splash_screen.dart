@@ -8,60 +8,60 @@ class SplashScreen extends StatelessWidget {
     return Scaffold(
       body: Center(
         child: SingleChildScrollView(
-          child: Container(
-            color: Colors.white,
-            width: double.infinity,
-            constraints: const BoxConstraints(maxWidth: 480),
-            padding: const EdgeInsets.symmetric(horizontal: 24),
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.stretch,
-              children: [
-                AspectRatio(
-                  aspectRatio: 0.74,
-                  child: Image.asset(
-                    'assets/splash_screen.png',
-                    fit: BoxFit.contain,
-                    alignment: Alignment.center,
-                  ),
-                ),
-                const SizedBox(height: 24),
-                const Text(
-                  'Read books with anyone, anywhere,\nfor free',
-                  style: TextStyle(
-                    color: Color(0xFF252F4A),
-                    fontSize: 36,
-                    fontWeight: FontWeight.w400,
-                    letterSpacing: -0.36,
-                  ),
-                  textAlign: TextAlign.center,
-                ),
-                const SizedBox(height: 49),
-                SizedBox(
-                  width: double.infinity,
-                  child: ElevatedButton(
-                    onPressed: () {
-                      Navigator.pushNamed(context, '/login');
-                    },
-                    style: ElevatedButton.styleFrom(
-                      backgroundColor: const Color(0xFFC259A8),
-                      padding: const EdgeInsets.all(16),
-                      shape: RoundedRectangleBorder(
-                        borderRadius: BorderRadius.circular(8),
-                      ),
-                    ),
-                    child: const Text(
-                      'Login',
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.stretch,
+            children: [
+              // Gambar atas full lebar
+              Image.asset(
+                'assets/splash_screen.png',
+                width: double.infinity,
+                fit: BoxFit.cover,
+              ),
+
+              const SizedBox(height: 24),
+
+              // Container untuk teks dan tombol
+              Padding(
+                padding: const EdgeInsets.symmetric(horizontal: 24),
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.stretch,
+                  children: [
+                    const Text(
+                      'Read books with anyone, anywhere,\nfor free',
                       style: TextStyle(
-                        fontSize: 14,
-                        fontWeight: FontWeight.w700,
-                        color: Colors.white,
+                        color: Color(0xFF252F4A),
+                        fontSize: 28,
+                        fontWeight: FontWeight.w500,
+                        letterSpacing: -0.5,
+                      ),
+                      textAlign: TextAlign.left,
+                    ),
+                    const SizedBox(height: 32),
+                    ElevatedButton(
+                      onPressed: () {
+                        Navigator.pushNamed(context, '/login');
+                      },
+                      style: ElevatedButton.styleFrom(
+                        backgroundColor: const Color(0xFF5B95E4),
+                        padding: const EdgeInsets.all(16),
+                        shape: RoundedRectangleBorder(
+                          borderRadius: BorderRadius.circular(8),
+                        ),
+                      ),
+                      child: const Text(
+                        'Login',
+                        style: TextStyle(
+                          fontSize: 16,
+                          fontWeight: FontWeight.w600,
+                          color: Colors.white,
+                        ),
                       ),
                     ),
-                  ),
+                    const SizedBox(height: 48),
+                  ],
                 ),
-                const SizedBox(height: 76),
-              ],
-            ),
+              ),
+            ],
           ),
         ),
       ),
