@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 import 'screens/splash_screen.dart';
+import 'screens/login.dart';
+import 'screens/home.dart';
 
 void main() {
   runApp(const MyApp());
@@ -17,6 +19,7 @@ class MyApp extends StatelessWidget {
         fontFamily: 'Inter',
       ),
       home: const SplashScreen(),
+      debugShowCheckedModeBanner: false,
     );
   }
 }
