@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'login.dart';
 
 class SplashScreen extends StatelessWidget {
   const SplashScreen({Key? key}) : super(key: key);
@@ -34,16 +33,14 @@ class SplashScreen extends StatelessWidget {
                     fontWeight: FontWeight.w400,
                     letterSpacing: -0.36,
                   ),
+                  textAlign: TextAlign.center,
                 ),
                 const SizedBox(height: 49),
                 SizedBox(
                   width: double.infinity,
                   child: ElevatedButton(
                     onPressed: () {
-                      Navigator.push(
-                        context,
-                        MaterialPageRoute(builder: (_) => const LoginScreen()),
-                      );
+                      Navigator.pushNamed(context, '/login');
                     },
                     style: ElevatedButton.styleFrom(
                       backgroundColor: const Color(0xFFC259A8),

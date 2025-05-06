@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import '../service/auth_service.dart';
-import 'home.dart';
 
 class LoginScreen extends StatefulWidget {
   const LoginScreen({super.key});
@@ -16,14 +15,11 @@ class _LoginScreenState extends State<LoginScreen> {
   String? _errorText;
 
   void _handleLogin() {
-    final nim = _nimController.text;
-    final password = _passwordController.text;
+    final nim = _nimController.text.trim();
+    final password = _passwordController.text.trim();
 
     if (_authService.login(nim, password)) {
-      Navigator.pushReplacement(
-        context,
-        MaterialPageRoute(builder: (_) => const HomeScreen()),
-      );
+      Navigator.pushReplacementNamed(context, '/home');
     } else {
       setState(() {
         _errorText = 'NIM atau Password salah';
@@ -33,82 +29,88 @@ class _LoginScreenState extends State<LoginScreen> {
 
   @override
   Widget build(BuildContext context) {
+    const primaryColor = Color(0xFF5B95E4);
+
     return Scaffold(
-      body: Container(
-        decoration: const BoxDecoration(
-          gradient: LinearGradient(
-            colors: [Colors.pinkAccent, Colors.orangeAccent],
-            begin: Alignment.topCenter,
-            end: Alignment.bottomCenter,
-          ),
-        ),
-        padding: const EdgeInsets.symmetric(horizontal: 24.0),
-        child: Center(
-          child: SingleChildScrollView(
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.stretch,
-              children: [
-                const Text(
-                  'Welcome',
-                  style: TextStyle(
-                    fontSize: 32,
-                    color: Colors.white,
-                    fontWeight: FontWeight.bold,
-                  ),
-                  textAlign: TextAlign.center,
+      backgroundColor: primaryColor,
+      body: Center(
+        child: SingleChildScrollView(
+          padding: const EdgeInsets.symmetric(horizontal: 24.0),
+          child: Column(
+            mainAxisSize: MainAxisSize.min,
+            children: [
+              const Text(
+                'Login',
+                style: TextStyle(
+                  fontSize: 28,
+                  color: Colors.white,
+                  fontWeight: FontWeight.bold,
                 ),
-                const SizedBox(height: 40),
-                Container(
-                  padding: const EdgeInsets.all(16.0),
-                  decoration: BoxDecoration(
-                    color: Colors.white.withOpacity(0.9),
-                    borderRadius: BorderRadius.circular(12),
-                  ),
-                  child: Column(
-                    children: [
-                      TextField(
-                        controller: _nimController,
-                        decoration: const InputDecoration(
-                          labelText: 'NIM / Username',
-                          prefixIcon: Icon(Icons.person),
-                        ),
+              ),
+              const SizedBox(height: 32),
+              Container(
+                padding: const EdgeInsets.all(20),
+                decoration: BoxDecoration(
+                  color: Colors.white,
+                  borderRadius: BorderRadius.circular(16),
+                ),
+                child: Column(
+                  children: [
+                    TextField(
+                      controller: _nimController,
+                      decoration: const InputDecoration(
+                        labelText: 'NIS',
+                        prefixIcon: Icon(Icons.person),
+                        border: OutlineInputBorder(),
                       ),
-                      const SizedBox(height: 16),
-                      TextField(
-                        controller: _passwordController,
-                        obscureText: true,
-                        decoration: const InputDecoration(
-                          labelText: 'Password',
-                          prefixIcon: Icon(Icons.lock),
-                        ),
+                    ),
+                    const SizedBox(height: 16),
+                    TextField(
+                      controller: _passwordController,
+                      obscureText: true,
+                      decoration: const InputDecoration(
+                        labelText: 'Password',
+                        prefixIcon: Icon(Icons.lock),
+                        border: OutlineInputBorder(),
                       ),
-                      if (_errorText != null) ...[
-                        const SizedBox(height: 12),
-                        Text(
-                          _errorText!,
-                          style: const TextStyle(color: Colors.red),
-                        ),
-                      ],
-                      const SizedBox(height: 24),
-                      ElevatedButton(
+                    ),
+                    if (_errorText != null) ...[
+                      const SizedBox(height: 12),
+                      Text(
+                        _errorText!,
+                        style: const TextStyle(color: Colors.red),
+                      ),
+                    ],
+                    const SizedBox(height: 24),
+                    SizedBox(
+                      width: double.infinity,
+                      child: ElevatedButton(
                         onPressed: _handleLogin,
                         style: ElevatedButton.styleFrom(
-                          backgroundColor: Colors.purpleAccent,
-                          padding: const EdgeInsets.symmetric(vertical: 16.0),
+                          backgroundColor: primaryColor,
+                          padding: const EdgeInsets.symmetric(vertical: 14),
                           shape: RoundedRectangleBorder(
-                            borderRadius: BorderRadius.circular(24),
+                            borderRadius: BorderRadius.circular(8),
                           ),
                         ),
                         child: const Text(
                           'Sign In',
-                          style: TextStyle(fontSize: 16),
+                          style: TextStyle(fontSize: 16, color: Colors.white),
                         ),
                       ),
-                    ],
-                  ),
+                    ),
+                  ],
                 ),
-              ],
-            ),
+              ),
+              const SizedBox(height: 16),
+              TextButton(
+                onPressed: () {},
+                child: const Text(
+                  'Lupa Password?',
+                  style: TextStyle(color: Colors.white70),
+                ),
+              ),
+            ],
           ),
         ),
       ),

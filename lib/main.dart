@@ -18,8 +18,13 @@ class MyApp extends StatelessWidget {
         primarySwatch: Colors.blue,
         fontFamily: 'Inter',
       ),
-      home: const SplashScreen(),
       debugShowCheckedModeBanner: false,
+      initialRoute: '/',
+      routes: {
+        '/': (context) => const SplashScreen(),
+        '/login': (context) => const LoginScreen(),
+        '/home': (context) => const HomeScreen(),
+      },
     );
   }
 }
