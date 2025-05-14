@@ -23,7 +23,7 @@ class _LoginScreenState extends State<LoginScreen> {
       Navigator.pushReplacementNamed(context, '/home');
     } else {
       setState(() {
-        _errorText = 'NIM atau Password salah';
+        _errorText = 'NIM atau= Password salah';
       });
     }
   }
