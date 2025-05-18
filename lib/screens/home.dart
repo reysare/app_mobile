@@ -1,24 +1,5 @@
+// lib/screens/home.dart
 import 'package:flutter/material.dart';
-
-void main() {
-  runApp(const MyApp());
-}
-
-class MyApp extends StatelessWidget {
-  const MyApp({Key? key}) : super(key: key);
-
-  @override
-  Widget build(BuildContext context) {
-    return MaterialApp(
-      debugShowCheckedModeBanner: false,
-      title: 'Bookstore App',
-      theme: ThemeData(
-        primarySwatch: Colors.blue,
-      ),
-      home: const BookstoreHomePage(),
-    );
-  }
-}
 
 class BookstoreHomePage extends StatefulWidget {
   const BookstoreHomePage({Key? key}) : super(key: key);
@@ -28,271 +9,382 @@ class BookstoreHomePage extends StatefulWidget {
 }
 
 class _BookstoreHomePageState extends State<BookstoreHomePage> {
-  int _selectedIndex = 1; // Default tab
-
-  final List<String> _genres = [
-    'All genre',
-    'Fiction',
-    'Romance',
-    'Old Classics',
-    'Self D',
-  ];
-
-  final List<Map<String, dynamic>> _books = [
-    {
-      'title': 'Atomic Habits',
-      'author': 'James Clear',
-      'coverUrl':
-          'https://images-na.ssl-images-amazon.com/images/I/91bYsX41DVL.jpg',
-      'isNew': true,
-    },
-    {
-      'title': 'Sapiens',
-      'author': 'Yuval Noah Harari',
-      'coverUrl':
-          'https://images-na.ssl-images-amazon.com/images/I/713jIoMO3UL.jpg',
-      'isNew': false,
-      'subtitle': 'Riwayat\nSingkat\nUmat Manusia',
-    },
-    {
-      'title': 'Si Putih',
-      'author': 'Robert T. Kiyosaki',
-      'coverUrl':
-          'https://cdn.gramedia.com/uploads/items/9786020523310_Si_Putih.jpg',
-      'isNew': true,
-    },
-    {
-      'title': 'Bintang',
-      'author': 'Tere Liye',
-      'coverUrl':
-          'https://cdn.gramedia.com/uploads/items/9786020624352_Bintang.jpg',
-      'isNew': false,
-      'discount': '70%',
-    },
-  ];
+  int _selectedIndex = 0;
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: Colors.white,
+      backgroundColor: Colors.grey[100],
       body: SafeArea(
         child: Column(
           children: [
-            _buildSearchBar(),
-            _buildGenreSelector(),
-            Expanded(child: _buildBookGrid()),
-          ],
-        ),
-      ),
-      bottomNavigationBar: _buildBottomNavigationBar(),
-    );
-  }
-
-  Widget _buildSearchBar() {
-    return Container(
-      margin: const EdgeInsets.all(16.0),
-      decoration: BoxDecoration(
-        border: Border.all(color: Colors.blue, width: 1.5),
-        borderRadius: BorderRadius.circular(8.0),
-      ),
-      child: Row(
-        children: [
-          const SizedBox(width: 8.0),
-          const Icon(Icons.search, color: Colors.grey),
-          const SizedBox(width: 8.0),
-          const Expanded(
-            child: TextField(
-              decoration: InputDecoration(
-                hintText: 'Search something...',
-                border: InputBorder.none,
-                hintStyle: TextStyle(color: Colors.grey),
+            // Header
+            Padding(
+              padding: const EdgeInsets.all(16.0),
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: [
+                  const Text(
+                    'Welcome back, Jen!',
+                    style: TextStyle(
+                      fontSize: 18,
+                      fontWeight: FontWeight.w500,
+                      color: Colors.blue,
+                    ),
+                  ),
+                  Row(
+                    children: [
+                      IconButton(
+                        icon: const Icon(Icons.search, color: Colors.grey),
+                        onPressed: () {},
+                      ),
+                      IconButton(
+                        icon: const Icon(Icons.notifications_none, color: Colors.grey),
+                        onPressed: () {},
+                      ),
+                    ],
+                  ),
+                ],
               ),
             ),
-          ),
-          Container(
-            padding: const EdgeInsets.all(8.0),
-            decoration: BoxDecoration(
-              border: Border(
-                left: BorderSide(
-                  color: Colors.blue.withOpacity(0.5),
-                  width: 1.5,
+            
+            // Category Section
+            Padding(
+              padding: const EdgeInsets.symmetric(horizontal: 16.0),
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: [
+                  const Text(
+                    'Category',
+                    style: TextStyle(
+                      fontSize: 24,
+                      fontWeight: FontWeight.bold,
+                    ),
+                  ),
+                  IconButton(
+                    icon: const Icon(Icons.help_outline, color: Colors.grey),
+                    onPressed: () {},
+                  ),
+                ],
+              ),
+            ),
+            
+            // Category Tabs
+            Padding(
+              padding: const EdgeInsets.symmetric(horizontal: 16.0),
+              child: SingleChildScrollView(
+                scrollDirection: Axis.horizontal,
+                child: Row(
+                  children: [
+                    Container(
+                      padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
+                      decoration: BoxDecoration(
+                        color: Colors.blue,
+                        borderRadius: BorderRadius.circular(20),
+                      ),
+                      child: const Text(
+                        'This month',
+                        style: TextStyle(color: Colors.white),
+                      ),
+                    ),
+                    const SizedBox(width: 8),
+                    _buildCategoryChip('Biology'),
+                    _buildCategoryChip('Technology'),
+                    _buildCategoryChip('Politics'),
+                    _buildCategoryChip('Sales'),
+                  ],
                 ),
               ),
             ),
-            child: const Icon(Icons.tune, color: Colors.blue),
+            
+            const SizedBox(height: 20),
+            
+            // Book Cards
+            Padding(
+              padding: const EdgeInsets.symmetric(horizontal: 16.0),
+              child: Row(
+                children: [
+                  Expanded(
+                    child: _buildBookCard(
+                      title: 'Selena - Tere Liye',
+                      author: 'Tere Liye',
+                      description: 'The Bumi Series has always entertained. Cool!',
+                      rating: 4.4,
+                      bookImage: Icons.book,
+                      color: Colors.teal,
+                    ),
+                  ),
+                  const SizedBox(width: 12),
+                  Expanded(
+                    child: _buildBookCard(
+                      title: 'Sapiens',
+                      author: 'Yuval Noah Harari',
+                      description: 'What does it mean to be human as we can see...',
+                      rating: 4.6,
+                      bookImage: Icons.book,
+                      color: Colors.pink,
+                    ),
+                  ),
+                ],
+              ),
+            ),
+            
+            const SizedBox(height: 20),
+            
+            // Our Recommendation
+            Padding(
+              padding: const EdgeInsets.symmetric(horizontal: 16.0),
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: [
+                  const Text(
+                    'Our Recommendation',
+                    style: TextStyle(
+                      fontSize: 20,
+                      fontWeight: FontWeight.bold,
+                    ),
+                  ),
+                  IconButton(
+                    icon: const Icon(Icons.help_outline, color: Colors.grey),
+                    onPressed: () {},
+                  ),
+                ],
+              ),
+            ),
+            
+            // Genre Tabs
+            Padding(
+              padding: const EdgeInsets.symmetric(horizontal: 16.0),
+              child: SingleChildScrollView(
+                scrollDirection: Axis.horizontal,
+                child: Row(
+                  children: [
+                    Container(
+                      padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
+                      decoration: BoxDecoration(
+                        color: Colors.blue,
+                        borderRadius: BorderRadius.circular(20),
+                      ),
+                      child: const Text(
+                        'All genre',
+                        style: TextStyle(color: Colors.white),
+                      ),
+                    ),
+                    const SizedBox(width: 8),
+                    _buildCategoryChip('Fiction'),
+                    _buildCategoryChip('Romance'),
+                    _buildCategoryChip('Old Classics'),
+                    _buildCategoryChip('Self-'),
+                  ],
+                ),
+              ),
+            ),
+            
+            const SizedBox(height: 16),
+            
+            // Recommendation Card
+            Expanded(
+              child: Padding(
+                padding: const EdgeInsets.symmetric(horizontal: 16.0),
+                child: Container(
+                  padding: const EdgeInsets.all(16),
+                  decoration: BoxDecoration(
+                    color: Colors.white,
+                    borderRadius: BorderRadius.circular(16),
+                    boxShadow: [
+                      BoxShadow(
+                        color: Colors.grey.withOpacity(0.1),
+                        spreadRadius: 1,
+                        blurRadius: 3,
+                      ),
+                    ],
+                  ),
+                  child: Row(
+                    children: [
+                      Container(
+                        width: 80,
+                        height: 120,
+                        decoration: BoxDecoration(
+                          color: Colors.grey[300],
+                          borderRadius: BorderRadius.circular(8),
+                        ),
+                        child: const Icon(Icons.book, size: 40, color: Colors.grey),
+                      ),
+                      const SizedBox(width: 16),
+                      Expanded(
+                        child: Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          children: [
+                            const Text(
+                              'Atomic Habits',
+                              style: TextStyle(
+                                fontSize: 18,
+                                fontWeight: FontWeight.bold,
+                              ),
+                            ),
+                            const SizedBox(height: 8),
+                            Text(
+                              'Cara Mudah dan Terbukti untuk Membentuk Kebiasaan Baik',
+                              style: TextStyle(
+                                fontSize: 14,
+                                color: Colors.grey[600],
+                              ),
+                            ),
+                          ],
+                        ),
+                      ),
+                      Container(
+                        padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
+                        decoration: BoxDecoration(
+                          color: Colors.pink,
+                          borderRadius: BorderRadius.circular(20),
+                        ),
+                        child: const Text(
+                          'New',
+                          style: TextStyle(color: Colors.white),
+                        ),
+                      ),
+                    ],
+                  ),
+                ),
+              ),
+            ),
+          ],
+        ),
+      ),
+      bottomNavigationBar: BottomNavigationBar(
+        type: BottomNavigationBarType.fixed,
+        currentIndex: _selectedIndex,
+        selectedItemColor: Colors.blue,
+        unselectedItemColor: Colors.grey,
+        onTap: (index) {
+          setState(() {
+            _selectedIndex = index;
+          });
+        },
+        items: const [
+          BottomNavigationBarItem(
+            icon: Icon(Icons.home),
+            label: 'Home',
+          ),
+          BottomNavigationBarItem(
+            icon: Icon(Icons.menu_book),
+            label: 'Books',
+          ),
+          BottomNavigationBarItem(
+            icon: Icon(Icons.restore),
+            label: 'History',
+          ),
+          BottomNavigationBarItem(
+            icon: Icon(Icons.account_circle),
+            label: 'Account',
           ),
         ],
       ),
     );
   }
-
-  Widget _buildGenreSelector() {
+  
+  Widget _buildCategoryChip(String label) {
     return Container(
-      height: 40,
-      margin: const EdgeInsets.only(bottom: 16.0),
-      child: ListView.builder(
-        scrollDirection: Axis.horizontal,
-        itemCount: _genres.length,
-        itemBuilder: (context, index) {
-          final bool isSelected = index == 0;
-          return Container(
-            margin: EdgeInsets.only(
-              left: index == 0 ? 16.0 : 8.0,
-              right: index == _genres.length - 1 ? 16.0 : 0.0,
-            ),
-            child: ElevatedButton(
-              onPressed: () {},
-              style: ElevatedButton.styleFrom(
-                backgroundColor: isSelected ? Colors.blue : Colors.white,
-                foregroundColor: isSelected ? Colors.white : Colors.black,
-                elevation: 0,
-                side: BorderSide(
-                  color: isSelected ? Colors.blue : Colors.grey,
-                ),
-              ),
-              child: Text(_genres[index]),
-            ),
-          );
-        },
+      margin: const EdgeInsets.only(left: 8),
+      padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
+      decoration: BoxDecoration(
+        color: Colors.white,
+        borderRadius: BorderRadius.circular(20),
+        border: Border.all(color: Colors.grey[300]!),
+      ),
+      child: Text(
+        label,
+        style: TextStyle(color: Colors.grey[700]),
       ),
     );
   }
-
-  Widget _buildBookGrid() {
-    return GridView.builder(
-      padding: const EdgeInsets.symmetric(horizontal: 16.0),
-      gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
-        crossAxisCount: 2,
-        childAspectRatio: 0.75,
-        crossAxisSpacing: 16.0,
-        mainAxisSpacing: 16.0,
+  
+  Widget _buildBookCard({
+    required String title,
+    required String author,
+    required String description,
+    required double rating,
+    required IconData bookImage,
+    required Color color,
+  }) {
+    return Container(
+      padding: const EdgeInsets.all(12),
+      decoration: BoxDecoration(
+        color: Colors.white,
+        borderRadius: BorderRadius.circular(16),
+        boxShadow: [
+          BoxShadow(
+            color: Colors.grey.withOpacity(0.1),
+            spreadRadius: 1,
+            blurRadius: 3,
+          ),
+        ],
       ),
-      itemCount: _books.length,
-      itemBuilder: (context, index) {
-        final book = _books[index];
-        return _buildBookCard(book);
-      },
-    );
-  }
-
-  Widget _buildBookCard(Map<String, dynamic> book) {
-    return Column(
-      crossAxisAlignment: CrossAxisAlignment.start,
-      children: [
-        Expanded(
-          child: Stack(
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          Container(
+            width: double.infinity,
+            height: 100,
+            decoration: BoxDecoration(
+              color: color.withOpacity(0.8),
+              borderRadius: BorderRadius.circular(12),
+            ),
+            child: Icon(bookImage, size: 50, color: Colors.white),
+          ),
+          const SizedBox(height: 12),
+          Text(
+            title,
+            style: const TextStyle(
+              fontSize: 16,
+              fontWeight: FontWeight.bold,
+            ),
+            overflow: TextOverflow.ellipsis,
+          ),
+          const SizedBox(height: 4),
+          Text(
+            description,
+            style: TextStyle(
+              fontSize: 12,
+              color: Colors.grey[600],
+            ),
+            maxLines: 2,
+            overflow: TextOverflow.ellipsis,
+          ),
+          const SizedBox(height: 8),
+          Row(
             children: [
-              ClipRRect(
-                borderRadius: BorderRadius.circular(8.0),
-                child: Container(
-                  width: double.infinity,
-                  color: Colors.grey.shade200,
-                  child: Image.network(
-                    book['coverUrl'],
-                    fit: BoxFit.cover,
-                    errorBuilder: (context, error, stackTrace) {
-                      return Center(
-                        child: Column(
-                          mainAxisAlignment: MainAxisAlignment.center,
-                          children: [
-                            Icon(Icons.book, size: 50, color: Colors.grey.shade400),
-                            const SizedBox(height: 8),
-                            Text(
-                              book['title'],
-                              textAlign: TextAlign.center,
-                              style: TextStyle(
-                                color: Colors.grey.shade700,
-                                fontWeight: FontWeight.bold,
-                              ),
-                            ),
-                          ],
-                        ),
-                      );
-                    },
+              Container(
+                padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 4),
+                decoration: BoxDecoration(
+                  color: color.withOpacity(0.2),
+                  borderRadius: BorderRadius.circular(12),
+                ),
+                child: Text(
+                  'Goodreads',
+                  style: TextStyle(
+                    fontSize: 10,
+                    color: color,
+                    fontWeight: FontWeight.w500,
                   ),
                 ),
               ),
-              if (book['isNew'] == true)
-                Positioned(
-                  top: 8.0,
-                  left: 8.0,
-                  child: Container(
-                    padding: const EdgeInsets.symmetric(
-                        horizontal: 8.0, vertical: 4.0),
-                    decoration: BoxDecoration(
-                      color: Colors.pink.shade100,
-                      borderRadius: BorderRadius.circular(4.0),
-                    ),
-                    child: const Text(
-                      'New',
-                      style: TextStyle(
-                        color: Colors.pink,
-                        fontSize: 12.0,
-                        fontWeight: FontWeight.bold,
-                      ),
-                    ),
-                  ),
+              const SizedBox(width: 8),
+              const Icon(Icons.star, size: 16, color: Colors.amber),
+              const SizedBox(width: 4),
+              Text(
+                rating.toString(),
+                style: const TextStyle(
+                  fontSize: 12,
+                  fontWeight: FontWeight.w500,
                 ),
-              if (book['discount'] != null)
-                Positioned(
-                  top: 8.0,
-                  right: 8.0,
-                  child: Container(
-                    padding: const EdgeInsets.symmetric(
-                        horizontal: 8.0, vertical: 4.0),
-                    decoration: BoxDecoration(
-                      color: Colors.purple.shade100,
-                      borderRadius: BorderRadius.circular(4.0),
-                    ),
-                    child: Text(
-                      book['discount'],
-                      style: const TextStyle(
-                        color: Colors.purple,
-                        fontSize: 12.0,
-                        fontWeight: FontWeight.bold,
-                      ),
-                    ),
-                  ),
-                ),
+              ),
             ],
           ),
-        ),
-        const SizedBox(height: 8.0),
-        Text(
-          book['title'],
-          style: const TextStyle(
-            fontWeight: FontWeight.bold,
-            fontSize: 16.0,
-          ),
-        ),
-        Text(
-          book['author'],
-          style: TextStyle(
-            color: Colors.grey.shade600,
-            fontSize: 14.0,
-          ),
-        ),
-      ],
-    );
-  }
-
-  Widget _buildBottomNavigationBar() {
-    return BottomNavigationBar(
-      type: BottomNavigationBarType.fixed,
-      selectedItemColor: Colors.blue,
-      unselectedItemColor: Colors.grey,
-      currentIndex: _selectedIndex,
-      onTap: (index) {
-        setState(() {
-          _selectedIndex = index;
-        });
-      },
-      items: const [
-        BottomNavigationBarItem(icon: Icon(Icons.home), label: 'Home'),
-        BottomNavigationBarItem(icon: Icon(Icons.book), label: 'Books'),
-        BottomNavigationBarItem(icon: Icon(Icons.history), label: 'History'),
-        BottomNavigationBarItem(icon: Icon(Icons.person), label: 'Account'),
-      ],
+        ],
+      ),
     );
   }
 }
