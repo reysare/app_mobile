@@ -3,6 +3,7 @@ import 'screens/splash_screen.dart';
 import 'screens/login.dart';
 import 'screens/home.dart';
 import 'screens/library.dart';
+import 'screens/pengembalian.dart';
 
 void main() {
   runApp(const MyApp());
@@ -27,6 +28,7 @@ class MyApp extends StatelessWidget {
         '/login': (context) => const LoginScreen(),
         '/home': (context) =>  const BookstoreHomePage(),
         '/library': (context) => const LibraryPage (),
+        '/pengembalian': (context) => const BookDetailScreen (),
       },
     );
   }
