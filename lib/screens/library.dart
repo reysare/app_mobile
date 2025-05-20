@@ -31,7 +31,8 @@ class _LibraryPageState extends State<LibraryPage> {
       'bookCount': 100,
       'borrowerCount': 31,
       'commentCount': 2,
-      'synopsis': 'Apapun tujuan Anda, Atomic Habits menawarkan kerangka kerja terbukti untuk meningkatkan diri setiap hari. James Clear, salah satu pakar terkemuka dunia di bidang pembentukan kebiasaan, mengungkapkan strategi praktis yang akan mengajarkan Anda cara membentuk kebiasaan baik, menghilangkan kebiasaan buruk, dan menguasai perubahan kecil...',
+      'synopsis':
+          'Apapun tujuan Anda, Atomic Habits menawarkan kerangka kerja terbukti untuk meningkatkan diri setiap hari. James Clear, salah satu pakar terkemuka dunia di bidang pembentukan kebiasaan, mengungkapkan strategi praktis yang akan mengajarkan Anda cara membentuk kebiasaan baik, menghilangkan kebiasaan buruk, dan menguasai perubahan kecil...',
     },
     {
       'title': 'Sapiens',
@@ -45,7 +46,8 @@ class _LibraryPageState extends State<LibraryPage> {
       'bookCount': 85,
       'borrowerCount': 27,
       'commentCount': 5,
-      'synopsis': 'Dari investigasi mendalam, Yuval Noah Harari mengungkapkan bagaimana homo sapiens berkembang dari spesies manusia yang tidak signifikan menjadi penguasa planet Bumi dan teror ekosistem planet...',
+      'synopsis':
+          'Dari investigasi mendalam, Yuval Noah Harari mengungkapkan bagaimana homo sapiens berkembang dari spesies manusia yang tidak signifikan menjadi penguasa planet Bumi dan teror ekosistem planet...',
     },
     {
       'title': 'Si Putih',
@@ -59,7 +61,8 @@ class _LibraryPageState extends State<LibraryPage> {
       'bookCount': 65,
       'borrowerCount': 22,
       'commentCount': 3,
-      'synopsis': 'Si Putih adalah buku yang mengajarkan tentang cara meraih kebebasan finansial melalui strategi investasi dan pengembangan aset...',
+      'synopsis':
+          'Si Putih adalah buku yang mengajarkan tentang cara meraih kebebasan finansial melalui strategi investasi dan pengembangan aset...',
     },
     {
       'title': 'Bintang',
@@ -74,62 +77,54 @@ class _LibraryPageState extends State<LibraryPage> {
       'bookCount': 120,
       'borrowerCount': 48,
       'commentCount': 12,
-      'synopsis': 'Petualangan Raib dan kawan-kawannya terus berlanjut. Di buku kedua ini, Raib, Seli, dan Ali melanjutkan petualangan mereka ke dunia paralel yang disebut Klan Bintang...',
+      'synopsis':
+          'Petualangan Raib dan kawan-kawannya terus berlanjut. Di buku kedua ini, Raib, Seli, dan Ali melanjutkan petualangan mereka ke dunia paralel yang disebut Klan Bintang...',
     },
   ];
+
+  void _onItemTapped(int index) {
+    if (index != _selectedIndex) {
+      setState(() {
+        _selectedIndex = index;
+      });
+
+      if (index == 0) {
+        Navigator.pushReplacementNamed(context, '/home');
+      } else if (index == 1) {
+        // Already on books page
+      } else if (index == 2) {
+        Navigator.pushReplacementNamed(context, '/history');
+      } else if (index == 3) {
+        Navigator.pushReplacementNamed(context, '/profil');
+      }
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: Colors.white,
       body: SafeArea(
-        child: IndexedStack(
-          index: _selectedIndex,
+        child: Column(
           children: [
-            _buildHomePage(),
-            _buildBooksPage(),
-            _buildHistoryPage(),
-            _buildProfilePage(),
+            _buildSearchBar(),
+            _buildGenreSelector(),
+            Expanded(child: _buildBookGrid()),
           ],
         ),
       ),
-      bottomNavigationBar: _buildBottomNavigationBar(),
-    );
-  }
-
-  Widget _buildHomePage() {
-    return Center(
-      child: Text(
-        'Home Page',
-        style: TextStyle(fontSize: 24, fontWeight: FontWeight.bold),
-      ),
-    );
-  }
-
-  Widget _buildBooksPage() {
-    return Column(
-      children: [
-        _buildSearchBar(),
-        _buildGenreSelector(),
-        Expanded(child: _buildBookGrid()),
-      ],
-    );
-  }
-
-  Widget _buildHistoryPage() {
-    return Center(
-      child: Text(
-        'History Page',
-        style: TextStyle(fontSize: 24, fontWeight: FontWeight.bold),
-      ),
-    );
-  }
-
-  Widget _buildProfilePage() {
-    return Center(
-      child: Text(
-        'Account Page',
-        style: TextStyle(fontSize: 24, fontWeight: FontWeight.bold),
+      bottomNavigationBar: BottomNavigationBar(
+        type: BottomNavigationBarType.fixed,
+        selectedItemColor: Colors.blue,
+        unselectedItemColor: Colors.grey,
+        currentIndex: _selectedIndex,
+        onTap: _onItemTapped,
+        items: const [
+          BottomNavigationBarItem(icon: Icon(Icons.home), label: 'Home'),
+          BottomNavigationBarItem(icon: Icon(Icons.book), label: 'Books'),
+          BottomNavigationBarItem(icon: Icon(Icons.history), label: 'History'),
+          BottomNavigationBarItem(icon: Icon(Icons.person), label: 'Account'),
+        ],
       ),
     );
   }
@@ -222,12 +217,7 @@ class _LibraryPageState extends State<LibraryPage> {
   Widget _buildBookCard(Map<String, dynamic> book) {
     return GestureDetector(
       onTap: () {
-        // Navigate to the book detail screen with book data
-        Navigator.pushNamed(
-          context,
-          '/pengembalian',
-          arguments: book,
-        );
+        Navigator.pushNamed(context, '/peminjaman', arguments: book);
       },
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
@@ -329,38 +319,6 @@ class _LibraryPageState extends State<LibraryPage> {
           ),
         ],
       ),
-    );
-  }
-
-  Widget _buildBottomNavigationBar() {
-    return BottomNavigationBar(
-      type: BottomNavigationBarType.fixed,
-      selectedItemColor: Colors.blue,
-      unselectedItemColor: Colors.grey,
-      currentIndex: _selectedIndex,
-      onTap: (index) {
-        setState(() {
-          _selectedIndex = index;
-        });
-
-        // Handle navigation between screens
-       if (index == 0) {
-          // Navigate to Home
-          Navigator.of(context).pushNamedAndRemoveUntil('/home', (route) => false);
-        } else if (index == 1) {
-          // We're already on Books page, no navigation needed
-        } else if (index == 2) {
-          // Navigate to History page (Not implemented yet)
-        } else if (index == 3) {
-          // Navigate to Account page (Not implemented yet)
-        }
-      },
-      items: const [
-        BottomNavigationBarItem(icon: Icon(Icons.home), label: 'Home'),
-        BottomNavigationBarItem(icon: Icon(Icons.book), label: 'Books'),
-        BottomNavigationBarItem(icon: Icon(Icons.history), label: 'History'),
-        BottomNavigationBarItem(icon: Icon(Icons.person), label: 'Account'),
-      ],
     );
   }
 }

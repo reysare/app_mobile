@@ -10,35 +10,24 @@ class BookstoreHomePage extends StatefulWidget {
 class _BookstoreHomePageState extends State<BookstoreHomePage> {
   int _selectedIndex = 0;
 
-  // Method to handle navigation when bottom navigation items are clicked
   void _onItemTapped(int index) {
     if (index != _selectedIndex) {
       setState(() {
         _selectedIndex = index;
       });
 
-      // Navigate to different pages based on the selected index
       if (index == 1) {
-        // Navigate to Books/Library page
         Navigator.pushReplacementNamed(context, '/library');
       } else if (index == 2) {
-        // Navigate to History page if you have one
-        // Navigator.pushReplacementNamed(context, '/history');
+        Navigator.pushReplacementNamed(context, '/history');
       } else if (index == 3) {
-        // Navigate to Account page if you have one
-        // Navigator.pushReplacementNamed(context, '/account');
+        Navigator.pushReplacementNamed(context, '/profil');
       }
-      // No navigation for index 0 (Home) since we're already there
     }
   }
 
-  // Method to navigate to book detail screen
   void _navigateToBookDetail(Map<String, dynamic> book) {
-    Navigator.pushNamed(
-      context, 
-      '/pengembalian', 
-      arguments: book
-      );
+    Navigator.pushNamed(context, '/peminjaman', arguments: book);
   }
 
   @override
@@ -50,7 +39,6 @@ class _BookstoreHomePageState extends State<BookstoreHomePage> {
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              // Header
               Padding(
                 padding: const EdgeInsets.all(16.0),
                 child: Row(
@@ -82,8 +70,6 @@ class _BookstoreHomePageState extends State<BookstoreHomePage> {
                   ],
                 ),
               ),
-
-              // Category Section
               Padding(
                 padding: const EdgeInsets.symmetric(horizontal: 16.0),
                 child: Row(
@@ -104,8 +90,6 @@ class _BookstoreHomePageState extends State<BookstoreHomePage> {
                   ],
                 ),
               ),
-
-              // Category Tabs
               Padding(
                 padding: const EdgeInsets.symmetric(
                   horizontal: 16.0,
@@ -141,10 +125,7 @@ class _BookstoreHomePageState extends State<BookstoreHomePage> {
                   ),
                 ),
               ),
-
               const SizedBox(height: 20),
-
-              // Book Cards
               Padding(
                 padding: const EdgeInsets.symmetric(horizontal: 16.0),
                 child: Row(
@@ -173,8 +154,7 @@ class _BookstoreHomePageState extends State<BookstoreHomePage> {
                           description:
                               'The Bumi series has always entertaining. Cool!',
                           rating: 4.4,
-                          bookImageAsset:
-                              'assets/images/1.png', // This would be an actual asset
+                          bookImageAsset: 'assets/images/1.png',
                           isTeal: true,
                         ),
                       ),
@@ -204,8 +184,7 @@ class _BookstoreHomePageState extends State<BookstoreHomePage> {
                           description:
                               'What does it mean to be human as we can see',
                           rating: 4.6,
-                          bookImageAsset:
-                              'assets/images/2.png', // This would be an actual asset
+                          bookImageAsset: 'assets/images/2.png',
                           isTeal: false,
                         ),
                       ),
@@ -213,10 +192,7 @@ class _BookstoreHomePageState extends State<BookstoreHomePage> {
                   ],
                 ),
               ),
-
               const SizedBox(height: 24),
-
-              // Our Recommendation
               Padding(
                 padding: const EdgeInsets.symmetric(horizontal: 16.0),
                 child: Row(
@@ -237,8 +213,6 @@ class _BookstoreHomePageState extends State<BookstoreHomePage> {
                   ],
                 ),
               ),
-
-              // Genre Tabs
               Padding(
                 padding: const EdgeInsets.symmetric(
                   horizontal: 16.0,
@@ -274,10 +248,7 @@ class _BookstoreHomePageState extends State<BookstoreHomePage> {
                   ),
                 ),
               ),
-
               const SizedBox(height: 24),
-
-              // Recommendation Card with Atomic Habits Book
               Padding(
                 padding: const EdgeInsets.symmetric(
                   horizontal: 16.0,
@@ -316,17 +287,14 @@ class _BookstoreHomePageState extends State<BookstoreHomePage> {
                     ),
                     child: Row(
                       children: [
-                        // Book cover image (left)
                         Container(
                           width: 120,
                           padding: const EdgeInsets.all(10),
                           child: Image.asset(
-                            'assets/images/3.png', // This would be an actual asset
+                            'assets/images/3.png',
                             fit: BoxFit.cover,
                           ),
                         ),
-
-                        // Book details (center)
                         Expanded(
                           child: Padding(
                             padding: const EdgeInsets.all(12.0),
@@ -381,8 +349,6 @@ class _BookstoreHomePageState extends State<BookstoreHomePage> {
                             ),
                           ),
                         ),
-
-                        // "New" badge (right)
                         Padding(
                           padding: const EdgeInsets.only(right: 16.0),
                           child: Container(
@@ -408,21 +374,18 @@ class _BookstoreHomePageState extends State<BookstoreHomePage> {
                   ),
                 ),
               ),
-
               const SizedBox(height: 24),
             ],
           ),
         ),
       ),
-
-      // Bottom Navigation Bar with updated onTap method
       bottomNavigationBar: BottomNavigationBar(
         type: BottomNavigationBarType.fixed,
         currentIndex: _selectedIndex,
         selectedItemColor: Colors.blue,
         unselectedItemColor: Colors.grey,
         elevation: 0,
-        onTap: _onItemTapped, // Using the navigation method
+        onTap: _onItemTapped,
         items: const [
           BottomNavigationBarItem(icon: Icon(Icons.home), label: 'Home'),
           BottomNavigationBarItem(icon: Icon(Icons.menu_book), label: 'Books'),
@@ -436,7 +399,6 @@ class _BookstoreHomePageState extends State<BookstoreHomePage> {
     );
   }
 
-  // Helper method to build category chips
   Widget _buildCategoryChip(String label) {
     return Container(
       margin: const EdgeInsets.only(right: 8),
@@ -453,7 +415,6 @@ class _BookstoreHomePageState extends State<BookstoreHomePage> {
     );
   }
 
-  // Helper method to build book cards
   Widget _buildBookCard({
     required String title,
     required String author,
@@ -478,7 +439,6 @@ class _BookstoreHomePageState extends State<BookstoreHomePage> {
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          // Book cover image - using Image.asset instead of a colored container with icon
           ClipRRect(
             borderRadius: BorderRadius.circular(12),
             child: Image.asset(
@@ -504,7 +464,6 @@ class _BookstoreHomePageState extends State<BookstoreHomePage> {
           const SizedBox(height: 8),
           Row(
             children: [
-              // Goodreads badge
               Container(
                 padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 4),
                 decoration: BoxDecoration(
@@ -527,7 +486,6 @@ class _BookstoreHomePageState extends State<BookstoreHomePage> {
                 ),
               ),
               const SizedBox(width: 8),
-              // Rating
               const Icon(Icons.star, size: 16, color: Colors.amber),
               const SizedBox(width: 4),
               Text(
