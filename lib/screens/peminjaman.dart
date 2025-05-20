@@ -5,7 +5,6 @@ class BookDetailScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    // Retrieve book data passed from the library page
     final Map<String, dynamic> book = 
       ModalRoute.of(context)?.settings.arguments as Map<String, dynamic>? ?? 
       {

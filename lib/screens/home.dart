@@ -1,4 +1,3 @@
-// lib/screens/home.dart
 import 'package:flutter/material.dart';
 
 class BookstoreHomePage extends StatefulWidget {
@@ -33,283 +32,386 @@ class _BookstoreHomePageState extends State<BookstoreHomePage> {
     }
   }
 
+  // Method to navigate to book detail screen
+  void _navigateToBookDetail(Map<String, dynamic> book) {
+    Navigator.pushNamed(
+      context, 
+      '/pengembalian', 
+      arguments: book
+      );
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: Colors.white,
       body: SafeArea(
-        child: Column(
-          children: [
-            // Header
-            Padding(
-              padding: const EdgeInsets.all(16.0),
-              child: Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: [
-                  const Text(
-                    'Welcome back, Jen!',
-                    style: TextStyle(
-                      fontSize: 22,
-                      fontWeight: FontWeight.w600,
-                      color: Colors.blue,
-                    ),
-                  ),
-                  Row(
-                    children: [
-                      IconButton(
-                        icon: const Icon(Icons.search, color: Colors.grey),
-                        onPressed: () {},
-                      ),
-                      IconButton(
-                        icon: const Icon(
-                          Icons.notifications_none,
-                          color: Colors.grey,
-                        ),
-                        onPressed: () {},
-                      ),
-                    ],
-                  ),
-                ],
-              ),
-            ),
-
-            // Category Section
-            Padding(
-              padding: const EdgeInsets.symmetric(horizontal: 16.0),
-              child: Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: [
-                  const Text(
-                    'Category',
-                    style: TextStyle(
-                      fontSize: 32,
-                      fontWeight: FontWeight.bold,
-                      color: Color(0xFF505A76),
-                    ),
-                  ),
-                  IconButton(
-                    icon: const Icon(Icons.help_outline, color: Colors.grey),
-                    onPressed: () {},
-                  ),
-                ],
-              ),
-            ),
-
-            // Category Tabs
-            Padding(
-              padding: const EdgeInsets.symmetric(horizontal: 16.0),
-              child: SingleChildScrollView(
-                scrollDirection: Axis.horizontal,
+        child: SingleChildScrollView(
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              // Header
+              Padding(
+                padding: const EdgeInsets.all(16.0),
                 child: Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
-                    Container(
-                      padding: const EdgeInsets.symmetric(
-                        horizontal: 16,
-                        vertical: 12,
-                      ),
-                      decoration: BoxDecoration(
-                        color: const Color(0xFF5E9EFF),
-                        borderRadius: BorderRadius.circular(30),
-                      ),
-                      child: const Text(
-                        'This month',
-                        style: TextStyle(
-                          color: Colors.white,
-                          fontWeight: FontWeight.w500,
-                        ),
+                    const Text(
+                      'Welcome back, Jen!',
+                      style: TextStyle(
+                        fontSize: 22,
+                        fontWeight: FontWeight.w600,
+                        color: Colors.blue,
                       ),
                     ),
-                    const SizedBox(width: 12),
-                    _buildCategoryChip('Biology'),
-                    _buildCategoryChip('Technology'),
-                    _buildCategoryChip('Politics'),
-                    _buildCategoryChip('Sains'),
+                    Row(
+                      children: [
+                        IconButton(
+                          icon: const Icon(Icons.search, color: Colors.grey),
+                          onPressed: () {},
+                        ),
+                        IconButton(
+                          icon: const Icon(
+                            Icons.notifications_none,
+                            color: Colors.grey,
+                          ),
+                          onPressed: () {},
+                        ),
+                      ],
+                    ),
                   ],
                 ),
               ),
-            ),
 
-            const SizedBox(height: 20),
-
-            // Book Cards
-            Padding(
-              padding: const EdgeInsets.symmetric(horizontal: 16.0),
-              child: Row(
-                children: [
-                  Expanded(
-                    child: _buildBookCard(
-                      title: 'Selena - Tere Liye',
-                      author: 'Tere Liye',
-                      description:
-                          'The Bumi series has always entertaining. Cool!',
-                      rating: 4.4,
-                      bookImageAsset:
-                          'assets/images/1.png', // This would be an actual asset
-                      isTeal: true,
-                    ),
-                  ),
-                  const SizedBox(width: 12),
-                  Expanded(
-                    child: _buildBookCard(
-                      title: 'Sapiens - Yuval Noah',
-                      author: 'Yuval Noah Harari',
-                      description: 'What does it mean to be human as we can se',
-                      rating: 4.6,
-                      bookImageAsset:
-                          'assets/images/2.png', // This would be an actual asset
-                      isTeal: false,
-                    ),
-                  ),
-                ],
-              ),
-            ),
-
-            const SizedBox(height: 20),
-
-            // Our Recommendation
-            Padding(
-              padding: const EdgeInsets.symmetric(horizontal: 16.0),
-              child: Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: [
-                  const Text(
-                    'Our Recommendation',
-                    style: TextStyle(
-                      fontSize: 28,
-                      fontWeight: FontWeight.bold,
-                      color: Color(0xFF505A76),
-                    ),
-                  ),
-                  IconButton(
-                    icon: const Icon(Icons.help_outline, color: Colors.grey),
-                    onPressed: () {},
-                  ),
-                ],
-              ),
-            ),
-
-            // Genre Tabs
-            Padding(
-              padding: const EdgeInsets.symmetric(horizontal: 16.0),
-              child: SingleChildScrollView(
-                scrollDirection: Axis.horizontal,
-                child: Row(
-                  children: [
-                    Container(
-                      padding: const EdgeInsets.symmetric(
-                        horizontal: 16,
-                        vertical: 12,
-                      ),
-                      decoration: BoxDecoration(
-                        color: const Color(0xFF5E9EFF),
-                        borderRadius: BorderRadius.circular(30),
-                      ),
-                      child: const Text(
-                        'All genre',
-                        style: TextStyle(
-                          color: Colors.white,
-                          fontWeight: FontWeight.w500,
-                        ),
-                      ),
-                    ),
-                    const SizedBox(width: 12),
-                    _buildCategoryChip('Fiction'),
-                    _buildCategoryChip('Romance'),
-                    _buildCategoryChip('Old Classics'),
-                    _buildCategoryChip('Self-'),
-                  ],
-                ),
-              ),
-            ),
-
-            const SizedBox(height: 24),
-
-            // Recommendation Card with Atomic Habits Book
-            Expanded(
-              child: Padding(
+              // Category Section
+              Padding(
                 padding: const EdgeInsets.symmetric(horizontal: 16.0),
-                child: Container(
-                  decoration: BoxDecoration(
-                    color: Colors.white,
-                    borderRadius: BorderRadius.circular(16),
-                    boxShadow: [
-                      BoxShadow(
-                        color: Colors.grey.withOpacity(0.1),
-                        spreadRadius: 1,
-                        blurRadius: 3,
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: [
+                    const Text(
+                      'Category',
+                      style: TextStyle(
+                        fontSize: 28,
+                        fontWeight: FontWeight.bold,
+                        color: Color(0xFF505A76),
                       ),
-                    ],
-                  ),
+                    ),
+                    IconButton(
+                      icon: const Icon(Icons.help_outline, color: Colors.grey),
+                      onPressed: () {},
+                    ),
+                  ],
+                ),
+              ),
+
+              // Category Tabs
+              Padding(
+                padding: const EdgeInsets.symmetric(
+                  horizontal: 16.0,
+                  vertical: 8.0,
+                ),
+                child: SingleChildScrollView(
+                  scrollDirection: Axis.horizontal,
                   child: Row(
                     children: [
-                      // Book cover image (left)
                       Container(
-                        width: 120,
-                        padding: const EdgeInsets.all(10),
-                        child: Image.asset(
-                          'assets/images/3.png', // This would be an actual asset
-                          fit: BoxFit.cover,
+                        padding: const EdgeInsets.symmetric(
+                          horizontal: 16,
+                          vertical: 12,
                         ),
-                      ),
-
-                      // Book details (center)
-                      Expanded(
-                        child: Padding(
-                          padding: const EdgeInsets.all(8.0),
-                          child: Column(
-                            crossAxisAlignment: CrossAxisAlignment.start,
-                            mainAxisAlignment: MainAxisAlignment.center,
-                            children: [
-                              const Text(
-                                'Atomic Habits',
-                                style: TextStyle(
-                                  fontSize: 22,
-                                  fontWeight: FontWeight.bold,
-                                ),
-                              ),
-                              const SizedBox(height: 8),
-                              const Text(
-                                'Cara Mudah dan Terbukti untuk Membentuk Kebiasaan Baik',
-                                style: TextStyle(
-                                  fontSize: 14,
-                                  color: Colors.grey,
-                                ),
-                              ),
-                            ],
+                        decoration: BoxDecoration(
+                          color: const Color(0xFF5E9EFF),
+                          borderRadius: BorderRadius.circular(30),
+                        ),
+                        child: const Text(
+                          'This month',
+                          style: TextStyle(
+                            color: Colors.white,
+                            fontWeight: FontWeight.w500,
                           ),
                         ),
                       ),
+                      const SizedBox(width: 12),
+                      _buildCategoryChip('Biology'),
+                      _buildCategoryChip('Technology'),
+                      _buildCategoryChip('Politics'),
+                      _buildCategoryChip('Sains'),
+                    ],
+                  ),
+                ),
+              ),
 
-                      // "New" badge (right)
-                      Padding(
-                        padding: const EdgeInsets.only(right: 16.0),
-                        child: Container(
-                          padding: const EdgeInsets.symmetric(
-                            horizontal: 16,
-                            vertical: 8,
+              const SizedBox(height: 20),
+
+              // Book Cards
+              Padding(
+                padding: const EdgeInsets.symmetric(horizontal: 16.0),
+                child: Row(
+                  children: [
+                    Expanded(
+                      child: GestureDetector(
+                        onTap: () {
+                          _navigateToBookDetail({
+                            'title': 'Selena',
+                            'author': 'Tere Liye',
+                            'coverUrl':
+                                'https://cdn.gramedia.com/uploads/items/Selena_cov.jpg',
+                            'subtitle': 'Serial Bumi',
+                            'rating': 4.4,
+                            'goodreads': true,
+                            'bookCount': 80,
+                            'borrowerCount': 25,
+                            'commentCount': 7,
+                            'synopsis':
+                                'The Bumi series has always been entertaining. It follows the adventure of Raib and her friends through various parallel worlds. This book focuses on a new character called Selena.',
+                          });
+                        },
+                        child: _buildBookCard(
+                          title: 'Selena - Tere Liye',
+                          author: 'Tere Liye',
+                          description:
+                              'The Bumi series has always entertaining. Cool!',
+                          rating: 4.4,
+                          bookImageAsset:
+                              'assets/images/1.png', // This would be an actual asset
+                          isTeal: true,
+                        ),
+                      ),
+                    ),
+                    const SizedBox(width: 12),
+                    Expanded(
+                      child: GestureDetector(
+                        onTap: () {
+                          _navigateToBookDetail({
+                            'title': 'Sapiens',
+                            'author': 'Yuval Noah Harari',
+                            'coverUrl':
+                                'https://images-na.ssl-images-amazon.com/images/I/713jIoMO3UL.jpg',
+                            'subtitle': 'Riwayat Singkat Umat Manusia',
+                            'rating': 4.6,
+                            'goodreads': true,
+                            'bookCount': 85,
+                            'borrowerCount': 27,
+                            'commentCount': 5,
+                            'synopsis':
+                                'What does it mean to be human as we can see through history? Yuval Noah Harari takes us on a journey through the entire history of the human species, from its emergence to its dominance on Earth.',
+                          });
+                        },
+                        child: _buildBookCard(
+                          title: 'Sapiens - Yuval Noah',
+                          author: 'Yuval Noah Harari',
+                          description:
+                              'What does it mean to be human as we can see',
+                          rating: 4.6,
+                          bookImageAsset:
+                              'assets/images/2.png', // This would be an actual asset
+                          isTeal: false,
+                        ),
+                      ),
+                    ),
+                  ],
+                ),
+              ),
+
+              const SizedBox(height: 24),
+
+              // Our Recommendation
+              Padding(
+                padding: const EdgeInsets.symmetric(horizontal: 16.0),
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: [
+                    const Text(
+                      'Our Recommendation',
+                      style: TextStyle(
+                        fontSize: 24,
+                        fontWeight: FontWeight.bold,
+                        color: Color(0xFF505A76),
+                      ),
+                    ),
+                    IconButton(
+                      icon: const Icon(Icons.help_outline, color: Colors.grey),
+                      onPressed: () {},
+                    ),
+                  ],
+                ),
+              ),
+
+              // Genre Tabs
+              Padding(
+                padding: const EdgeInsets.symmetric(
+                  horizontal: 16.0,
+                  vertical: 8.0,
+                ),
+                child: SingleChildScrollView(
+                  scrollDirection: Axis.horizontal,
+                  child: Row(
+                    children: [
+                      Container(
+                        padding: const EdgeInsets.symmetric(
+                          horizontal: 16,
+                          vertical: 12,
+                        ),
+                        decoration: BoxDecoration(
+                          color: const Color(0xFF5E9EFF),
+                          borderRadius: BorderRadius.circular(30),
+                        ),
+                        child: const Text(
+                          'All genre',
+                          style: TextStyle(
+                            color: Colors.white,
+                            fontWeight: FontWeight.w500,
                           ),
-                          decoration: BoxDecoration(
-                            color: const Color(0xFFFF5D8F),
-                            borderRadius: BorderRadius.circular(20),
+                        ),
+                      ),
+                      const SizedBox(width: 12),
+                      _buildCategoryChip('Fiction'),
+                      _buildCategoryChip('Romance'),
+                      _buildCategoryChip('Old Classics'),
+                      _buildCategoryChip('Self-help'),
+                    ],
+                  ),
+                ),
+              ),
+
+              const SizedBox(height: 24),
+
+              // Recommendation Card with Atomic Habits Book
+              Padding(
+                padding: const EdgeInsets.symmetric(
+                  horizontal: 16.0,
+                  vertical: 8.0,
+                ),
+                child: GestureDetector(
+                  onTap: () {
+                    _navigateToBookDetail({
+                      'title': 'Atomic Habits',
+                      'author': 'James Clear',
+                      'coverUrl':
+                          'https://images-na.ssl-images-amazon.com/images/I/91bYsX41DVL.jpg',
+                      'subtitle':
+                          'Cara Mudah dan Terbukti untuk Membentuk Kebiasaan Baik',
+                      'rating': 4.8,
+                      'goodreads': true,
+                      'bookCount': 100,
+                      'borrowerCount': 31,
+                      'commentCount': 2,
+                      'synopsis':
+                          'Apapun tujuan Anda, Atomic Habits menawarkan kerangka kerja terbukti untuk meningkatkan diri setiap hari. James Clear, salah satu pakar terkemuka dunia di bidang pembentukan kebiasaan, mengungkapkan strategi praktis yang akan mengajarkan Anda cara membentuk kebiasaan baik, menghilangkan kebiasaan buruk, dan menguasai perubahan kecil...',
+                    });
+                  },
+                  child: Container(
+                    height: 160,
+                    decoration: BoxDecoration(
+                      color: Colors.white,
+                      borderRadius: BorderRadius.circular(16),
+                      boxShadow: [
+                        BoxShadow(
+                          color: Colors.grey.withOpacity(0.1),
+                          spreadRadius: 1,
+                          blurRadius: 3,
+                        ),
+                      ],
+                    ),
+                    child: Row(
+                      children: [
+                        // Book cover image (left)
+                        Container(
+                          width: 120,
+                          padding: const EdgeInsets.all(10),
+                          child: Image.asset(
+                            'assets/images/3.png', // This would be an actual asset
+                            fit: BoxFit.cover,
                           ),
-                          child: const Text(
-                            'New',
-                            style: TextStyle(
-                              color: Colors.white,
-                              fontWeight: FontWeight.bold,
+                        ),
+
+                        // Book details (center)
+                        Expanded(
+                          child: Padding(
+                            padding: const EdgeInsets.all(12.0),
+                            child: Column(
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              mainAxisAlignment: MainAxisAlignment.center,
+                              children: [
+                                const Text(
+                                  'Atomic Habits',
+                                  style: TextStyle(
+                                    fontSize: 20,
+                                    fontWeight: FontWeight.bold,
+                                  ),
+                                ),
+                                const SizedBox(height: 4),
+                                const Text(
+                                  'James Clear',
+                                  style: TextStyle(
+                                    fontSize: 16,
+                                    color: Colors.grey,
+                                  ),
+                                ),
+                                const SizedBox(height: 8),
+                                const Text(
+                                  'Cara Mudah dan Terbukti untuk Membentuk Kebiasaan Baik',
+                                  style: TextStyle(
+                                    fontSize: 14,
+                                    color: Colors.grey,
+                                  ),
+                                  maxLines: 2,
+                                  overflow: TextOverflow.ellipsis,
+                                ),
+                                const SizedBox(height: 8),
+                                Row(
+                                  children: [
+                                    const Icon(
+                                      Icons.star,
+                                      size: 16,
+                                      color: Colors.amber,
+                                    ),
+                                    const SizedBox(width: 4),
+                                    const Text(
+                                      '4.8',
+                                      style: TextStyle(
+                                        fontSize: 14,
+                                        fontWeight: FontWeight.w500,
+                                      ),
+                                    ),
+                                  ],
+                                ),
+                              ],
                             ),
                           ),
                         ),
-                      ),
-                    ],
+
+                        // "New" badge (right)
+                        Padding(
+                          padding: const EdgeInsets.only(right: 16.0),
+                          child: Container(
+                            padding: const EdgeInsets.symmetric(
+                              horizontal: 16,
+                              vertical: 8,
+                            ),
+                            decoration: BoxDecoration(
+                              color: const Color(0xFFFF5D8F),
+                              borderRadius: BorderRadius.circular(20),
+                            ),
+                            child: const Text(
+                              'New',
+                              style: TextStyle(
+                                color: Colors.white,
+                                fontWeight: FontWeight.bold,
+                              ),
+                            ),
+                          ),
+                        ),
+                      ],
+                    ),
                   ),
                 ),
               ),
-            ),
 
-            // Space for bottom navigation
-            const SizedBox(height: 10),
-          ],
+              const SizedBox(height: 24),
+            ],
+          ),
         ),
       ),
 
@@ -320,7 +422,7 @@ class _BookstoreHomePageState extends State<BookstoreHomePage> {
         selectedItemColor: Colors.blue,
         unselectedItemColor: Colors.grey,
         elevation: 0,
-        onTap: _onItemTapped, // Using the new navigation method
+        onTap: _onItemTapped, // Using the navigation method
         items: const [
           BottomNavigationBarItem(icon: Icon(Icons.home), label: 'Home'),
           BottomNavigationBarItem(icon: Icon(Icons.menu_book), label: 'Books'),
