@@ -13,8 +13,6 @@ class BookDetailScreen extends StatelessWidget {
           'coverUrl':
               'https://images-na.ssl-images-amazon.com/images/I/91bYsX41DVL.jpg',
           'subtitle': 'Perubahan Kecil Yang Memberikan Hasil Luar Biasa',
-          'rating': 4.4,
-          'goodreads': true,
           'bookCount': 100,
           'borrowerCount': 31,
           'commentCount': 2,
@@ -37,7 +35,7 @@ class BookDetailScreen extends StatelessWidget {
                   const BackButton(color: Colors.grey),
                   Row(
                     children: [
-                      // Logo "GM" in the top right
+                      // Logo "GM"
                       Image.network(
                         'https://1.bp.blogspot.com/-IDI_jqoMdaM/XflYVZ5qpUI/AAAAAAAAD3g/l7MBKYAeuY4WOuQZDfMk7GtRiQgIKc4tQCLcBGAsYHQ/s1600/Gramedia%2BPustaka%2BUtama.jpg',
                         height: 24,
@@ -73,7 +71,7 @@ class BookDetailScreen extends StatelessWidget {
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.stretch,
                   children: [
-                    // Book cover image - Center aligned in its own container
+                    // Book cover
                     Container(
                       padding: const EdgeInsets.all(16),
                       child: Center(
@@ -126,13 +124,12 @@ class BookDetailScreen extends StatelessWidget {
                       ),
                     ),
 
-                    // Book title and author section
+                    // Title & Author
                     Padding(
                       padding: const EdgeInsets.symmetric(horizontal: 24),
                       child: Column(
                         crossAxisAlignment: CrossAxisAlignment.center,
                         children: [
-                          // Book title
                           Text(
                             book['title'],
                             textAlign: TextAlign.center,
@@ -143,51 +140,13 @@ class BookDetailScreen extends StatelessWidget {
                             ),
                           ),
                           const SizedBox(height: 16),
-
-                          // Author name with Goodreads rating
-                          Row(
-                            mainAxisAlignment: MainAxisAlignment.center,
-                            children: [
-                              Text(
-                                book['author'],
-                                style: const TextStyle(
-                                  fontSize: 18,
-                                  color: Colors.orange,
-                                  fontWeight: FontWeight.w500,
-                                ),
-                              ),
-                              const SizedBox(width: 12),
-                              const Text(
-                                '|',
-                                style: TextStyle(
-                                  fontSize: 18,
-                                  color: Colors.grey,
-                                  fontWeight: FontWeight.w200,
-                                ),
-                              ),
-                              const SizedBox(width: 12),
-                              const Text(
-                                'Goodreads',
-                                style: TextStyle(
-                                  fontSize: 16,
-                                  color: Colors.grey,
-                                ),
-                              ),
-                              const SizedBox(width: 6),
-                              const Icon(
-                                Icons.star,
-                                color: Colors.orange,
-                                size: 16,
-                              ),
-                              Text(
-                                '${book['rating']}',
-                                style: const TextStyle(
-                                  fontSize: 16,
-                                  color: Colors.grey,
-                                  fontWeight: FontWeight.w500,
-                                ),
-                              ),
-                            ],
+                          Text(
+                            book['author'],
+                            style: const TextStyle(
+                              fontSize: 18,
+                              color: Colors.orange,
+                              fontWeight: FontWeight.w500,
+                            ),
                           ),
                         ],
                       ),
@@ -195,7 +154,7 @@ class BookDetailScreen extends StatelessWidget {
 
                     const SizedBox(height: 40),
 
-                    // Stats icons row
+                    // Stats
                     Padding(
                       padding: const EdgeInsets.symmetric(horizontal: 40),
                       child: Row(
@@ -219,7 +178,7 @@ class BookDetailScreen extends StatelessWidget {
 
                     const SizedBox(height: 40),
 
-                    // Synopsis section
+                    // Synopsis
                     Padding(
                       padding: const EdgeInsets.symmetric(horizontal: 24),
                       child: Column(
@@ -246,10 +205,7 @@ class BookDetailScreen extends StatelessWidget {
                               ),
                             ],
                           ),
-
                           const SizedBox(height: 16),
-
-                          // Synopsis text
                           Text(
                             book['synopsis'],
                             style: const TextStyle(
@@ -268,12 +224,11 @@ class BookDetailScreen extends StatelessWidget {
               ),
             ),
 
-            // Bottom buttons
+            // Bottom Buttons
             Padding(
               padding: const EdgeInsets.all(16),
               child: Row(
                 children: [
-                  // Add To Library button
                   Expanded(
                     child: InkWell(
                       onTap: () {
@@ -303,8 +258,6 @@ class BookDetailScreen extends StatelessWidget {
                     ),
                   ),
                   const SizedBox(width: 16),
-
-                  // Pinjam button
                   Expanded(
                     child: InkWell(
                       onTap: () {
