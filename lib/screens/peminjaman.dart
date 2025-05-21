@@ -298,7 +298,7 @@ class BookDetailScreen extends StatelessWidget {
                         ),
                         alignment: Alignment.center,
                         child: const Text(
-                          'Tambahkan ke Perpustakaan',
+                          'Tambahkan ke\n Perpustakaan',
                           style: TextStyle(
                             color: Colors.blue,
                             fontWeight: FontWeight.bold,
@@ -328,7 +328,7 @@ class BookDetailScreen extends StatelessWidget {
                         ),
                         alignment: Alignment.center,
                         child: const Text(
-                          'Pinjam',
+                          'Pinjam buku',
                           style: TextStyle(
                             color: Colors.white,
                             fontWeight: FontWeight.bold,

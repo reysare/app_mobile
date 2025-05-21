@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 
-// Model buku
 class Book {
   final String id;
   final String title;
@@ -23,7 +22,6 @@ class Book {
   });
 }
 
-// Halaman pengembalian buku
 class BookReturnPage extends StatefulWidget {
   final Book book;
 
@@ -50,7 +48,6 @@ class _BookReturnPageState extends State<BookReturnPage> {
       );
       return;
     }
-    // Bisa tambah logic submit di sini
     Navigator.pop(context, true);
   }
 
@@ -81,7 +78,6 @@ class _BookReturnPageState extends State<BookReturnPage> {
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.center,
             children: [
-              // Info buku
               Container(
                 width: double.infinity,
                 padding: const EdgeInsets.all(16.0),
@@ -149,8 +145,6 @@ class _BookReturnPageState extends State<BookReturnPage> {
                 ),
               ),
               const SizedBox(height: 16),
-
-              // Informasi pinjam
               Container(
                 width: double.infinity,
                 padding: const EdgeInsets.all(16.0),
@@ -200,8 +194,6 @@ class _BookReturnPageState extends State<BookReturnPage> {
                 ),
               ),
               const SizedBox(height: 16),
-
-              // Pilih kondisi buku
               Container(
                 width: double.infinity,
                 padding: const EdgeInsets.all(16.0),
@@ -266,8 +258,6 @@ class _BookReturnPageState extends State<BookReturnPage> {
                 ),
               ),
               const SizedBox(height: 24),
-
-              // Tombol kembalikan
               SizedBox(
                 width: double.infinity,
                 child: ElevatedButton(
@@ -289,7 +279,6 @@ class _BookReturnPageState extends State<BookReturnPage> {
   }
 }
 
-// Halaman riwayat peminjaman
 class HistoryPage extends StatefulWidget {
   const HistoryPage({Key? key}) : super(key: key);
 
@@ -300,8 +289,8 @@ class HistoryPage extends StatefulWidget {
 class _HistoryPageState extends State<HistoryPage>
     with SingleTickerProviderStateMixin {
   late TabController _tabController;
+  int _selectedIndex = 2; // History is index 2 in navigation
 
-  // Data buku contoh
   final List<Book> _borrowedBooks = [
     Book(
       id: '1',
@@ -354,6 +343,12 @@ class _HistoryPageState extends State<HistoryPage>
     _tabController = TabController(length: 2, vsync: this);
   }
 
+  @override
+  void dispose() {
+    _tabController.dispose();
+    super.dispose();
+  }
+
   void _handleReturnBook(Book book) {
     setState(() {
       _borrowedBooks.removeWhere((b) => b.id == book.id);
@@ -370,6 +365,24 @@ class _HistoryPageState extends State<HistoryPage>
         ),
       );
     });
+  }
+
+  void _onItemTapped(int index) {
+    if (index != _selectedIndex) {
+      setState(() {
+        _selectedIndex = index;
+      });
+
+      if (index == 0) {
+        Navigator.pushReplacementNamed(context, '/home');
+      } else if (index == 1) {
+        Navigator.pushReplacementNamed(context, '/library');
+      } else if (index == 2) {
+        // Already on history page
+      } else if (index == 3) {
+        Navigator.pushReplacementNamed(context, '/profil');
+      }
+    }
   }
 
   Widget _buildBooksList(List<Book> books, bool isReturned) {
@@ -443,12 +456,6 @@ class _HistoryPageState extends State<HistoryPage>
   }
 
   @override
-  void dispose() {
-    _tabController.dispose();
-    super.dispose();
-  }
-
-  @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
@@ -468,7 +475,19 @@ class _HistoryPageState extends State<HistoryPage>
           _buildBooksList(_returnedBooks, true),
         ],
       ),
+      bottomNavigationBar: BottomNavigationBar(
+        type: BottomNavigationBarType.fixed,
+        currentIndex: _selectedIndex,
+        selectedItemColor: Colors.blue,
+        unselectedItemColor: Colors.grey,
+        onTap: _onItemTapped,
+        items: const [
+          BottomNavigationBarItem(icon: Icon(Icons.home), label: 'Home'),
+          BottomNavigationBarItem(icon: Icon(Icons.book), label: 'Books'),
+          BottomNavigationBarItem(icon: Icon(Icons.history), label: 'History'),
+          BottomNavigationBarItem(icon: Icon(Icons.person), label: 'Account'),
+        ],
+      ),
     );
   }
 }
-
