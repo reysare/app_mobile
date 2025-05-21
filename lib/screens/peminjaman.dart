@@ -5,22 +5,25 @@ class BookDetailScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final Map<String, dynamic> book = 
-      ModalRoute.of(context)?.settings.arguments as Map<String, dynamic>? ?? 
-      {
-        'title': 'Atomic Habits',
-        'author': 'James Clear',
-        'coverUrl': 'https://images-na.ssl-images-amazon.com/images/I/91bYsX41DVL.jpg',
-        'subtitle': 'Perubahan Kecil Yang Memberikan Hasil Luar Biasa',
-        'rating': 4.4,
-        'goodreads': true,
-        'bookCount': 100,
-        'borrowerCount': 31,
-        'commentCount': 2,
-        'synopsis': 'Apapun tujuan Anda, Atomic Habits menawarkan kerangka kerja terbukti untuk meningkatkan diri setiap hari. James Clear, salah satu pakar terkemuka dunia di bidang pembentukan kebiasaan, mengungkapkan strategi praktis yang akan mengajarkan Anda cara membentuk kebiasaan baik, menghilangkan kebiasaan buruk, dan menguasai perubahan kecil...',
-      };
+    final Map<String, dynamic> book =
+        ModalRoute.of(context)?.settings.arguments as Map<String, dynamic>? ??
+        {
+          'title': 'Atomic Habits',
+          'author': 'James Clear',
+          'coverUrl':
+              'https://images-na.ssl-images-amazon.com/images/I/91bYsX41DVL.jpg',
+          'subtitle': 'Perubahan Kecil Yang Memberikan Hasil Luar Biasa',
+          'rating': 4.4,
+          'goodreads': true,
+          'bookCount': 100,
+          'borrowerCount': 31,
+          'commentCount': 2,
+          'synopsis':
+              'No matter your goals, Atomic Habits offers a proven framework for improving--every day. James Clear, one of the world\'s leading experts on habit formation, reveals practical strategies that will teach you exactly how to form good habits, break bad ones, and master the tiny behaviors that lead to remarkable results.',
+        };
 
     return Scaffold(
+      backgroundColor: Colors.white,
       body: SafeArea(
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
@@ -31,220 +34,85 @@ class BookDetailScreen extends StatelessWidget {
               child: Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
-                  BackButton(
-                    onPressed: () => Navigator.pop(context),
-                  ),
+                  const BackButton(color: Colors.grey),
                   Row(
                     children: [
-                      Container(
-                        padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 2),
-                        decoration: BoxDecoration(
-                          color: Colors.grey[800],
-                          borderRadius: BorderRadius.circular(4),
-                        ),
-                        child: const Text(
-                          'ID',
-                          style: TextStyle(
-                            color: Colors.white,
-                            fontSize: 12,
-                            fontWeight: FontWeight.bold,
-                          ),
-                        ),
+                      // Logo "GM" in the top right
+                      Image.network(
+                        'https://1.bp.blogspot.com/-IDI_jqoMdaM/XflYVZ5qpUI/AAAAAAAAD3g/l7MBKYAeuY4WOuQZDfMk7GtRiQgIKc4tQCLcBGAsYHQ/s1600/Gramedia%2BPustaka%2BUtama.jpg',
+                        height: 24,
+                        errorBuilder: (context, error, stackTrace) {
+                          return Container(
+                            height: 24,
+                            width: 24,
+                            color: Colors.grey[300],
+                            child: const Center(
+                              child: Text(
+                                'GM',
+                                style: TextStyle(
+                                  color: Colors.grey,
+                                  fontSize: 12,
+                                  fontWeight: FontWeight.bold,
+                                ),
+                              ),
+                            ),
+                          );
+                        },
                       ),
-                      const SizedBox(width: 8),
-                      const Icon(Icons.more_horiz),
+                      const SizedBox(width: 16),
+                      const Icon(Icons.more_horiz, color: Colors.grey),
                     ],
                   ),
                 ],
               ),
             ),
-            
+
             // Konten buku
             Expanded(
               child: SingleChildScrollView(
-                child: Padding(
-                  padding: const EdgeInsets.symmetric(horizontal: 16),
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      // Teks bestseller New York Times
-                      const Padding(
-                        padding: EdgeInsets.symmetric(vertical: 8),
-                        child: Text(
-                          'NEW YORK TIMES BESTSELLER',
-                          style: TextStyle(
-                            fontSize: 10,
-                            fontWeight: FontWeight.w500,
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.stretch,
+                  children: [
+                    // Book cover image - Center aligned in its own container
+                    Container(
+                      padding: const EdgeInsets.all(16),
+                      child: Center(
+                        child: Container(
+                          width: 240,
+                          height: 360,
+                          decoration: BoxDecoration(
+                            borderRadius: BorderRadius.circular(12),
+                            boxShadow: [
+                              BoxShadow(
+                                color: Colors.black.withOpacity(0.1),
+                                spreadRadius: 1,
+                                blurRadius: 10,
+                                offset: const Offset(0, 5),
+                              ),
+                            ],
                           ),
-                        ),
-                      ),
-                      
-                      // Indonesian title (subtitle from book data)
-                      Text(
-                        book['subtitle'] ?? 'PERUBAHAN KECIL YANG MEMBERIKAN HASIL LUAR BIASA',
-                        style: const TextStyle(
-                          fontSize: 12,
-                          fontWeight: FontWeight.bold,
-                        ),
-                      ),
-                      
-                      const SizedBox(height: 16),
-                      
-                      // Book cover and bookmark icon
-                      Row(
-                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          // Book title and cover
-                          Expanded(
-                            child: Column(
-                              crossAxisAlignment: CrossAxisAlignment.start,
-                              children: [
-                                // English title in gold
-                                Text(
-                                  book['title'],
-                                  style: const TextStyle(
-                                    fontSize: 28,
-                                    fontWeight: FontWeight.bold,
-                                    color: Color(0xFFD4AF37), // Gold color
-                                  ),
-                                ),
-                                
-                                const SizedBox(height: 16),
-                                
-                                // Author name and rating
-                                Row(
-                                  children: [
-                                    Text(
-                                      book['author'],
-                                      style: const TextStyle(
-                                        fontSize: 14,
-                                        fontWeight: FontWeight.w500,
-                                      ),
-                                    ),
-                                    if (book['goodreads'] == true) ...[
-                                      Container(
-                                        margin: const EdgeInsets.symmetric(horizontal: 8),
-                                        width: 4,
-                                        height: 4,
-                                        decoration: const BoxDecoration(
-                                          color: Colors.orange,
-                                          shape: BoxShape.circle,
-                                        ),
-                                      ),
-                                      const Text(
-                                        'Goodreads',
-                                        style: TextStyle(
-                                          fontSize: 14,
-                                          color: Colors.grey,
-                                        ),
-                                      ),
-                                      const SizedBox(width: 8),
-                                      const Icon(
-                                        Icons.star,
-                                        color: Colors.orange,
-                                        size: 16,
-                                      ),
-                                      Text(
-                                        '${book['rating'] ?? '4.4'}',
-                                        style: const TextStyle(
-                                          fontSize: 14,
-                                          color: Colors.grey,
-                                        ),
-                                      ),
-                                    ],
-                                  ],
-                                ),
-                              ],
-                            ),
-                          ),
-                          
-                          // Bookmark icon
-                          const Icon(
-                            Icons.bookmark_border,
-                            color: Colors.grey,
-                          ),
-                        ],
-                      ),
-                      
-                      const SizedBox(height: 32),
-                      
-                      // Statistik buku
-                      Row(
-                        mainAxisAlignment: MainAxisAlignment.spaceAround,
-                        children: [
-                          _buildStatItem(Icons.menu_book_outlined, '${book['bookCount'] ?? 100} Buku'),
-                          _buildStatDivider(),
-                          _buildStatItem(Icons.person_outline, '${book['borrowerCount'] ?? 31} peminjam'),
-                          _buildStatDivider(),
-                          _buildStatItem(Icons.chat_bubble_outline, '${book['commentCount'] ?? 2} komentar'),
-                        ],
-                      ),
-                      
-                      const SizedBox(height: 24),
-                      
-                      // Sinopsis
-                      Row(
-                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                        children: [
-                          const Text(
-                            'Sinopsis',
-                            style: TextStyle(
-                              fontSize: 16,
-                              fontWeight: FontWeight.bold,
-                            ),
-                          ),
-                          Text(
-                            'Baca selengkapnya',
-                            style: TextStyle(
-                              fontSize: 14,
-                              color: Colors.blue[600],
-                              fontWeight: FontWeight.w500,
-                            ),
-                          ),
-                        ],
-                      ),
-                      
-                      const SizedBox(height: 8),
-                      
-                      // Teks sinopsis
-                      Text(
-                        book['synopsis'] ?? 'Apapun tujuan Anda, Atomic Habits menawarkan kerangka kerja terbukti untuk meningkatkan diri setiap hari. James Clear, salah satu pakar terkemuka dunia di bidang pembentukan kebiasaan, mengungkapkan strategi praktis yang akan mengajarkan Anda cara membentuk kebiasaan baik, menghilangkan kebiasaan buruk, dan menguasai perubahan kecil...',
-                        style: const TextStyle(
-                          fontSize: 14,
-                          color: Colors.black87,
-                        ),
-                      ),
-                      
-                      const SizedBox(height: 32),
-                      
-                      // Book cover image
-                      if (book['coverUrl'] != null)
-                        Center(
                           child: ClipRRect(
-                            borderRadius: BorderRadius.circular(8),
+                            borderRadius: BorderRadius.circular(12),
                             child: Image.network(
                               book['coverUrl'],
-                              height: 200,
+                              fit: BoxFit.cover,
                               errorBuilder: (context, error, stackTrace) {
                                 return Container(
-                                  height: 200,
-                                  width: 140,
-                                  color: Colors.grey.shade200,
+                                  color: Colors.grey[300],
                                   child: Column(
                                     mainAxisAlignment: MainAxisAlignment.center,
                                     children: [
                                       Icon(
                                         Icons.book,
                                         size: 50,
-                                        color: Colors.grey.shade400,
+                                        color: Colors.grey[500],
                                       ),
                                       const SizedBox(height: 8),
                                       Text(
                                         book['title'],
                                         textAlign: TextAlign.center,
                                         style: TextStyle(
-                                          color: Colors.grey.shade700,
+                                          color: Colors.grey[700],
                                           fontWeight: FontWeight.bold,
                                         ),
                                       ),
@@ -255,31 +123,157 @@ class BookDetailScreen extends StatelessWidget {
                             ),
                           ),
                         ),
-                      
-                      const SizedBox(height: 32),
-                    ],
-                  ),
+                      ),
+                    ),
+
+                    // Book title and author section
+                    Padding(
+                      padding: const EdgeInsets.symmetric(horizontal: 24),
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.center,
+                        children: [
+                          // Book title
+                          Text(
+                            book['title'],
+                            textAlign: TextAlign.center,
+                            style: const TextStyle(
+                              fontSize: 28,
+                              fontWeight: FontWeight.bold,
+                              color: Color(0xFF2E3A59),
+                            ),
+                          ),
+                          const SizedBox(height: 16),
+
+                          // Author name with Goodreads rating
+                          Row(
+                            mainAxisAlignment: MainAxisAlignment.center,
+                            children: [
+                              Text(
+                                book['author'],
+                                style: const TextStyle(
+                                  fontSize: 18,
+                                  color: Colors.orange,
+                                  fontWeight: FontWeight.w500,
+                                ),
+                              ),
+                              const SizedBox(width: 12),
+                              const Text(
+                                '|',
+                                style: TextStyle(
+                                  fontSize: 18,
+                                  color: Colors.grey,
+                                  fontWeight: FontWeight.w200,
+                                ),
+                              ),
+                              const SizedBox(width: 12),
+                              const Text(
+                                'Goodreads',
+                                style: TextStyle(
+                                  fontSize: 16,
+                                  color: Colors.grey,
+                                ),
+                              ),
+                              const SizedBox(width: 6),
+                              const Icon(
+                                Icons.star,
+                                color: Colors.orange,
+                                size: 16,
+                              ),
+                              Text(
+                                '${book['rating']}',
+                                style: const TextStyle(
+                                  fontSize: 16,
+                                  color: Colors.grey,
+                                  fontWeight: FontWeight.w500,
+                                ),
+                              ),
+                            ],
+                          ),
+                        ],
+                      ),
+                    ),
+
+                    const SizedBox(height: 40),
+
+                    // Stats icons row
+                    Padding(
+                      padding: const EdgeInsets.symmetric(horizontal: 40),
+                      child: Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                        children: [
+                          _buildRoundedStatItem(
+                            Icons.watch_later_outlined,
+                            '${book['bookCount']} Buku',
+                          ),
+                          _buildRoundedStatItem(
+                            Icons.people_outline,
+                            '${book['borrowerCount']} borrower',
+                          ),
+                          _buildRoundedStatItem(
+                            Icons.chat_bubble_outline,
+                            '${book['commentCount']} komentar',
+                          ),
+                        ],
+                      ),
+                    ),
+
+                    const SizedBox(height: 40),
+
+                    // Synopsis section
+                    Padding(
+                      padding: const EdgeInsets.symmetric(horizontal: 24),
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          Row(
+                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                            children: [
+                              const Text(
+                                'Sysnopsis',
+                                style: TextStyle(
+                                  fontSize: 20,
+                                  fontWeight: FontWeight.bold,
+                                  color: Color(0xFF2E3A59),
+                                ),
+                              ),
+                              Text(
+                                'Read more',
+                                style: TextStyle(
+                                  fontSize: 16,
+                                  color: Colors.blue[600],
+                                  fontWeight: FontWeight.w500,
+                                ),
+                              ),
+                            ],
+                          ),
+
+                          const SizedBox(height: 16),
+
+                          // Synopsis text
+                          Text(
+                            book['synopsis'],
+                            style: const TextStyle(
+                              fontSize: 15,
+                              height: 1.5,
+                              color: Colors.grey,
+                            ),
+                          ),
+                        ],
+                      ),
+                    ),
+
+                    const SizedBox(height: 40),
+                  ],
                 ),
               ),
             ),
-            
+
             // Bottom buttons
-            Container(
+            Padding(
               padding: const EdgeInsets.all(16),
-              decoration: BoxDecoration(
-                color: Colors.white,
-                boxShadow: [
-                  BoxShadow(
-                    color: Colors.grey.withOpacity(0.2),
-                    spreadRadius: 1,
-                    blurRadius: 5,
-                    offset: const Offset(0, -2),
-                  ),
-                ],
-              ),
               child: Row(
                 children: [
-                  // Tombol Tambahkan ke Perpustakaan
+                  // Add To Library button
                   Expanded(
                     child: InkWell(
                       onTap: () {
@@ -291,16 +285,17 @@ class BookDetailScreen extends StatelessWidget {
                         );
                       },
                       child: Container(
-                        padding: const EdgeInsets.symmetric(vertical: 12),
+                        padding: const EdgeInsets.symmetric(vertical: 16),
                         decoration: BoxDecoration(
                           border: Border.all(color: Colors.blue),
                           borderRadius: BorderRadius.circular(8),
                         ),
                         alignment: Alignment.center,
                         child: const Text(
-                          'Tambahkan ke\n Perpustakaan',
+                          'Add To Library',
                           style: TextStyle(
                             color: Colors.blue,
+                            fontSize: 16,
                             fontWeight: FontWeight.bold,
                           ),
                         ),
@@ -308,8 +303,8 @@ class BookDetailScreen extends StatelessWidget {
                     ),
                   ),
                   const SizedBox(width: 16),
-                  
-                  // Tombol Pinjam
+
+                  // Pinjam button
                   Expanded(
                     child: InkWell(
                       onTap: () {
@@ -321,16 +316,17 @@ class BookDetailScreen extends StatelessWidget {
                         );
                       },
                       child: Container(
-                        padding: const EdgeInsets.symmetric(vertical: 12),
+                        padding: const EdgeInsets.symmetric(vertical: 16),
                         decoration: BoxDecoration(
                           color: Colors.blue,
                           borderRadius: BorderRadius.circular(8),
                         ),
                         alignment: Alignment.center,
                         child: const Text(
-                          'Pinjam buku',
+                          'Pinjam',
                           style: TextStyle(
                             color: Colors.white,
+                            fontSize: 16,
                             fontWeight: FontWeight.bold,
                           ),
                         ),
@@ -346,31 +342,21 @@ class BookDetailScreen extends StatelessWidget {
     );
   }
 
-  Widget _buildStatItem(IconData icon, String text) {
+  Widget _buildRoundedStatItem(IconData icon, String text) {
     return Column(
       children: [
-        Icon(
-          icon,
-          color: Colors.blue,
-          size: 22,
-        ),
-        const SizedBox(height: 4),
-        Text(
-          text,
-          style: const TextStyle(
-            fontSize: 12,
-            color: Colors.grey,
+        Container(
+          width: 56,
+          height: 56,
+          decoration: BoxDecoration(
+            color: Colors.grey.withOpacity(0.1),
+            shape: BoxShape.circle,
           ),
+          child: Center(child: Icon(icon, color: Colors.blue[300], size: 24)),
         ),
+        const SizedBox(height: 8),
+        Text(text, style: const TextStyle(fontSize: 14, color: Colors.grey)),
       ],
-    );
-  }
-
-  Widget _buildStatDivider() {
-    return Container(
-      height: 24,
-      width: 1,
-      color: Colors.grey.withOpacity(0.3),
     );
   }
 }
