@@ -9,21 +9,23 @@ class LoginScreen extends StatefulWidget {
 }
 
 class _LoginScreenState extends State<LoginScreen> {
-  final TextEditingController _nimController = TextEditingController();
+  final TextEditingController _nisController = TextEditingController();
   final TextEditingController _passwordController = TextEditingController();
   final AuthService _authService = AuthService();
   String? _errorText;
   bool _obscurePassword = true;
 
-  void _handleLogin() {
-    final nim = _nimController.text.trim();
+  void _handleLogin() async {
+    final nis = _nisController.text.trim();
     final password = _passwordController.text.trim();
 
-    if (_authService.login(nim, password)) {
+    final success = await _authService.login(nis, password);
+
+    if (success) {
       Navigator.pushReplacementNamed(context, '/home');
     } else {
       setState(() {
-        _errorText = 'NIM atau Password salah';
+        _errorText = 'NIS atau Password salah';
       });
     }
   }
@@ -58,7 +60,7 @@ class _LoginScreenState extends State<LoginScreen> {
                 child: Column(
                   children: [
                     TextField(
-                      controller: _nimController,
+                      controller: _nisController,
                       decoration: const InputDecoration(
                         labelText: 'NIS',
                         prefixIcon: Icon(Icons.person),
