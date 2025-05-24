@@ -60,8 +60,6 @@ class ProfilePage extends StatelessWidget {
           const SizedBox(height: 30),
           _buildCollectionSection(context),
           const SizedBox(height: 20),
-          _buildStatsSection(),
-          const SizedBox(height: 20),
           _buildPreferencesSection(),
         ],
       ),
@@ -114,36 +112,13 @@ class ProfilePage extends StatelessWidget {
               Icon(Icons.alternate_email, size: 16, color: Colors.blue[700]),
               const SizedBox(width: 4),
               Text(
-                '@munaw.00',
+                'munaw.00', // Diperbaiki: tanpa simbol @ lagi
                 style: TextStyle(
                   fontSize: 14,
                   color: Colors.blue[700],
                 ),
               ),
             ],
-          ),
-          const SizedBox(height: 8),
-          Container(
-            padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 6),
-            decoration: BoxDecoration(
-              color: Colors.blue[50],
-              borderRadius: BorderRadius.circular(30),
-            ),
-            child: Row(
-              mainAxisSize: MainAxisSize.min,
-              children: [
-                Icon(Icons.stars, size: 16, color: Colors.amber[700]),
-                const SizedBox(width: 4),
-                Text(
-                  'Premium Member',
-                  style: TextStyle(
-                    fontSize: 12,
-                    color: Colors.blue[800],
-                    fontWeight: FontWeight.w500,
-                  ),
-                ),
-              ],
-            ),
           ),
         ],
       ),
@@ -261,99 +236,6 @@ class ProfilePage extends StatelessWidget {
           ),
         ],
       ),
-    );
-  }
-
-  Widget _buildStatsSection() {
-    return Container(
-      margin: const EdgeInsets.symmetric(horizontal: 16),
-      padding: const EdgeInsets.all(16),
-      decoration: BoxDecoration(
-        color: Colors.white,
-        borderRadius: BorderRadius.circular(12),
-        boxShadow: [
-          BoxShadow(
-            color: Colors.black.withOpacity(0.05),
-            spreadRadius: 1,
-            blurRadius: 10,
-            offset: const Offset(0, 2),
-          ),
-        ],
-      ),
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          const Text(
-            'Statistik Bacaan',
-            style: TextStyle(
-              fontSize: 16,
-              fontWeight: FontWeight.bold,
-            ),
-          ),
-          const SizedBox(height: 16),
-          Row(
-            mainAxisAlignment: MainAxisAlignment.spaceAround,
-            children: [
-              _buildStatItem('12', 'Buku Dibaca', Icons.menu_book, Colors.blue),
-              _buildStatItem('5', 'Sedang Dibaca', Icons.hourglass_top, Colors.orange),
-              _buildStatItem('23', 'Wishlist', Icons.favorite, Colors.red),
-            ],
-          ),
-          const SizedBox(height: 16),
-          ClipRRect(
-            borderRadius: BorderRadius.circular(8),
-            child: LinearProgressIndicator(
-              value: 0.7,
-              minHeight: 10,
-              backgroundColor: Colors.grey[200],
-              color: Colors.green,
-            ),
-          ),
-          const SizedBox(height: 8),
-          const Text(
-            'Target bacaan tahun ini: 70%',
-            style: TextStyle(
-              fontSize: 12,
-              color: Colors.grey,
-            ),
-          ),
-        ],
-      ),
-    );
-  }
-
-  Widget _buildStatItem(String value, String label, IconData icon, Color color) {
-    return Column(
-      children: [
-        Container(
-          padding: const EdgeInsets.all(12),
-          decoration: BoxDecoration(
-            color: color.withOpacity(0.1),
-            shape: BoxShape.circle,
-          ),
-          child: Icon(
-            icon,
-            color: color,
-            size: 28,
-          ),
-        ),
-        const SizedBox(height: 8),
-        Text(
-          value,
-          style: const TextStyle(
-            fontWeight: FontWeight.bold,
-            fontSize: 18,
-          ),
-        ),
-        const SizedBox(height: 4),
-        Text(
-          label,
-          style: TextStyle(
-            fontSize: 12,
-            color: Colors.grey[600],
-          ),
-        ),
-      ],
     );
   }
 

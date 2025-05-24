@@ -1,4 +1,3 @@
-// lib/screens/home.dart
 import 'package:flutter/material.dart';
 
 class BookstoreHomePage extends StatefulWidget {
@@ -47,7 +46,7 @@ class _BookstoreHomePageState extends State<BookstoreHomePage> {
                 ],
               ),
             ),
-            
+
             // Category Section
             Padding(
               padding: const EdgeInsets.symmetric(horizontal: 16.0),
@@ -68,7 +67,7 @@ class _BookstoreHomePageState extends State<BookstoreHomePage> {
                 ],
               ),
             ),
-            
+
             // Category Tabs
             Padding(
               padding: const EdgeInsets.symmetric(horizontal: 16.0),
@@ -96,9 +95,9 @@ class _BookstoreHomePageState extends State<BookstoreHomePage> {
                 ),
               ),
             ),
-            
+
             const SizedBox(height: 20),
-            
+
             // Book Cards
             Padding(
               padding: const EdgeInsets.symmetric(horizontal: 16.0),
@@ -109,7 +108,6 @@ class _BookstoreHomePageState extends State<BookstoreHomePage> {
                       title: 'Selena - Tere Liye',
                       author: 'Tere Liye',
                       description: 'The Bumi Series has always entertained. Cool!',
-                      rating: 4.4,
                       bookImage: Icons.book,
                       color: Colors.teal,
                     ),
@@ -120,7 +118,6 @@ class _BookstoreHomePageState extends State<BookstoreHomePage> {
                       title: 'Sapiens',
                       author: 'Yuval Noah Harari',
                       description: 'What does it mean to be human as we can see...',
-                      rating: 4.6,
                       bookImage: Icons.book,
                       color: Colors.pink,
                     ),
@@ -128,9 +125,9 @@ class _BookstoreHomePageState extends State<BookstoreHomePage> {
                 ],
               ),
             ),
-            
+
             const SizedBox(height: 20),
-            
+
             // Our Recommendation
             Padding(
               padding: const EdgeInsets.symmetric(horizontal: 16.0),
@@ -151,7 +148,7 @@ class _BookstoreHomePageState extends State<BookstoreHomePage> {
                 ],
               ),
             ),
-            
+
             // Genre Tabs
             Padding(
               padding: const EdgeInsets.symmetric(horizontal: 16.0),
@@ -179,9 +176,9 @@ class _BookstoreHomePageState extends State<BookstoreHomePage> {
                 ),
               ),
             ),
-            
+
             const SizedBox(height: 16),
-            
+
             // Recommendation Card
             Expanded(
               child: Padding(
@@ -284,7 +281,7 @@ class _BookstoreHomePageState extends State<BookstoreHomePage> {
       ),
     );
   }
-  
+
   Widget _buildCategoryChip(String label) {
     return Container(
       margin: const EdgeInsets.only(left: 8),
@@ -300,12 +297,11 @@ class _BookstoreHomePageState extends State<BookstoreHomePage> {
       ),
     );
   }
-  
+
   Widget _buildBookCard({
     required String title,
     required String author,
     required String description,
-    required double rating,
     required IconData bookImage,
     required Color color,
   }) {
@@ -354,34 +350,20 @@ class _BookstoreHomePageState extends State<BookstoreHomePage> {
             overflow: TextOverflow.ellipsis,
           ),
           const SizedBox(height: 8),
-          Row(
-            children: [
-              Container(
-                padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 4),
-                decoration: BoxDecoration(
-                  color: color.withOpacity(0.2),
-                  borderRadius: BorderRadius.circular(12),
-                ),
-                child: Text(
-                  'Goodreads',
-                  style: TextStyle(
-                    fontSize: 10,
-                    color: color,
-                    fontWeight: FontWeight.w500,
-                  ),
-                ),
+          Container(
+            padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 4),
+            decoration: BoxDecoration(
+              color: color.withOpacity(0.2),
+              borderRadius: BorderRadius.circular(12),
+            ),
+            child: Text(
+              'Goodreads',
+              style: TextStyle(
+                fontSize: 10,
+                color: color,
+                fontWeight: FontWeight.w500,
               ),
-              const SizedBox(width: 8),
-              const Icon(Icons.star, size: 16, color: Colors.amber),
-              const SizedBox(width: 4),
-              Text(
-                rating.toString(),
-                style: const TextStyle(
-                  fontSize: 12,
-                  fontWeight: FontWeight.w500,
-                ),
-              ),
-            ],
+            ),
           ),
         ],
       ),
