@@ -32,9 +32,16 @@ class MyApp extends StatelessWidget {
         '/home': (context) =>  const BookstoreHomePage(),
         '/library': (context) => const LibraryPage (),
         '/peminjaman': (context) => const BookDetailScreen (),
+<<<<<<< HEAD
         '/profil': (context) => const ProfilePage (), 
         '/pengembalian': (context) => const PengembalianPage (),
         '/history' :(context) => HistoryPage(),
+=======
+        '/history' :(context) => const HistoryPage(),
+        '/profil': (context) => const ProfilePage (), 
+        '/pengembalian': (context) => const PengembalianPage (),
+        
+>>>>>>> 3d6affe84ec656312610adbc09881998ac90d0ff
       },
     );
   }

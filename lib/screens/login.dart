@@ -9,21 +9,43 @@ class LoginScreen extends StatefulWidget {
 }
 
 class _LoginScreenState extends State<LoginScreen> {
-  final TextEditingController _nimController = TextEditingController();
+  final TextEditingController _nisController = TextEditingController();
   final TextEditingController _passwordController = TextEditingController();
   final AuthService _authService = AuthService();
   String? _errorText;
   bool _obscurePassword = true;
+  bool _isLoading = false;
 
-  void _handleLogin() {
-    final nim = _nimController.text.trim();
+  void _handleLogin() async {
+    if (_nisController.text.trim().isEmpty || _passwordController.text.trim().isEmpty) {
+      setState(() {
+        _errorText = 'NIS dan Password harus diisi';
+      });
+      return;
+    }
+
+    setState(() {
+      _isLoading = true;
+      _errorText = null;
+    });
+
+    final nis = _nisController.text.trim();
     final password = _passwordController.text.trim();
 
-    if (_authService.login(nim, password)) {
+    final result = await _authService.login(nis, password);
+
+    setState(() {
+      _isLoading = false;
+    });
+
+    if (result['success']) {
+      // Login berhasil, navigasi ke home
+      print("User data: ${result['user']}");
       Navigator.pushReplacementNamed(context, '/home');
     } else {
+      // Login gagal, tampilkan error
       setState(() {
-        _errorText = 'NIM atau Password salah';
+        _errorText = result['message'];
       });
     }
   }
@@ -52,13 +74,14 @@ class _LoginScreenState extends State<LoginScreen> {
               Container(
                 padding: const EdgeInsets.all(20),
                 decoration: BoxDecoration(
-                  color: Colors.white,
+                  color: const Color.fromARGB(255, 255, 255, 255),
                   borderRadius: BorderRadius.circular(16),
                 ),
                 child: Column(
                   children: [
                     TextField(
-                      controller: _nimController,
+                      controller: _nisController,
+                      enabled: !_isLoading,
                       decoration: const InputDecoration(
                         labelText: 'NIS',
                         prefixIcon: Icon(Icons.person),
@@ -68,6 +91,7 @@ class _LoginScreenState extends State<LoginScreen> {
                     const SizedBox(height: 16),
                     TextField(
                       controller: _passwordController,
+                      enabled: !_isLoading,
                       obscureText: _obscurePassword,
                       decoration: InputDecoration(
                         labelText: 'Password',
@@ -98,7 +122,7 @@ class _LoginScreenState extends State<LoginScreen> {
                     SizedBox(
                       width: double.infinity,
                       child: ElevatedButton(
-                        onPressed: _handleLogin,
+                        onPressed: _isLoading ? null : _handleLogin,
                         style: ElevatedButton.styleFrom(
                           backgroundColor: primaryColor,
                           padding: const EdgeInsets.symmetric(vertical: 14),
@@ -106,10 +130,19 @@ class _LoginScreenState extends State<LoginScreen> {
                             borderRadius: BorderRadius.circular(8),
                           ),
                         ),
-                        child: const Text(
-                          'Sign In',
-                          style: TextStyle(fontSize: 16, color: Colors.white),
-                        ),
+                        child: _isLoading
+                            ? const SizedBox(
+                                height: 20,
+                                width: 20,
+                                child: CircularProgressIndicator(
+                                  strokeWidth: 2,
+                                  valueColor: AlwaysStoppedAnimation<Color>(Colors.white),
+                                ),
+                              )
+                            : const Text(
+                                'Sign In',
+                                style: TextStyle(fontSize: 16, color: Colors.white),
+                              ),
                       ),
                     ),
                   ],
