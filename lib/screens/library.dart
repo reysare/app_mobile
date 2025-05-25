@@ -1,5 +1,3 @@
-
-
 import 'package:flutter/material.dart';
 
 class LibraryPage extends StatefulWidget {
@@ -24,30 +22,26 @@ class _LibraryPageState extends State<LibraryPage> {
     {
       'title': 'Atomic Habits',
       'author': 'James Clear',
-      'coverUrl':
-          'https://images-na.ssl-images-amazon.com/images/I/91bYsX41DVL.jpg',
+      'coverUrl': 'https://images-na.ssl-images-amazon.com/images/I/91bYsX41DVL.jpg',
       'isNew': true,
     },
     {
       'title': 'Sapiens',
       'author': 'Yuval Noah Harari',
-      'coverUrl':
-          'https://images-na.ssl-images-amazon.com/images/I/713jIoMO3UL.jpg',
+      'coverUrl': 'https://images-na.ssl-images-amazon.com/images/I/713jIoMO3UL.jpg',
       'isNew': false,
       'subtitle': 'Riwayat\nSingkat\nUmat Manusia',
     },
     {
       'title': 'Si Putih',
       'author': 'Robert T. Kiyosaki',
-      'coverUrl':
-          'https://cdn.gramedia.com/uploads/items/9786020523310_Si_Putih.jpg',
+      'coverUrl': 'https://cdn.gramedia.com/uploads/items/9786020523310_Si_Putih.jpg',
       'isNew': true,
     },
     {
       'title': 'Bintang',
       'author': 'Tere Liye',
-      'coverUrl':
-          'https://cdn.gramedia.com/uploads/items/9786020624352_Bintang.jpg',
+      'coverUrl': 'https://cdn.gramedia.com/uploads/items/9786020624352_Bintang.jpg',
       'isNew': false,
       'discount': '70%',
     },
@@ -58,54 +52,15 @@ class _LibraryPageState extends State<LibraryPage> {
     return Scaffold(
       backgroundColor: Colors.white,
       body: SafeArea(
-        child: IndexedStack(
-          index: _selectedIndex,
+        child: Column(
           children: [
-            _buildHomePage(),
-            _buildBooksPage(),
-            _buildHistoryPage(),
-            _buildProfilePage(),
+            _buildSearchBar(),
+            _buildGenreSelector(),
+            Expanded(child: _buildBookGrid()),
           ],
         ),
       ),
       bottomNavigationBar: _buildBottomNavigationBar(),
-    );
-  }
-
-  Widget _buildHomePage() {
-    return Center(
-      child: Text(
-        'Home Page',
-        style: TextStyle(fontSize: 24, fontWeight: FontWeight.bold),
-      ),
-    );
-  }
-
-  Widget _buildBooksPage() {
-    return Column(
-      children: [
-        _buildSearchBar(),
-        _buildGenreSelector(),
-        Expanded(child: _buildBookGrid()),
-      ],
-    );
-  }
-
-  Widget _buildHistoryPage() {
-    return Center(
-      child: Text(
-        'History Page',
-        style: TextStyle(fontSize: 24, fontWeight: FontWeight.bold),
-      ),
-    );
-  }
-
-  Widget _buildProfilePage() {
-    return Center(
-      child: Text(
-        'Account Page',
-        style: TextStyle(fontSize: 24, fontWeight: FontWeight.bold),
-      ),
     );
   }
 
@@ -197,108 +152,118 @@ class _LibraryPageState extends State<LibraryPage> {
   }
 
   Widget _buildBookCard(Map<String, dynamic> book) {
-    return Column(
-      crossAxisAlignment: CrossAxisAlignment.start,
-      children: [
-        Expanded(
-          child: Stack(
-            children: [
-              ClipRRect(
-                borderRadius: BorderRadius.circular(8.0),
-                child: Container(
-                  width: double.infinity,
-                  color: Colors.grey.shade200,
-                  child: Image.network(
-                    book['coverUrl'],
-                    fit: BoxFit.cover,
-                    errorBuilder: (context, error, stackTrace) {
-                      return Center(
-                        child: Column(
-                          mainAxisAlignment: MainAxisAlignment.center,
-                          children: [
-                            Icon(Icons.book,
-                                size: 50, color: Colors.grey.shade400),
-                            const SizedBox(height: 8),
-                            Text(
-                              book['title'],
-                              textAlign: TextAlign.center,
-                              style: TextStyle(
-                                color: Colors.grey.shade700,
-                                fontWeight: FontWeight.bold,
+    return InkWell(
+      onTap: () {
+        Navigator.pushNamed(
+          context,
+          '/peminjaman',
+          arguments: {
+            'title': book['title'],
+            'author': book['author'],
+            'isNew': book['isNew'],
+          },
+        );
+      },
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          Expanded(
+            child: Stack(
+              children: [
+                ClipRRect(
+                  borderRadius: BorderRadius.circular(8.0),
+                  child: Container(
+                    width: double.infinity,
+                    color: Colors.grey.shade200,
+                    child: Image.network(
+                      book['coverUrl'],
+                      fit: BoxFit.cover,
+                      errorBuilder: (context, error, stackTrace) {
+                        return Center(
+                          child: Column(
+                            mainAxisAlignment: MainAxisAlignment.center,
+                            children: [
+                              Icon(Icons.book, size: 50, color: Colors.grey.shade400),
+                              const SizedBox(height: 8),
+                              Text(
+                                book['title'],
+                                textAlign: TextAlign.center,
+                                style: TextStyle(
+                                  color: Colors.grey.shade700,
+                                  fontWeight: FontWeight.bold,
+                                ),
                               ),
-                            ),
-                          ],
+                            ],
+                          ),
+                        );
+                      },
+                    ),
+                  ),
+                ),
+                if (book['isNew'] == true)
+                  Positioned(
+                    top: 8.0,
+                    left: 8.0,
+                    child: Container(
+                      padding: const EdgeInsets.symmetric(horizontal: 8.0, vertical: 4.0),
+                      decoration: BoxDecoration(
+                        color: Colors.pink.shade100,
+                        borderRadius: BorderRadius.circular(4.0),
+                      ),
+                      child: const Text(
+                        'New',
+                        style: TextStyle(
+                          color: Colors.pink,
+                          fontSize: 12.0,
+                          fontWeight: FontWeight.bold,
                         ),
-                      );
-                    },
-                  ),
-                ),
-              ),
-              if (book['isNew'] == true)
-                Positioned(
-                  top: 8.0,
-                  left: 8.0,
-                  child: Container(
-                    padding: const EdgeInsets.symmetric(
-                        horizontal: 8.0, vertical: 4.0),
-                    decoration: BoxDecoration(
-                      color: Colors.pink.shade100,
-                      borderRadius: BorderRadius.circular(4.0),
-                    ),
-                    child: const Text(
-                      'New',
-                      style: TextStyle(
-                        color: Colors.pink,
-                        fontSize: 12.0,
-                        fontWeight: FontWeight.bold,
                       ),
                     ),
                   ),
-                ),
-              if (book['discount'] != null)
-                Positioned(
-                  top: 8.0,
-                  right: 8.0,
-                  child: Container(
-                    padding: const EdgeInsets.symmetric(
-                        horizontal: 8.0, vertical: 4.0),
-                    decoration: BoxDecoration(
-                      color: Colors.purple.shade100,
-                      borderRadius: BorderRadius.circular(4.0),
-                    ),
-                    child: Text(
-                      book['discount'],
-                      style: const TextStyle(
-                        color: Colors.purple,
-                        fontSize: 12.0,
-                        fontWeight: FontWeight.bold,
+                if (book['discount'] != null)
+                  Positioned(
+                    top: 8.0,
+                    right: 8.0,
+                    child: Container(
+                      padding: const EdgeInsets.symmetric(horizontal: 8.0, vertical: 4.0),
+                      decoration: BoxDecoration(
+                        color: Colors.purple.shade100,
+                        borderRadius: BorderRadius.circular(4.0),
+                      ),
+                      child: Text(
+                        book['discount'],
+                        style: const TextStyle(
+                          color: Colors.purple,
+                          fontSize: 12.0,
+                          fontWeight: FontWeight.bold,
+                        ),
                       ),
                     ),
                   ),
-                ),
-            ],
+              ],
+            ),
           ),
-        ),
-        const SizedBox(height: 8.0),
-        Text(
-          book['title'],
-          style: const TextStyle(
-            fontWeight: FontWeight.bold,
-            fontSize: 16.0,
+          const SizedBox(height: 8.0),
+          Text(
+            book['title'],
+            style: const TextStyle(
+              fontWeight: FontWeight.bold,
+              fontSize: 16.0,
+            ),
           ),
-        ),
-        Text(
-          book['author'],
-          style: TextStyle(
-            color: Colors.grey.shade600,
-            fontSize: 14.0,
+          Text(
+            book['author'],
+            style: TextStyle(
+              color: Colors.grey.shade600,
+              fontSize: 14.0,
+            ),
           ),
-        ),
-      ],
+        ],
+      ),
     );
   }
 
- Widget _buildBottomNavigationBar() {
+  Widget _buildBottomNavigationBar() {
     return BottomNavigationBar(
       type: BottomNavigationBarType.fixed,
       selectedItemColor: Colors.blue,
@@ -309,17 +274,13 @@ class _LibraryPageState extends State<LibraryPage> {
           _selectedIndex = index;
         });
         
-        // Handle navigation between screens
         if (index == 0) {
-          // Navigate to Home
           Navigator.pushReplacementNamed(context, '/home');
         } else if (index == 1) {
-          // We're already on Books page, no navigation needed
+          // Already on Books page
         } else if (index == 2) {
-          // Navigate to History page
           Navigator.pushReplacementNamed(context, '/history');
         } else if (index == 3) {
-          // Navigate to Account page
           Navigator.pushReplacementNamed(context, '/profil');
         }
       },
