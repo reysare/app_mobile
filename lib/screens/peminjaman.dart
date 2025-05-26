@@ -43,28 +43,28 @@ class BookDetailScreen extends StatelessWidget {
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.center,
                   children: [
-                    const SizedBox(height: 20),
-                    const Text(
-                      'NEW YORK TIMES BESTSELLER',
-                      style: TextStyle(
-                        fontSize: 11,
-                        fontWeight: FontWeight.w600,
-                        letterSpacing: 1.0,
-                        color: Colors.black54,
-                      ),
-                    ),
-                    const SizedBox(height: 16),
-                    const Text(
-                      'PERUBAHAN KECIL YANG\nMEMBERIKAN HASIL LUAR BIASA',
-                      textAlign: TextAlign.center,
-                      style: TextStyle(
-                        fontSize: 13,
-                        fontWeight: FontWeight.bold,
-                        letterSpacing: 0.5,
-                        height: 1.3,
-                        color: Colors.black87,
-                      ),
-                    ),
+                    // const SizedBox(height: 20),
+                    // const Text(
+                    //   'NEW YORK TIMES BESTSELLER',
+                    //   style: TextStyle(
+                    //     fontSize: 11,
+                    //     fontWeight: FontWeight.w600,
+                    //     letterSpacing: 1.0,
+                    //     color: Colors.black54,
+                    //   ),
+                    // ),
+                    // const SizedBox(height: 16),
+                    // const Text(
+                    //   'PERUBAHAN KECIL YANG\nMEMBERIKAN HASIL LUAR BIASA',
+                    //   textAlign: TextAlign.center,
+                    //   style: TextStyle(
+                    //     fontSize: 13,
+                    //     fontWeight: FontWeight.bold,
+                    //     letterSpacing: 0.5,
+                    //     height: 1.3,
+                    //     color: Colors.black87,
+                    //   ),
+                    // ),
                     const SizedBox(height: 24),
                     Container(
                       width: 200,
@@ -96,16 +96,16 @@ class BookDetailScreen extends StatelessWidget {
                         ),
                       ),
                     ),
-                    const SizedBox(height: 24),
-                    const Text(
-                      'Cara Mudah dan Terbukti\nuntuk Membentuk Kebiasaan Baik\ndan Menghilangkan Kebiasaan Buruk',
-                      textAlign: TextAlign.center,
-                      style: TextStyle(
-                        fontSize: 13,
-                        color: Colors.black87,
-                        height: 1.4,
-                      ),
-                    ),
+                    const SizedBox(height: 12),
+                    // const Text(
+                    //   'Cara Mudah dan Terbukti\nuntuk Membentuk Kebiasaan Baik\ndan Menghilangkan Kebiasaan Buruk',
+                    //   textAlign: TextAlign.center,
+                    //   style: TextStyle(
+                    //     fontSize: 13,
+                    //     color: Colors.black87,
+                    //     height: 1.4,
+                    //   ),
+                    // ),
                     const SizedBox(height: 24),
                     const Text(
                       'JAMES CLEAR',
@@ -132,8 +132,7 @@ class BookDetailScreen extends StatelessWidget {
                       mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                       children: [
                         _buildStatItem(Icons.access_time, '100 Buku'),
-                        _buildStatItem(Icons.menu_book, '31 borrower'),
-                        _buildStatItem(Icons.chat_bubble_outline, '2 komentar'),
+                        _buildStatItem(Icons.menu_book, '31 peminjam'),
                       ],
                     ),
                     const SizedBox(height: 32),
@@ -143,7 +142,7 @@ class BookDetailScreen extends StatelessWidget {
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: [
                         const Text(
-                          'Sysnopsis',
+                          'Sinopsis',
                           style: TextStyle(
                             fontSize: 18,
                             fontWeight: FontWeight.bold,
