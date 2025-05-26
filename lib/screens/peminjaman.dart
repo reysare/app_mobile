@@ -29,9 +29,8 @@ class BookDetailScreen extends StatelessWidget {
                     ),
                   ),
                   const Spacer(),
-                  // Empty container to balance the row (same width as the back button)
                   Container(
-                    width: 48, // Same width as IconButton
+                    width: 48,
                   ),
                 ],
               ),
@@ -45,8 +44,6 @@ class BookDetailScreen extends StatelessWidget {
                   crossAxisAlignment: CrossAxisAlignment.center,
                   children: [
                     const SizedBox(height: 20),
-
-                    // NY Times Bestseller
                     const Text(
                       'NEW YORK TIMES BESTSELLER',
                       style: TextStyle(
@@ -57,8 +54,6 @@ class BookDetailScreen extends StatelessWidget {
                       ),
                     ),
                     const SizedBox(height: 16),
-
-                    // Indonesian Title
                     const Text(
                       'PERUBAHAN KECIL YANG\nMEMBERIKAN HASIL LUAR BIASA',
                       textAlign: TextAlign.center,
@@ -71,11 +66,9 @@ class BookDetailScreen extends StatelessWidget {
                       ),
                     ),
                     const SizedBox(height: 24),
-
-                    // Book Cover Image
                     Container(
                       width: 200,
-                      height: 300, // Increased height to accommodate book cover
+                      height: 300,
                       decoration: BoxDecoration(
                         borderRadius: BorderRadius.circular(8),
                         boxShadow: [
@@ -92,12 +85,18 @@ class BookDetailScreen extends StatelessWidget {
                         child: Image.asset(
                           'assets/images/3.png',
                           fit: BoxFit.cover,
+                          errorBuilder: (context, error, stackTrace) {
+                            return const Center(
+                              child: Text(
+                                'Gambar tidak ditemukan',
+                                style: TextStyle(color: Colors.red),
+                              ),
+                            );
+                          },
                         ),
                       ),
                     ),
                     const SizedBox(height: 24),
-
-                    // Subtitle
                     const Text(
                       'Cara Mudah dan Terbukti\nuntuk Membentuk Kebiasaan Baik\ndan Menghilangkan Kebiasaan Buruk',
                       textAlign: TextAlign.center,
@@ -108,8 +107,6 @@ class BookDetailScreen extends StatelessWidget {
                       ),
                     ),
                     const SizedBox(height: 24),
-
-                    // Author Name
                     const Text(
                       'JAMES CLEAR',
                       style: TextStyle(
@@ -120,8 +117,6 @@ class BookDetailScreen extends StatelessWidget {
                       ),
                     ),
                     const SizedBox(height: 32),
-
-                    // Title Section
                     const Text(
                       'Atomic Habits',
                       style: TextStyle(
@@ -132,7 +127,7 @@ class BookDetailScreen extends StatelessWidget {
                     ),
                     const SizedBox(height: 12),
 
-                    // Stats Row
+                    // Blue Stats Row
                     Row(
                       mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                       children: [
@@ -188,7 +183,6 @@ class BookDetailScreen extends StatelessWidget {
               ),
               child: Row(
                 children: [
-                  // Add To Library Button
                   Expanded(
                     child: Container(
                       padding: const EdgeInsets.symmetric(vertical: 16),
@@ -202,6 +196,7 @@ class BookDetailScreen extends StatelessWidget {
                       alignment: Alignment.center,
                       child: const Text(
                         'Tambahkan ke\n Perpustakaan',
+                        textAlign: TextAlign.center,
                         style: TextStyle(
                           color: Color.fromARGB(218, 66, 138, 187),
                           fontWeight: FontWeight.w600,
@@ -211,8 +206,6 @@ class BookDetailScreen extends StatelessWidget {
                     ),
                   ),
                   const SizedBox(width: 16),
-
-                  // Pinjam Button
                   Expanded(
                     child: Container(
                       padding: const EdgeInsets.symmetric(vertical: 16),
@@ -240,24 +233,29 @@ class BookDetailScreen extends StatelessWidget {
     );
   }
 
+  // 🔵 Komponen Statistik dengan Warna Biru
   Widget _buildStatItem(IconData icon, String text) {
     return Column(
       children: [
         Container(
           width: 48,
           height: 48,
-          decoration: BoxDecoration(
-            color: Colors.grey[100],
+          decoration: const BoxDecoration(
+            color: Color(0xFFE6EEF7), // Latar belakang biru muda
             shape: BoxShape.circle,
           ),
-          child: Icon(icon, color: Colors.grey[600], size: 24),
+          child: Icon(icon, color: Color(0xFF4699D0), size: 24), // Ikon biru
         ),
         const SizedBox(height: 8),
+        const Text(
+          '',
+          style: TextStyle(fontSize: 13),
+        ),
         Text(
           text,
-          style: TextStyle(
+          style: const TextStyle(
             fontSize: 13,
-            color: Colors.grey[600],
+            color: Color(0xFF7A8CA3), // Warna teks keabu-biruan
             fontWeight: FontWeight.w500,
           ),
         ),
