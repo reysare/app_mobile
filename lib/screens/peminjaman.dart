@@ -234,32 +234,28 @@ class BookDetailScreen extends StatelessWidget {
   }
 
   // 🔵 Komponen Statistik dengan Warna Biru
-  Widget _buildStatItem(IconData icon, String text) {
-    return Column(
-      children: [
-        Container(
-          width: 48,
-          height: 48,
-          decoration: const BoxDecoration(
-            color: Color(0xFFE6EEF7), // Latar belakang biru muda
-            shape: BoxShape.circle,
-          ),
-          child: Icon(icon, color: Color(0xFF4699D0), size: 24), // Ikon biru
+ Widget _buildStatItem(IconData icon, String text) {
+  return Column(
+    children: [
+      Container(
+        width: 48,
+        height: 48,
+        decoration: const BoxDecoration(
+          color: Color(0xFFE6EEF7), // Latar belakang biru muda
+          shape: BoxShape.circle,
         ),
-        const SizedBox(height: 8),
-        const Text(
-          '',
-          style: TextStyle(fontSize: 13),
+        child: Icon(icon, color: Color(0xFF4699D0), size: 24), // Ikon biru
+      ),
+      const SizedBox(height: 8),
+      Text(
+        text,
+        style: const TextStyle(
+          fontSize: 13,
+          color: Color(0xFF7A8CA3), // Warna teks keabu-biruan
+          fontWeight: FontWeight.w500,
         ),
-        Text(
-          text,
-          style: const TextStyle(
-            fontSize: 13,
-            color: Color(0xFF7A8CA3), // Warna teks keabu-biruan
-            fontWeight: FontWeight.w500,
-          ),
-        ),
-      ],
-    );
-  }
+      ),
+    ],
+  );
+}
 }
