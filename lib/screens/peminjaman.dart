@@ -121,7 +121,7 @@ class BookDetailScreen extends StatelessWidget {
                     ),
                     const SizedBox(height: 32),
 
-                    // Title and Rating Section
+                    // Title Section
                     const Text(
                       'Atomic Habits',
                       style: TextStyle(
@@ -131,46 +131,6 @@ class BookDetailScreen extends StatelessWidget {
                       ),
                     ),
                     const SizedBox(height: 12),
-
-                    // Author and Rating Row
-                    Row(
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      children: [
-                        const Text(
-                          'James Clear',
-                          style: TextStyle(
-                            fontSize: 16,
-                            color: Colors.orange,
-                            fontWeight: FontWeight.w500,
-                          ),
-                        ),
-                        Container(
-                          margin: const EdgeInsets.symmetric(horizontal: 12),
-                          width: 2,
-                          height: 16,
-                          color: Colors.grey[300],
-                        ),
-                        const Text(
-                          'Goodreads',
-                          style: TextStyle(
-                            fontSize: 16,
-                            color: Colors.orange,
-                            fontWeight: FontWeight.w500,
-                          ),
-                        ),
-                        const SizedBox(width: 8),
-                        const Icon(Icons.star, color: Colors.orange, size: 18),
-                        const Text(
-                          '4.4',
-                          style: TextStyle(
-                            fontSize: 16,
-                            color: Colors.orange,
-                            fontWeight: FontWeight.w500,
-                          ),
-                        ),
-                      ],
-                    ),
-                    const SizedBox(height: 32),
 
                     // Stats Row
                     Row(
