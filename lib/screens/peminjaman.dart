@@ -29,9 +29,7 @@ class BookDetailScreen extends StatelessWidget {
                     ),
                   ),
                   const Spacer(),
-                  Container(
-                    width: 48,
-                  ),
+                  Container(width: 48),
                 ],
               ),
             ),
@@ -153,7 +151,7 @@ class BookDetailScreen extends StatelessWidget {
                     ),
                     const SizedBox(height: 16),
                     const Text(
-                      'No matter your goals, Atomic Habits offers a proven framework for improving--every day. James Clear, one of the world\'s leading experts on habit formation, reveals practical strategies that will teach you exactly how to form good habits, break bad ones, and master the tiny...',
+                      'No matter your goals, Atomic Habits offers a proven framework for improving--every day. James Clear, one of the world\'s leading experts on habit formation, reveals practical strategies that will teach you exactly how to form good habits, break bad ones, and master the tiny behaviors that lead to remarkable results. If you\'re having trouble changing your habits, the problem isn\'t you. The problem is your system. Bad habits repeat themselves again and again not because you don\'t want to change, but because you have the wrong system for change.',
                       style: TextStyle(
                         fontSize: 14,
                         color: Colors.grey,
@@ -233,28 +231,28 @@ class BookDetailScreen extends StatelessWidget {
   }
 
   // 🔵 Komponen Statistik dengan Warna Biru
- Widget _buildStatItem(IconData icon, String text) {
-  return Column(
-    children: [
-      Container(
-        width: 48,
-        height: 48,
-        decoration: const BoxDecoration(
-          color: Color(0xFFE6EEF7), // Latar belakang biru muda
-          shape: BoxShape.circle,
+  Widget _buildStatItem(IconData icon, String text) {
+    return Column(
+      children: [
+        Container(
+          width: 48,
+          height: 48,
+          decoration: const BoxDecoration(
+            color: Color(0xFFE6EEF7), // Latar belakang biru muda
+            shape: BoxShape.circle,
+          ),
+          child: Icon(icon, color: Color(0xFF4699D0), size: 24), // Ikon biru
         ),
-        child: Icon(icon, color: Color(0xFF4699D0), size: 24), // Ikon biru
-      ),
-      const SizedBox(height: 8),
-      Text(
-        text,
-        style: const TextStyle(
-          fontSize: 13,
-          color: Color(0xFF7A8CA3), // Warna teks keabu-biruan
-          fontWeight: FontWeight.w500,
+        const SizedBox(height: 8),
+        Text(
+          text,
+          style: const TextStyle(
+            fontSize: 13,
+            color: Color(0xFF7A8CA3), // Warna teks keabu-biruan
+            fontWeight: FontWeight.w500,
+          ),
         ),
-      ),
-    ],
-  );
-}
+      ],
+    );
+  }
 }
