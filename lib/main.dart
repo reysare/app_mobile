@@ -34,7 +34,7 @@ class MyApp extends StatelessWidget {
         '/peminjaman': (context) => const BookDetailScreen (),
         '/profil': (context) => const ProfilePage (), 
         '/pengembalian': (context) => const PengembalianPage (),
-        '/history' :(context) => HistoryPage(),
+        '/history' :(context) => const HistoryPage(),
       },
     );
   }
