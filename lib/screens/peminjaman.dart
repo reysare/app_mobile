@@ -116,13 +116,13 @@ class BookDetailScreen extends StatelessWidget {
                         color: Colors.black,
                       ),
                     ),
-                    const SizedBox(height: 32),
+                    const SizedBox(height: 2),
                     const Text(
                       'Atomic Habits',
                       style: TextStyle(
                         fontSize: 24,
                         fontWeight: FontWeight.bold,
-                        color: Colors.black,
+                        color: Color.fromARGB(255, 117, 156, 182),
                       ),
                     ),
                     const SizedBox(height: 12),
