@@ -10,6 +10,32 @@ class BookstoreHomePage extends StatefulWidget {
 class _BookstoreHomePageState extends State<BookstoreHomePage> {
   int _selectedIndex = 0;
 
+  final List<Map<String, dynamic>> _manualBooks = [
+    {
+      'title': 'Si Putih',
+      'author': 'Tere Liye',
+      'description': 'Petualangan seru di dunia paralel...',
+      'image': 'assets/images/si_putih.jpg',
+      'color': Colors.teal,
+    },
+    {
+      'title': 'Selena',
+      'author': 'Tere Liye',
+      'description':
+          'Buku prekuel serial dunia paralel yang menceritakan tentang orang tua Raib...',
+      'image': 'assets/images/2.png',
+      'color': Colors.purple,
+    },
+    {
+      'title': 'Atomic Habits',
+      'author': 'James Clear',
+      'description':
+          'Cara Mudah dan Terbukti untuk Membentuk Kebiasaan Baik',
+      'image': 'assets/images/3.png',
+      'color': Colors.orange,
+    },
+  ];
+
   void _onItemTapped(int index) {
     if (index != _selectedIndex) {
       setState(() {
@@ -54,7 +80,8 @@ class _BookstoreHomePageState extends State<BookstoreHomePage> {
                         onPressed: () {},
                       ),
                       IconButton(
-                        icon: const Icon(Icons.notifications_none, color: Colors.grey),
+                        icon: const Icon(Icons.notifications_none,
+                            color: Colors.grey),
                         onPressed: () {},
                       ),
                     ],
@@ -63,16 +90,15 @@ class _BookstoreHomePageState extends State<BookstoreHomePage> {
               ),
             ),
 
-            // Category Section
+            // Category Header
             Padding(
               padding: const EdgeInsets.symmetric(horizontal: 16.0),
               child: Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
-                  const Text(
-                    'Category',
-                    style: TextStyle(fontSize: 24, fontWeight: FontWeight.bold),
-                  ),
+                  const Text('Category',
+                      style:
+                          TextStyle(fontSize: 24, fontWeight: FontWeight.bold)),
                   IconButton(
                     icon: const Icon(Icons.help_outline, color: Colors.grey),
                     onPressed: () {},
@@ -89,12 +115,14 @@ class _BookstoreHomePageState extends State<BookstoreHomePage> {
                 child: Row(
                   children: [
                     Container(
-                      padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
+                      padding: const EdgeInsets.symmetric(
+                          horizontal: 16, vertical: 8),
                       decoration: BoxDecoration(
                         color: Colors.blue,
                         borderRadius: BorderRadius.circular(20),
                       ),
-                      child: const Text('This month', style: TextStyle(color: Colors.white)),
+                      child: const Text('This month',
+                          style: TextStyle(color: Colors.white)),
                     ),
                     const SizedBox(width: 8),
                     _buildCategoryChip('Biology'),
@@ -108,153 +136,36 @@ class _BookstoreHomePageState extends State<BookstoreHomePage> {
 
             const SizedBox(height: 20),
 
-            // Book Cards
-            Padding(
-              padding: const EdgeInsets.symmetric(horizontal: 16.0),
-              child: Row(
-                children: [
-                  Expanded(
+            // Manual Book List
+            Expanded(
+              child: ListView.builder(
+                itemCount: _manualBooks.length,
+                padding: const EdgeInsets.symmetric(horizontal: 16.0),
+                itemBuilder: (context, index) {
+                  final manual = _manualBooks[index];
+                  return Padding(
+                    padding: const EdgeInsets.only(bottom: 12.0),
                     child: _buildBookCard(
-                      title: 'Selena - Tere Liye',
-                      author: 'Tere Liye',
-                      description: 'The Bumi Series has always entertained. Cool!',
-                      bookImage: Icons.book,
-                      color: Colors.teal,
+                      title: manual['title'],
+                      author: manual['author'],
+                      description: manual['description'],
+                      bookImage: ClipRRect(
+                        borderRadius: BorderRadius.circular(12),
+                        child: Image.asset(
+                          manual['image'],
+                          fit: BoxFit.cover,
+                          width: double.infinity,
+                          height: 100,
+                        ),
+                      ),
+                      color: manual['color'],
                     ),
-                  ),
-                  const SizedBox(width: 12),
-                  Expanded(
-                    child: _buildBookCard(
-                      title: 'Sapiens',
-                      author: 'Yuval Noah Harari',
-                      description: 'What does it mean to be human as we can see...',
-                      bookImage: Icons.book,
-                      color: Colors.pink,
-                    ),
-                  ),
-                ],
+                  );
+                },
               ),
             ),
 
             const SizedBox(height: 20),
-
-            // Our Recommendation
-            Padding(
-              padding: const EdgeInsets.symmetric(horizontal: 16.0),
-              child: Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: [
-                  const Text(
-                    'Our Recommendation',
-                    style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
-                  ),
-                  IconButton(
-                    icon: const Icon(Icons.help_outline, color: Colors.grey),
-                    onPressed: () {},
-                  ),
-                ],
-              ),
-            ),
-
-            // Genre Tabs
-            Padding(
-              padding: const EdgeInsets.symmetric(horizontal: 16.0),
-              child: SingleChildScrollView(
-                scrollDirection: Axis.horizontal,
-                child: Row(
-                  children: [
-                    Container(
-                      padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
-                      decoration: BoxDecoration(
-                        color: Colors.blue,
-                        borderRadius: BorderRadius.circular(20),
-                      ),
-                      child: const Text('All genre', style: TextStyle(color: Colors.white)),
-                    ),
-                    const SizedBox(width: 8),
-                    _buildCategoryChip('Fiction'),
-                    _buildCategoryChip('Romance'),
-                    _buildCategoryChip('Old Classics'),
-                    _buildCategoryChip('Self-'),
-                  ],
-                ),
-              ),
-            ),
-
-            const SizedBox(height: 16),
-
-            // Recommendation Card
-            Expanded(
-              child: Padding(
-                padding: const EdgeInsets.symmetric(horizontal: 16.0),
-                child: InkWell(
-                  onTap: () {
-                    Navigator.pushNamed(
-                      context,
-                      '/peminjaman',
-                      arguments: {
-                        'title': 'Atomic Habits',
-                        'author': 'James Clear',
-                        'description': 'Cara Mudah dan Terbukti untuk Membentuk Kebiasaan Baik',
-                      },
-                    );
-                  },
-                  child: Container(
-                    padding: const EdgeInsets.all(16),
-                    decoration: BoxDecoration(
-                      color: Colors.white,
-                      borderRadius: BorderRadius.circular(16),
-                      boxShadow: [
-                        BoxShadow(
-                          color: Colors.grey.withOpacity(0.1),
-                          spreadRadius: 1,
-                          blurRadius: 3,
-                        ),
-                      ],
-                    ),
-                    child: Row(
-                      children: [
-                        Container(
-                          width: 80,
-                          height: 120,
-                          decoration: BoxDecoration(
-                            color: Colors.grey[300],
-                            borderRadius: BorderRadius.circular(8),
-                          ),
-                          child: const Icon(Icons.book, size: 40, color: Colors.grey),
-                        ),
-                        const SizedBox(width: 16),
-                        Expanded(
-                          child: Column(
-                            crossAxisAlignment: CrossAxisAlignment.start,
-                            mainAxisAlignment: MainAxisAlignment.center,
-                            children: [
-                              const Text(
-                                'Atomic Habits',
-                                style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
-                              ),
-                              const SizedBox(height: 8),
-                              Text(
-                                'Cara Mudah dan Terbukti untuk Membentuk Kebiasaan Baik',
-                                style: TextStyle(fontSize: 14, color: Colors.grey[600]),
-                              ),
-                            ],
-                          ),
-                        ),
-                        Container(
-                          padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
-                          decoration: BoxDecoration(
-                            color: Colors.pink,
-                            borderRadius: BorderRadius.circular(20),
-                          ),
-                          child: const Text('New', style: TextStyle(color: Colors.white)),
-                        ),
-                      ],
-                    ),
-                  ),
-                ),
-              ),
-            ),
           ],
         ),
       ),
@@ -269,7 +180,8 @@ class _BookstoreHomePageState extends State<BookstoreHomePage> {
           BottomNavigationBarItem(icon: Icon(Icons.home), label: 'Home'),
           BottomNavigationBarItem(icon: Icon(Icons.menu_book), label: 'Books'),
           BottomNavigationBarItem(icon: Icon(Icons.restore), label: 'History'),
-          BottomNavigationBarItem(icon: Icon(Icons.account_circle), label: 'Account'),
+          BottomNavigationBarItem(
+              icon: Icon(Icons.account_circle), label: 'Account'),
         ],
       ),
     );
@@ -292,7 +204,7 @@ class _BookstoreHomePageState extends State<BookstoreHomePage> {
     required String title,
     required String author,
     required String description,
-    required IconData bookImage,
+    required Widget bookImage,
     required Color color,
   }) {
     return InkWell(
@@ -327,15 +239,15 @@ class _BookstoreHomePageState extends State<BookstoreHomePage> {
               width: double.infinity,
               height: 100,
               decoration: BoxDecoration(
-                color: color.withOpacity(0.8),
                 borderRadius: BorderRadius.circular(12),
               ),
-              child: Icon(bookImage, size: 50, color: Colors.white),
+              child: bookImage,
             ),
             const SizedBox(height: 12),
             Text(
               title,
-              style: const TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
+              style:
+                  const TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
               overflow: TextOverflow.ellipsis,
             ),
             const SizedBox(height: 4),
@@ -344,6 +256,22 @@ class _BookstoreHomePageState extends State<BookstoreHomePage> {
               style: TextStyle(fontSize: 12, color: Colors.grey[600]),
               maxLines: 2,
               overflow: TextOverflow.ellipsis,
+            ),
+            const SizedBox(height: 8),
+            Container(
+              padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 4),
+              decoration: BoxDecoration(
+                color: color.withOpacity(0.2),
+                borderRadius: BorderRadius.circular(12),
+              ),
+              child: Text(
+                'Goodreads',
+                style: TextStyle(
+                  fontSize: 10,
+                  color: color,
+                  fontWeight: FontWeight.w500,
+                ),
+              ),
             ),
           ],
         ),

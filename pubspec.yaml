@@ -35,7 +35,6 @@ dependencies:
   http: ^1.2.0
   shared_preferences: ^2.2.2
   cupertino_icons: ^1.0.8
-  
 
 dev_dependencies:
   flutter_test:
@@ -60,9 +59,10 @@ flutter:
 
   assets:
     - assets/images/2.png
-    - assets/images/1.png
     - assets/images/3.png
     - assets/splash_screen.png
+    - assets/images/Matahari.jpg
+    - assets/images/si_putih.jpg
 
 fonts:
   - family: Inter
