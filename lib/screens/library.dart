@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import '../models/book_models.dart';
 import '../service/book_service.dart';
+import 'Peminjaman.dart'; 
 
 class LibraryPage extends StatefulWidget {
   const LibraryPage({Key? key}) : super(key: key);
@@ -13,6 +14,89 @@ class _LibraryPageState extends State<LibraryPage> {
   int _selectedIndex = 1;
   List<Book> _books = [];
   bool _isLoading = true;
+  
+  Widget _buildBookImage(String imageUrl) {
+    if (imageUrl.startsWith('http')) {
+      return Image.network(
+        imageUrl,
+        fit: BoxFit.cover,
+        errorBuilder: (context, error, stackTrace) {
+          return _buildImageErrorPlaceholder();
+        },
+      );
+    } else {
+      return Image.asset(
+        imageUrl,
+        fit: BoxFit.cover,
+        errorBuilder: (context, error, stackTrace) {
+          return _buildImageErrorPlaceholder();
+        },
+      );
+    }
+  }
+
+  Widget _buildImageErrorPlaceholder() {
+    return Center(
+      child: Column(
+        mainAxisAlignment: MainAxisAlignment.center,
+        children: [
+          Icon(Icons.book, size: 50, color: Colors.grey.shade400),
+          const SizedBox(height: 8),
+          Text(
+            'Image not found',
+            textAlign: TextAlign.center,
+            style: TextStyle(
+              color: Colors.grey.shade700,
+              fontWeight: FontWeight.bold,
+            ),
+          ),
+        ],
+      ),
+    );
+  }
+
+  // Fungsi yang hilang - ini yang menyebabkan error
+  Widget _buildBookCard(Book book) {
+    return InkWell(
+      onTap: () {
+        // Navigate ke BookDetailScreen
+        Navigator.push(
+          context,
+          MaterialPageRoute(
+            builder: (context) => BookDetailScreen(),
+          ),
+        );
+      },
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          Expanded(
+            child: ClipRRect(
+              borderRadius: BorderRadius.circular(8.0),
+              child: Container(
+                width: double.infinity,
+                color: Colors.grey.shade200,
+                child: _buildBookImage('assets/images/3.png'),
+              ),
+            ),
+          ),
+          const SizedBox(height: 8.0),
+          Text(
+            'Atomic Habbits',
+            style: const TextStyle(fontWeight: FontWeight.bold, fontSize: 16.0),
+            maxLines: 2,
+            overflow: TextOverflow.ellipsis,
+          ),
+          Text(
+            'JAMES CLEAR',
+            style: TextStyle(color: Colors.grey.shade600, fontSize: 14.0),
+            maxLines: 1,
+            overflow: TextOverflow.ellipsis,
+          ),
+        ],
+      ),
+    );
+  }
 
   final List<String> _genres = [
     'All genre',
@@ -130,84 +214,60 @@ class _LibraryPageState extends State<LibraryPage> {
 
     return GridView.builder(
       padding: const EdgeInsets.symmetric(horizontal: 16.0),
+      shrinkWrap: true,
+      physics: const NeverScrollableScrollPhysics(),
       gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
         crossAxisCount: 2,
         childAspectRatio: 0.75,
         crossAxisSpacing: 16.0,
         mainAxisSpacing: 16.0,
       ),
-      itemCount: _books.length,
+      itemCount: _books.length + 1,
       itemBuilder: (context, index) {
-        final book = _books[index];
-        return _buildBookCard(book);
+        if (index < _books.length) {
+          final book = _books[index];
+          return _buildBookCard(book);
+        } else {
+          return _buildStaticBookCard();
+        }
       },
     );
   }
 
-  Widget _buildBookCard(Book book) {
+  Widget _buildStaticBookCard() {
     return InkWell(
       onTap: () {
-        Navigator.pushNamed(
+        // Navigate ke BookDetailScreen
+        Navigator.push(
           context,
-          '/peminjaman',
-          arguments: {
-            'title': book.judul,
-            'author': book.penulis,
-            'isNew': true, // opsional: bisa ambil dari API
-          },
+          MaterialPageRoute(
+            builder: (context) => BookDetailScreen(),
+          ),
         );
       },
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           Expanded(
-            child: Stack(
-              children: [
-                ClipRRect(
-                  borderRadius: BorderRadius.circular(8.0),
-                  child: Container(
-                    width: double.infinity,
-                    color: Colors.grey.shade200,
-                    child: Image.network(
-                      book.gambar,
-                      fit: BoxFit.cover,
-                      errorBuilder: (context, error, stackTrace) {
-                        return Center(
-                          child: Column(
-                            mainAxisAlignment: MainAxisAlignment.center,
-                            children: [
-                              Icon(
-                                Icons.book,
-                                size: 50,
-                                color: Colors.grey.shade400,
-                              ),
-                              const SizedBox(height: 8),
-                              Text(
-                                book.judul,
-                                textAlign: TextAlign.center,
-                                style: TextStyle(
-                                  color: Colors.grey.shade700,
-                                  fontWeight: FontWeight.bold,
-                                ),
-                              ),
-                            ],
-                          ),
-                        );
-                      },
-                    ),
-                  ),
+            child: ClipRRect(
+              borderRadius: BorderRadius.circular(8.0),
+              child: Container(
+                width: double.infinity,
+                color: Colors.grey.shade200,
+                child: Image.asset(
+                  'assets/images/Matahari.jpg',
+                  fit: BoxFit.cover,
                 ),
-                // Optional Badge
-              ],
+              ),
             ),
           ),
           const SizedBox(height: 8.0),
           Text(
-            book.judul,
+            'Matahari',
             style: const TextStyle(fontWeight: FontWeight.bold, fontSize: 16.0),
           ),
           Text(
-            book.penulis,
+            'Tere Liye',
             style: TextStyle(color: Colors.grey.shade600, fontSize: 14.0),
           ),
         ],
