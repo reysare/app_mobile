@@ -61,8 +61,6 @@ flutter:
     - assets/images/2.png
     - assets/images/3.png
     - assets/splash_screen.png
-    - assets/images/Matahari.jpg
-    - assets/images/si_putih.jpg
 
 fonts:
   - family: Inter
