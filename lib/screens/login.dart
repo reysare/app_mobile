@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 import '../service/auth_service.dart';
+import '../service/book_service.dart';
 
 class LoginScreen extends StatefulWidget {
   const LoginScreen({super.key});
@@ -17,7 +19,8 @@ class _LoginScreenState extends State<LoginScreen> {
   bool _isLoading = false;
 
   void _handleLogin() async {
-    if (_nisController.text.trim().isEmpty || _passwordController.text.trim().isEmpty) {
+    if (_nisController.text.trim().isEmpty ||
+        _passwordController.text.trim().isEmpty) {
       setState(() {
         _errorText = 'NIS dan Password harus diisi';
       });
@@ -39,6 +42,14 @@ class _LoginScreenState extends State<LoginScreen> {
     });
 
     if (result['success']) {
+      // Ambil token dari hasil login
+      final token = result['token'];
+
+      // Set token ke BookService kalau kamu pakai metode manual
+      // Simpan token di SharedPreferences
+      SharedPreferences prefs = await SharedPreferences.getInstance();
+      await prefs.setString('token', token);
+
       // Login berhasil, navigasi ke home
       print("User data: ${result['user']}");
       Navigator.pushReplacementNamed(context, '/home');
@@ -130,19 +141,25 @@ class _LoginScreenState extends State<LoginScreen> {
                             borderRadius: BorderRadius.circular(8),
                           ),
                         ),
-                        child: _isLoading
-                            ? const SizedBox(
-                                height: 20,
-                                width: 20,
-                                child: CircularProgressIndicator(
-                                  strokeWidth: 2,
-                                  valueColor: AlwaysStoppedAnimation<Color>(Colors.white),
+                        child:
+                            _isLoading
+                                ? const SizedBox(
+                                  height: 20,
+                                  width: 20,
+                                  child: CircularProgressIndicator(
+                                    strokeWidth: 2,
+                                    valueColor: AlwaysStoppedAnimation<Color>(
+                                      Colors.white,
+                                    ),
+                                  ),
+                                )
+                                : const Text(
+                                  'Sign In',
+                                  style: TextStyle(
+                                    fontSize: 16,
+                                    color: Colors.white,
+                                  ),
                                 ),
-                              )
-                            : const Text(
-                                'Sign In',
-                                style: TextStyle(fontSize: 16, color: Colors.white),
-                              ),
                       ),
                     ),
                   ],

@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import '../models/book_models.dart';
+import '../service/book_service.dart';
 
 class LibraryPage extends StatefulWidget {
   const LibraryPage({Key? key}) : super(key: key);
@@ -9,6 +11,8 @@ class LibraryPage extends StatefulWidget {
 
 class _LibraryPageState extends State<LibraryPage> {
   int _selectedIndex = 1;
+  List<Book> _books = [];
+  bool _isLoading = true;
 
   final List<String> _genres = [
     'All genre',
@@ -18,34 +22,26 @@ class _LibraryPageState extends State<LibraryPage> {
     'Self D',
   ];
 
-  final List<Map<String, dynamic>> _books = [
-    {
-      'title': 'Atomic Habits',
-      'author': 'James Clear',
-      'coverUrl': 'https://images-na.ssl-images-amazon.com/images/I/91bYsX41DVL.jpg',
-      'isNew': true,
-    },
-    {
-      'title': 'Sapiens',
-      'author': 'Yuval Noah Harari',
-      'coverUrl': 'https://images-na.ssl-images-amazon.com/images/I/713jIoMO3UL.jpg',
-      'isNew': false,
-      'subtitle': 'Riwayat\nSingkat\nUmat Manusia',
-    },
-    {
-      'title': 'Si Putih',
-      'author': 'Robert T. Kiyosaki',
-      'coverUrl': 'https://cdn.gramedia.com/uploads/items/9786020523310_Si_Putih.jpg',
-      'isNew': true,
-    },
-    {
-      'title': 'Bintang',
-      'author': 'Tere Liye',
-      'coverUrl': 'https://cdn.gramedia.com/uploads/items/9786020624352_Bintang.jpg',
-      'isNew': false,
-      'discount': '70%',
-    },
-  ];
+  @override
+  void initState() {
+    super.initState();
+    _loadBooks();
+  }
+
+  void _loadBooks() async {
+    try {
+      final books = await BookService().fetchBooks();
+      setState(() {
+        _books = books;
+        _isLoading = false;
+      });
+    } catch (e) {
+      print('Error fetching books: $e');
+      setState(() {
+        _isLoading = false;
+      });
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -88,12 +84,7 @@ class _LibraryPageState extends State<LibraryPage> {
           Container(
             padding: const EdgeInsets.all(8.0),
             decoration: BoxDecoration(
-              border: Border(
-                left: BorderSide(
-                  color: Colors.blue.withOpacity(0.5),
-                  width: 1.5,
-                ),
-              ),
+              border: Border(left: BorderSide(color: Colors.blue, width: 1.5)),
             ),
             child: const Icon(Icons.tune, color: Colors.blue),
           ),
@@ -122,9 +113,7 @@ class _LibraryPageState extends State<LibraryPage> {
                 backgroundColor: isSelected ? Colors.blue : Colors.white,
                 foregroundColor: isSelected ? Colors.white : Colors.black,
                 elevation: 0,
-                side: BorderSide(
-                  color: isSelected ? Colors.blue : Colors.grey,
-                ),
+                side: BorderSide(color: isSelected ? Colors.blue : Colors.grey),
               ),
               child: Text(_genres[index]),
             ),
@@ -135,6 +124,10 @@ class _LibraryPageState extends State<LibraryPage> {
   }
 
   Widget _buildBookGrid() {
+    if (_isLoading) {
+      return const Center(child: CircularProgressIndicator());
+    }
+
     return GridView.builder(
       padding: const EdgeInsets.symmetric(horizontal: 16.0),
       gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
@@ -151,16 +144,16 @@ class _LibraryPageState extends State<LibraryPage> {
     );
   }
 
-  Widget _buildBookCard(Map<String, dynamic> book) {
+  Widget _buildBookCard(Book book) {
     return InkWell(
       onTap: () {
         Navigator.pushNamed(
           context,
           '/peminjaman',
           arguments: {
-            'title': book['title'],
-            'author': book['author'],
-            'isNew': book['isNew'],
+            'title': book.judul,
+            'author': book.penulis,
+            'isNew': true, // opsional: bisa ambil dari API
           },
         );
       },
@@ -176,17 +169,21 @@ class _LibraryPageState extends State<LibraryPage> {
                     width: double.infinity,
                     color: Colors.grey.shade200,
                     child: Image.network(
-                      book['coverUrl'],
+                      book.gambar,
                       fit: BoxFit.cover,
                       errorBuilder: (context, error, stackTrace) {
                         return Center(
                           child: Column(
                             mainAxisAlignment: MainAxisAlignment.center,
                             children: [
-                              Icon(Icons.book, size: 50, color: Colors.grey.shade400),
+                              Icon(
+                                Icons.book,
+                                size: 50,
+                                color: Colors.grey.shade400,
+                              ),
                               const SizedBox(height: 8),
                               Text(
-                                book['title'],
+                                book.judul,
                                 textAlign: TextAlign.center,
                                 style: TextStyle(
                                   color: Colors.grey.shade700,
@@ -200,63 +197,18 @@ class _LibraryPageState extends State<LibraryPage> {
                     ),
                   ),
                 ),
-                if (book['isNew'] == true)
-                  Positioned(
-                    top: 8.0,
-                    left: 8.0,
-                    child: Container(
-                      padding: const EdgeInsets.symmetric(horizontal: 8.0, vertical: 4.0),
-                      decoration: BoxDecoration(
-                        color: Colors.pink.shade100,
-                        borderRadius: BorderRadius.circular(4.0),
-                      ),
-                      child: const Text(
-                        'New',
-                        style: TextStyle(
-                          color: Colors.pink,
-                          fontSize: 12.0,
-                          fontWeight: FontWeight.bold,
-                        ),
-                      ),
-                    ),
-                  ),
-                if (book['discount'] != null)
-                  Positioned(
-                    top: 8.0,
-                    right: 8.0,
-                    child: Container(
-                      padding: const EdgeInsets.symmetric(horizontal: 8.0, vertical: 4.0),
-                      decoration: BoxDecoration(
-                        color: Colors.purple.shade100,
-                        borderRadius: BorderRadius.circular(4.0),
-                      ),
-                      child: Text(
-                        book['discount'],
-                        style: const TextStyle(
-                          color: Colors.purple,
-                          fontSize: 12.0,
-                          fontWeight: FontWeight.bold,
-                        ),
-                      ),
-                    ),
-                  ),
+                // Optional Badge
               ],
             ),
           ),
           const SizedBox(height: 8.0),
           Text(
-            book['title'],
-            style: const TextStyle(
-              fontWeight: FontWeight.bold,
-              fontSize: 16.0,
-            ),
+            book.judul,
+            style: const TextStyle(fontWeight: FontWeight.bold, fontSize: 16.0),
           ),
           Text(
-            book['author'],
-            style: TextStyle(
-              color: Colors.grey.shade600,
-              fontSize: 14.0,
-            ),
+            book.penulis,
+            style: TextStyle(color: Colors.grey.shade600, fontSize: 14.0),
           ),
         ],
       ),
@@ -273,7 +225,7 @@ class _LibraryPageState extends State<LibraryPage> {
         setState(() {
           _selectedIndex = index;
         });
-        
+
         if (index == 0) {
           Navigator.pushReplacementNamed(context, '/home');
         } else if (index == 1) {
