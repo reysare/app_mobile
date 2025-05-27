@@ -29,12 +29,12 @@ class MyApp extends StatelessWidget {
       routes: {
         '/': (context) => const SplashScreen(),
         '/login': (context) => const LoginScreen(),
-        '/home': (context) =>  const BookstoreHomePage(),
-        '/library': (context) => const LibraryPage (),
-        '/peminjaman': (context) => const BookDetailScreen (),
-        '/profil': (context) => const ProfilePage (), 
-        '/pengembalian': (context) => const PengembalianPage (),
-        '/history' :(context) => const HistoryPage(),
+        '/home': (context) => const BookstoreHomePage(),
+        '/library': (context) => const LibraryPage(),
+        '/peminjaman': (context) => const BookDetailScreen(),
+        '/profil': (context) => const ProfilePage(),
+        '/pengembalian': (context) => const PengembalianPage(),
+        '/history': (context) => const HistoryPage(),
       },
     );
   }
