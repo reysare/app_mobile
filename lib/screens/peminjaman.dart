@@ -5,6 +5,13 @@ class BookDetailScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final args =
+        ModalRoute.of(context)!.settings.arguments as Map<String, dynamic>;
+    final title = args['title'] ?? 'No Title';
+    final author = args['author'] ?? 'Unknown Author';
+    final description = args['description'] ?? 'No description available';
+    final imageUrl = args['imageUrl'] ?? '';
+
     return Scaffold(
       backgroundColor: Colors.white,
       body: SafeArea(
@@ -41,28 +48,6 @@ class BookDetailScreen extends StatelessWidget {
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.center,
                   children: [
-                    // const SizedBox(height: 20),
-                    // const Text(
-                    //   'NEW YORK TIMES BESTSELLER',
-                    //   style: TextStyle(
-                    //     fontSize: 11,
-                    //     fontWeight: FontWeight.w600,
-                    //     letterSpacing: 1.0,
-                    //     color: Colors.black54,
-                    //   ),
-                    // ),
-                    // const SizedBox(height: 16),
-                    // const Text(
-                    //   'PERUBAHAN KECIL YANG\nMEMBERIKAN HASIL LUAR BIASA',
-                    //   textAlign: TextAlign.center,
-                    //   style: TextStyle(
-                    //     fontSize: 13,
-                    //     fontWeight: FontWeight.bold,
-                    //     letterSpacing: 0.5,
-                    //     height: 1.3,
-                    //     color: Colors.black87,
-                    //   ),
-                    // ),
                     const SizedBox(height: 24),
                     Container(
                       width: 200,
@@ -80,34 +65,40 @@ class BookDetailScreen extends StatelessWidget {
                       ),
                       child: ClipRRect(
                         borderRadius: BorderRadius.circular(8),
-                        child: Image.asset(
-                          'assets/images/3.png',
-                          fit: BoxFit.cover,
-                          errorBuilder: (context, error, stackTrace) {
-                            return const Center(
-                              child: Text(
-                                'Gambar tidak ditemukan',
-                                style: TextStyle(color: Colors.red),
-                              ),
-                            );
-                          },
-                        ),
+                        child:
+                            imageUrl.isNotEmpty
+                                ? Image.network(
+                                  imageUrl,
+                                  fit: BoxFit.cover,
+                                  errorBuilder: (context, error, stackTrace) {
+                                    return Container(
+                                      color: Colors.grey[200],
+                                      child: const Center(
+                                        child: Icon(
+                                          Icons.book,
+                                          size: 50,
+                                          color: Colors.grey,
+                                        ),
+                                      ),
+                                    );
+                                  },
+                                )
+                                : Container(
+                                  color: Colors.grey[200],
+                                  child: const Center(
+                                    child: Icon(
+                                      Icons.book,
+                                      size: 50,
+                                      color: Colors.grey,
+                                    ),
+                                  ),
+                                ),
                       ),
                     ),
                     const SizedBox(height: 12),
-                    // const Text(
-                    //   'Cara Mudah dan Terbukti\nuntuk Membentuk Kebiasaan Baik\ndan Menghilangkan Kebiasaan Buruk',
-                    //   textAlign: TextAlign.center,
-                    //   style: TextStyle(
-                    //     fontSize: 13,
-                    //     color: Colors.black87,
-                    //     height: 1.4,
-                    //   ),
-                    // ),
-                    const SizedBox(height: 24),
-                    const Text(
-                      'JAMES CLEAR',
-                      style: TextStyle(
+                    Text(
+                      author.toUpperCase(),
+                      style: const TextStyle(
                         fontSize: 16,
                         fontWeight: FontWeight.bold,
                         letterSpacing: 2.0,
@@ -115,9 +106,9 @@ class BookDetailScreen extends StatelessWidget {
                       ),
                     ),
                     const SizedBox(height: 2),
-                    const Text(
-                      'Atomic Habits',
-                      style: TextStyle(
+                    Text(
+                      title,
+                      style: const TextStyle(
                         fontSize: 24,
                         fontWeight: FontWeight.bold,
                         color: Color.fromARGB(255, 117, 156, 182),
@@ -150,9 +141,9 @@ class BookDetailScreen extends StatelessWidget {
                       ],
                     ),
                     const SizedBox(height: 16),
-                    const Text(
-                      'No matter your goals, Atomic Habits offers a proven framework for improving--every day. James Clear, one of the world\'s leading experts on habit formation, reveals practical strategies that will teach you exactly how to form good habits, break bad ones, and master the tiny behaviors that lead to remarkable results. If you\'re having trouble changing your habits, the problem isn\'t you. The problem is your system. Bad habits repeat themselves again and again not because you don\'t want to change, but because you have the wrong system for change.',
-                      style: TextStyle(
+                    Text(
+                      description,
+                      style: const TextStyle(
                         fontSize: 14,
                         color: Colors.grey,
                         height: 1.5,
@@ -230,7 +221,6 @@ class BookDetailScreen extends StatelessWidget {
     );
   }
 
-  // 🔵 Komponen Statistik dengan Warna Biru
   Widget _buildStatItem(IconData icon, String text) {
     return Column(
       children: [

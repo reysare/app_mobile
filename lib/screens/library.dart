@@ -153,7 +153,8 @@ class _LibraryPageState extends State<LibraryPage> {
           arguments: {
             'title': book.judul,
             'author': book.penulis,
-            'isNew': true, // opsional: bisa ambil dari API
+            'description': book.sinopsis,
+            'imageUrl': book.gambar,
           },
         );
       },
@@ -168,36 +169,58 @@ class _LibraryPageState extends State<LibraryPage> {
                   child: Container(
                     width: double.infinity,
                     color: Colors.grey.shade200,
-                    child: Image.network(
-                      book.gambar,
-                      fit: BoxFit.cover,
-                      errorBuilder: (context, error, stackTrace) {
-                        return Center(
-                          child: Column(
-                            mainAxisAlignment: MainAxisAlignment.center,
-                            children: [
-                              Icon(
-                                Icons.book,
-                                size: 50,
-                                color: Colors.grey.shade400,
+                    child:
+                        book.gambar.isNotEmpty
+                            ? Image.network(
+                              book.gambar,
+                              fit: BoxFit.cover,
+                              errorBuilder: (context, error, stackTrace) {
+                                return Center(
+                                  child: Column(
+                                    mainAxisAlignment: MainAxisAlignment.center,
+                                    children: [
+                                      Icon(
+                                        Icons.book,
+                                        size: 50,
+                                        color: Colors.grey.shade400,
+                                      ),
+                                      const SizedBox(height: 8),
+                                      Text(
+                                        book.judul,
+                                        textAlign: TextAlign.center,
+                                        style: TextStyle(
+                                          color: Colors.grey.shade700,
+                                          fontWeight: FontWeight.bold,
+                                        ),
+                                      ),
+                                    ],
+                                  ),
+                                );
+                              },
+                            )
+                            : Center(
+                              child: Column(
+                                mainAxisAlignment: MainAxisAlignment.center,
+                                children: [
+                                  Icon(
+                                    Icons.book,
+                                    size: 50,
+                                    color: Colors.grey.shade400,
+                                  ),
+                                  const SizedBox(height: 8),
+                                  Text(
+                                    book.judul,
+                                    textAlign: TextAlign.center,
+                                    style: TextStyle(
+                                      color: Colors.grey.shade700,
+                                      fontWeight: FontWeight.bold,
+                                    ),
+                                  ),
+                                ],
                               ),
-                              const SizedBox(height: 8),
-                              Text(
-                                book.judul,
-                                textAlign: TextAlign.center,
-                                style: TextStyle(
-                                  color: Colors.grey.shade700,
-                                  fontWeight: FontWeight.bold,
-                                ),
-                              ),
-                            ],
-                          ),
-                        );
-                      },
-                    ),
+                            ),
                   ),
                 ),
-                // Optional Badge
               ],
             ),
           ),

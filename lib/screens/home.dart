@@ -152,13 +152,7 @@ class _BookstoreHomePageState extends State<BookstoreHomePage> {
                       final book = _books[index];
                       return Padding(
                         padding: const EdgeInsets.only(bottom: 12.0),
-                        child: _buildBookCard(
-                          title: book.judul,
-                          author: book.penulis,
-                          description: book.sinopsis,
-                          bookImage: Icons.book,
-                          color: Colors.blueAccent,
-                        ),
+                        child: _buildBookCard(book),
                       );
                     },
                   ),
@@ -230,6 +224,8 @@ class _BookstoreHomePageState extends State<BookstoreHomePage> {
                       'author': 'James Clear',
                       'description':
                           'Cara Mudah dan Terbukti untuk Membentuk Kebiasaan Baik',
+                      'imageUrl':
+                          'https://example.com/atomic-habits.jpg', // Replace with actual URL
                     },
                   );
                 },
@@ -255,10 +251,16 @@ class _BookstoreHomePageState extends State<BookstoreHomePage> {
                           color: Colors.grey[300],
                           borderRadius: BorderRadius.circular(8),
                         ),
-                        child: const Icon(
-                          Icons.book,
-                          size: 40,
-                          color: Colors.grey,
+                        child: Image.network(
+                          'https://example.com/atomic-habits.jpg', // Replace with actual URL
+                          fit: BoxFit.cover,
+                          errorBuilder: (context, error, stackTrace) {
+                            return const Icon(
+                              Icons.book,
+                              size: 40,
+                              color: Colors.grey,
+                            );
+                          },
                         ),
                       ),
                       const SizedBox(width: 16),
@@ -341,22 +343,17 @@ class _BookstoreHomePageState extends State<BookstoreHomePage> {
     );
   }
 
-  Widget _buildBookCard({
-    required String title,
-    required String author,
-    required String description,
-    required IconData bookImage,
-    required Color color,
-  }) {
+  Widget _buildBookCard(Book book) {
     return InkWell(
       onTap: () {
         Navigator.pushNamed(
           context,
           '/peminjaman',
           arguments: {
-            'title': title,
-            'author': author,
-            'description': description,
+            'title': book.judul,
+            'author': book.penulis,
+            'description': book.sinopsis,
+            'imageUrl': book.gambar,
           },
         );
       },
@@ -380,20 +377,45 @@ class _BookstoreHomePageState extends State<BookstoreHomePage> {
               width: double.infinity,
               height: 100,
               decoration: BoxDecoration(
-                color: color.withOpacity(0.8),
                 borderRadius: BorderRadius.circular(12),
               ),
-              child: Icon(bookImage, size: 50, color: Colors.white),
+              child:
+                  book.gambar.isNotEmpty
+                      ? ClipRRect(
+                        borderRadius: BorderRadius.circular(12),
+                        child: Image.network(
+                          book.gambar,
+                          fit: BoxFit.cover,
+                          errorBuilder: (context, error, stackTrace) {
+                            return Container(
+                              color: Colors.blueAccent.withOpacity(0.8),
+                              child: const Icon(
+                                Icons.book,
+                                size: 50,
+                                color: Colors.white,
+                              ),
+                            );
+                          },
+                        ),
+                      )
+                      : Container(
+                        color: Colors.blueAccent.withOpacity(0.8),
+                        child: const Icon(
+                          Icons.book,
+                          size: 50,
+                          color: Colors.white,
+                        ),
+                      ),
             ),
             const SizedBox(height: 12),
             Text(
-              title,
+              book.judul,
               style: const TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
               overflow: TextOverflow.ellipsis,
             ),
             const SizedBox(height: 4),
             Text(
-              description,
+              book.sinopsis,
               style: TextStyle(fontSize: 12, color: Colors.grey[600]),
               maxLines: 2,
               overflow: TextOverflow.ellipsis,
@@ -402,14 +424,14 @@ class _BookstoreHomePageState extends State<BookstoreHomePage> {
             Container(
               padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 4),
               decoration: BoxDecoration(
-                color: color.withOpacity(0.2),
+                color: Colors.blueAccent.withOpacity(0.2),
                 borderRadius: BorderRadius.circular(12),
               ),
               child: Text(
                 'Goodreads',
                 style: TextStyle(
                   fontSize: 10,
-                  color: color,
+                  color: Colors.blueAccent,
                   fontWeight: FontWeight.w500,
                 ),
               ),
