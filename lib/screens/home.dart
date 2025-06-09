@@ -65,7 +65,7 @@ class _BookstoreHomePageState extends State<BookstoreHomePage> {
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
                   const Text(
-                    'Welcome back, Jen!',
+                    'Welcome back!',
                     style: TextStyle(
                       fontSize: 18,
                       fontWeight: FontWeight.w500,

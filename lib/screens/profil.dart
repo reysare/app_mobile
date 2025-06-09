@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:app_mobile/models/profile_models.dart';
+import 'package:app_mobile/service/profile_service.dart';
 
 void main() {
   runApp(const MyApp());
@@ -12,10 +14,7 @@ class MyApp extends StatelessWidget {
     return MaterialApp(
       title: 'Perpustakaan App',
       debugShowCheckedModeBanner: false,
-      theme: ThemeData(
-        primarySwatch: Colors.blue,
-        fontFamily: 'Poppins',
-      ),
+      theme: ThemeData(primarySwatch: Colors.blue, fontFamily: 'Poppins'),
       home: const ProfilePage(),
     );
   }
@@ -98,34 +97,57 @@ class _ProfilePageState extends State<ProfilePage> {
                 backgroundColor: Colors.blue,
                 child: IconButton(
                   padding: EdgeInsets.zero,
-                  icon: const Icon(Icons.camera_alt, size: 18, color: Colors.white),
+                  icon: const Icon(
+                    Icons.camera_alt,
+                    size: 18,
+                    color: Colors.white,
+                  ),
                   onPressed: () {},
                 ),
               ),
             ],
           ),
           const SizedBox(height: 12),
-          const Text(
-            'Munawwaroh',
-            style: TextStyle(
-              fontSize: 22,
-              fontWeight: FontWeight.bold,
-            ),
-          ),
-          const SizedBox(height: 4),
-          Row(
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: [
-              Icon(Icons.alternate_email, size: 16, color: Colors.blue[700]),
-              const SizedBox(width: 4),
-              Text(
-                'munaw.00', // Diperbaiki: tanpa simbol @ lagi
-                style: TextStyle(
-                  fontSize: 14,
-                  color: Colors.blue[700],
-                ),
-              ),
-            ],
+          FutureBuilder(
+            future: ProfileService().getProfile(),
+            builder: (context, snapshot) {
+              if (snapshot.connectionState == ConnectionState.waiting) {
+                return const CircularProgressIndicator();
+              } else if (snapshot.hasError) {
+                return const Text('Gagal memuat data');
+              } else if (!snapshot.hasData || snapshot.data == null) {
+                return const Text('Data tidak tersedia');
+              }
+
+              final Profile profile = snapshot.data as Profile;
+              return Column(
+                children: [
+                  Text(
+                    profile.nama,
+                    style: const TextStyle(
+                      fontSize: 22,
+                      fontWeight: FontWeight.bold,
+                    ),
+                  ),
+                  const SizedBox(height: 4),
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      Icon(
+                        Icons.alternate_email,
+                        size: 16,
+                        color: Colors.blue[700],
+                      ),
+                      const SizedBox(width: 4),
+                      Text(
+                        profile.nis,
+                        style: TextStyle(fontSize: 14, color: Colors.blue[700]),
+                      ),
+                    ],
+                  ),
+                ],
+              );
+            },
           ),
         ],
       ),
@@ -143,10 +165,7 @@ class _ProfilePageState extends State<ProfilePage> {
             children: [
               const Text(
                 'Koleksi saya',
-                style: TextStyle(
-                  fontSize: 18,
-                  fontWeight: FontWeight.bold,
-                ),
+                style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
               ),
               TextButton(
                 onPressed: () {},
@@ -226,20 +245,14 @@ class _ProfilePageState extends State<ProfilePage> {
             title,
             maxLines: 1,
             overflow: TextOverflow.ellipsis,
-            style: const TextStyle(
-              fontWeight: FontWeight.w600,
-              fontSize: 14,
-            ),
+            style: const TextStyle(fontWeight: FontWeight.w600, fontSize: 14),
           ),
           const SizedBox(height: 2),
           Text(
             author,
             maxLines: 1,
             overflow: TextOverflow.ellipsis,
-            style: TextStyle(
-              fontSize: 12,
-              color: Colors.grey[600],
-            ),
+            style: TextStyle(fontSize: 12, color: Colors.grey[600]),
           ),
         ],
       ),
@@ -282,21 +295,10 @@ class _ProfilePageState extends State<ProfilePage> {
           color: Colors.blue.withOpacity(0.1),
           borderRadius: BorderRadius.circular(8),
         ),
-        child: Icon(
-          icon,
-          color: Colors.blue[700],
-        ),
+        child: Icon(icon, color: Colors.blue[700]),
       ),
-      title: Text(
-        title,
-        style: const TextStyle(
-          fontWeight: FontWeight.w500,
-        ),
-      ),
-      trailing: const Icon(
-        Icons.arrow_forward_ios,
-        size: 16,
-      ),
+      title: Text(title, style: const TextStyle(fontWeight: FontWeight.w500)),
+      trailing: const Icon(Icons.arrow_forward_ios, size: 16),
       onTap: () {},
     );
   }
@@ -311,7 +313,7 @@ class _ProfilePageState extends State<ProfilePage> {
         setState(() {
           _selectedIndex = index;
         });
-        
+
         // Handle navigation between screens
         if (index == 0) {
           // Navigate to Home
