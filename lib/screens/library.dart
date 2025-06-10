@@ -169,56 +169,17 @@ class _LibraryPageState extends State<LibraryPage> {
                   child: Container(
                     width: double.infinity,
                     color: Colors.grey.shade200,
-                    child:
-                        book.gambar.isNotEmpty
-                            ? Image.network(
-                              book.gambar,
-                              fit: BoxFit.cover,
-                              errorBuilder: (context, error, stackTrace) {
-                                return Center(
-                                  child: Column(
-                                    mainAxisAlignment: MainAxisAlignment.center,
-                                    children: [
-                                      Icon(
-                                        Icons.book,
-                                        size: 50,
-                                        color: Colors.grey.shade400,
-                                      ),
-                                      const SizedBox(height: 8),
-                                      Text(
-                                        book.judul,
-                                        textAlign: TextAlign.center,
-                                        style: TextStyle(
-                                          color: Colors.grey.shade700,
-                                          fontWeight: FontWeight.bold,
-                                        ),
-                                      ),
-                                    ],
-                                  ),
-                                );
-                              },
-                            )
-                            : Center(
-                              child: Column(
-                                mainAxisAlignment: MainAxisAlignment.center,
-                                children: [
-                                  Icon(
-                                    Icons.book,
-                                    size: 50,
-                                    color: Colors.grey.shade400,
-                                  ),
-                                  const SizedBox(height: 8),
-                                  Text(
-                                    book.judul,
-                                    textAlign: TextAlign.center,
-                                    style: TextStyle(
-                                      color: Colors.grey.shade700,
-                                      fontWeight: FontWeight.bold,
-                                    ),
-                                  ),
-                                ],
-                              ),
-                            ),
+                    child: book.gambar.isNotEmpty
+                        ? Image.asset(
+                            'assets/${book.gambar}',
+                            width: double.infinity,
+                            height: double.infinity,
+                            fit: BoxFit.cover,
+                            errorBuilder: (context, error, stackTrace) {
+                              return _buildDefaultCover(book.judul);
+                            },
+                          )
+                        : _buildDefaultCover(book.judul),
                   ),
                 ),
               ],
@@ -234,6 +195,29 @@ class _LibraryPageState extends State<LibraryPage> {
             style: TextStyle(color: Colors.grey.shade600, fontSize: 14.0),
           ),
         ],
+      ),
+    );
+  }
+
+  Widget _buildDefaultCover(String title) {
+    return Container(
+      color: Colors.grey.shade200,
+      child: Center(
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [
+            Icon(Icons.book, size: 50, color: Colors.grey.shade400),
+            const SizedBox(height: 8),
+            Text(
+              title,
+              textAlign: TextAlign.center,
+              style: TextStyle(
+                color: Colors.grey.shade700,
+                fontWeight: FontWeight.bold,
+              ),
+            ),
+          ],
+        ),
       ),
     );
   }

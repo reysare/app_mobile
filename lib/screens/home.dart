@@ -14,6 +14,13 @@ class _BookstoreHomePageState extends State<BookstoreHomePage> {
   bool _isLoading = true;
   int _selectedIndex = 0;
 
+  // Map untuk mencocokkan judul buku dengan asset gambar
+  final Map<String, String> _bookCovers = {
+    'atomic habbits': 'assets/images/1.png',
+    'selena': 'assets/images/2.png',
+    // Tambahkan mapping lainnya sesuai dengan buku yang ada
+  };
+
   @override
   void initState() {
     super.initState();
@@ -33,6 +40,12 @@ class _BookstoreHomePageState extends State<BookstoreHomePage> {
         _isLoading = false;
       });
     }
+  }
+
+  // Method untuk mendapatkan asset path berdasarkan judul buku
+  String? _getBookCoverAsset(String bookTitle) {
+    final normalizedTitle = bookTitle.toLowerCase().trim();
+    return _bookCovers[normalizedTitle];
   }
 
   void _onItemTapped(int index) {
@@ -224,8 +237,7 @@ class _BookstoreHomePageState extends State<BookstoreHomePage> {
                       'author': 'James Clear',
                       'description':
                           'Cara Mudah dan Terbukti untuk Membentuk Kebiasaan Baik',
-                      'imageUrl':
-                          'https://example.com/atomic-habits.jpg', // Replace with actual URL
+                      'imageUrl': 'assets/images/1.png',
                     },
                   );
                 },
@@ -251,16 +263,19 @@ class _BookstoreHomePageState extends State<BookstoreHomePage> {
                           color: Colors.grey[300],
                           borderRadius: BorderRadius.circular(8),
                         ),
-                        child: Image.network(
-                          'https://example.com/atomic-habits.jpg', // Replace with actual URL
-                          fit: BoxFit.cover,
-                          errorBuilder: (context, error, stackTrace) {
-                            return const Icon(
-                              Icons.book,
-                              size: 40,
-                              color: Colors.grey,
-                            );
-                          },
+                        child: ClipRRect(
+                          borderRadius: BorderRadius.circular(8),
+                          child: Image.asset(
+                            'assets/images/1.png',
+                            fit: BoxFit.cover,
+                            errorBuilder: (context, error, stackTrace) {
+                              return const Icon(
+                                Icons.book,
+                                size: 40,
+                                color: Colors.grey,
+                              );
+                            },
+                          ),
                         ),
                       ),
                       const SizedBox(width: 16),
@@ -344,6 +359,8 @@ class _BookstoreHomePageState extends State<BookstoreHomePage> {
   }
 
   Widget _buildBookCard(Book book) {
+    final assetPath = _getBookCoverAsset(book.judul);
+    
     return InkWell(
       onTap: () {
         Navigator.pushNamed(
@@ -353,7 +370,7 @@ class _BookstoreHomePageState extends State<BookstoreHomePage> {
             'title': book.judul,
             'author': book.penulis,
             'description': book.sinopsis,
-            'imageUrl': book.gambar,
+            'imageUrl': assetPath ?? book.gambar,
           },
         );
       },
@@ -379,33 +396,47 @@ class _BookstoreHomePageState extends State<BookstoreHomePage> {
               decoration: BoxDecoration(
                 borderRadius: BorderRadius.circular(12),
               ),
-              child:
-                  book.gambar.isNotEmpty
-                      ? ClipRRect(
-                        borderRadius: BorderRadius.circular(12),
-                        child: Image.network(
-                          book.gambar,
-                          fit: BoxFit.cover,
-                          errorBuilder: (context, error, stackTrace) {
-                            return Container(
-                              color: Colors.blueAccent.withOpacity(0.8),
-                              child: const Icon(
-                                Icons.book,
-                                size: 50,
-                                color: Colors.white,
-                              ),
-                            );
-                          },
-                        ),
+              child: ClipRRect(
+                borderRadius: BorderRadius.circular(12),
+                child: assetPath != null
+                    ? Image.asset(
+                        assetPath,
+                        fit: BoxFit.cover,
+                        errorBuilder: (context, error, stackTrace) {
+                          return Container(
+                            color: Colors.blueAccent.withOpacity(0.8),
+                            child: const Icon(
+                              Icons.book,
+                              size: 50,
+                              color: Colors.white,
+                            ),
+                          );
+                        },
                       )
-                      : Container(
-                        color: Colors.blueAccent.withOpacity(0.8),
-                        child: const Icon(
-                          Icons.book,
-                          size: 50,
-                          color: Colors.white,
-                        ),
-                      ),
+                    : book.gambar.isNotEmpty
+                        ? Image.network(
+                            book.gambar,
+                            fit: BoxFit.cover,
+                            errorBuilder: (context, error, stackTrace) {
+                              return Container(
+                                color: Colors.blueAccent.withOpacity(0.8),
+                                child: const Icon(
+                                  Icons.book,
+                                  size: 50,
+                                  color: Colors.white,
+                                ),
+                              );
+                            },
+                          )
+                        : Container(
+                            color: Colors.blueAccent.withOpacity(0.8),
+                            child: const Icon(
+                              Icons.book,
+                              size: 50,
+                              color: Colors.white,
+                            ),
+                          ),
+              ),
             ),
             const SizedBox(height: 12),
             Text(
