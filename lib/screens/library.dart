@@ -245,7 +245,7 @@ class _LibraryPageState extends State<LibraryPage> {
       },
       items: const [
         BottomNavigationBarItem(icon: Icon(Icons.home), label: 'Home'),
-        BottomNavigationBarItem(icon: Icon(Icons.book), label: 'Books'),
+        BottomNavigationBarItem(icon: Icon(Icons.menu_book), label: 'Books'),
         BottomNavigationBarItem(icon: Icon(Icons.history), label: 'History'),
         BottomNavigationBarItem(icon: Icon(Icons.person), label: 'Account'),
       ],

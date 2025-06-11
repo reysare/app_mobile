@@ -348,8 +348,8 @@ class _HistoryPageState extends State<HistoryPage> {
           // Navigate to Home
           Navigator.pushReplacementNamed(context, '/home');
         } else if (index == 1) {
-          // Navigate to Books page
-          Navigator.pushReplacementNamed(context, '/books');
+          // Navigate to Library page (changed from '/books' to '/library')
+          Navigator.pushReplacementNamed(context, '/library');
         } else if (index == 2) {
           // We're already on History page, no navigation needed
         } else if (index == 3) {
@@ -359,7 +359,7 @@ class _HistoryPageState extends State<HistoryPage> {
       },
       items: const [
         BottomNavigationBarItem(icon: Icon(Icons.home), label: 'Home'),
-        BottomNavigationBarItem(icon: Icon(Icons.book), label: 'Books'),
+        BottomNavigationBarItem(icon: Icon(Icons.menu_book), label: 'Books'),
         BottomNavigationBarItem(icon: Icon(Icons.history), label: 'History'),
         BottomNavigationBarItem(icon: Icon(Icons.person), label: 'Account'),
       ],

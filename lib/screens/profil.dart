@@ -319,18 +319,18 @@ class _ProfilePageState extends State<ProfilePage> {
           // Navigate to Home
           Navigator.pushReplacementNamed(context, '/home');
         } else if (index == 1) {
-          // We're already on Books page, no navigation needed
+          // Navigate to Library page
+          Navigator.pushReplacementNamed(context, '/library');
         } else if (index == 2) {
           // Navigate to History page
           Navigator.pushReplacementNamed(context, '/history');
         } else if (index == 3) {
-          // Navigate to Account page
-          Navigator.pushReplacementNamed(context, '/account');
+          // We're already on Account/Profile page, no navigation needed
         }
       },
       items: const [
         BottomNavigationBarItem(icon: Icon(Icons.home), label: 'Home'),
-        BottomNavigationBarItem(icon: Icon(Icons.book), label: 'Books'),
+        BottomNavigationBarItem(icon: Icon(Icons.menu_book), label: 'Books'),
         BottomNavigationBarItem(icon: Icon(Icons.history), label: 'History'),
         BottomNavigationBarItem(icon: Icon(Icons.person), label: 'Account'),
       ],
