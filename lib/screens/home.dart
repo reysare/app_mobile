@@ -146,7 +146,7 @@ class _BookstoreHomePageState extends State<BookstoreHomePage> {
 
   Widget _buildCategorySection() {
     return Padding(
-      padding: const EdgeInsets.fromLTRB(20.0, 20.0, 20.0, 10.0),
+      padding: const EdgeInsets.fromLTRB(20.0, 20.0, 20.0, 0.0),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
@@ -188,19 +188,10 @@ class _BookstoreHomePageState extends State<BookstoreHomePage> {
 
   Widget _buildBooksSection() {
     return Padding(
-      padding: const EdgeInsets.symmetric(horizontal: 20.0),
+      padding: const EdgeInsets.fromLTRB(20.0, 24.0, 20.0, 0.0),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          const Text(
-            'Popular Books',
-            style: TextStyle(
-              fontSize: 20,
-              fontWeight: FontWeight.bold,
-              color: Colors.black87,
-            ),
-          ),
-          const SizedBox(height: 16),
           _isLoading
               ? const Center(
                   child: Padding(
