@@ -85,9 +85,16 @@ class _HistoryPageState extends State<HistoryPage> {
 
   Widget _buildStatisticsSection() {
     int totalBorrowed = borrowedBooks.length;
-    int returned = borrowedBooks.where((book) => book.status == BookStatus.returned).length;
-    int borrowed = borrowedBooks.where((book) => book.status == BookStatus.borrowed).length;
-    int overdue = borrowedBooks.where((book) => book.status == BookStatus.overdue).length;
+    int returned =
+        borrowedBooks
+            .where((book) => book.status == BookStatus.returned)
+            .length;
+    int borrowed =
+        borrowedBooks
+            .where((book) => book.status == BookStatus.borrowed)
+            .length;
+    int overdue =
+        borrowedBooks.where((book) => book.status == BookStatus.overdue).length;
 
     return Container(
       padding: const EdgeInsets.all(20),
@@ -109,21 +116,56 @@ class _HistoryPageState extends State<HistoryPage> {
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          const Text('Reading Statistics', style: TextStyle(color: Colors.white, fontSize: 18, fontWeight: FontWeight.w600)),
+          const Text(
+            'Reading Statistics',
+            style: TextStyle(
+              color: Colors.white,
+              fontSize: 18,
+              fontWeight: FontWeight.w600,
+            ),
+          ),
           const SizedBox(height: 16),
           Row(
             children: [
-              Expanded(child: _buildStatCard('Total Books', totalBorrowed.toString(), Icons.library_books, Colors.white.withOpacity(0.2))),
+              Expanded(
+                child: _buildStatCard(
+                  'Total Books',
+                  totalBorrowed.toString(),
+                  Icons.library_books,
+                  Colors.white.withOpacity(0.2),
+                ),
+              ),
               const SizedBox(width: 12),
-              Expanded(child: _buildStatCard('Returned', returned.toString(), Icons.check_circle, Colors.green.withOpacity(0.3))),
+              Expanded(
+                child: _buildStatCard(
+                  'Returned',
+                  returned.toString(),
+                  Icons.check_circle,
+                  Colors.green.withOpacity(0.3),
+                ),
+              ),
             ],
           ),
           const SizedBox(height: 12),
           Row(
             children: [
-              Expanded(child: _buildStatCard('Borrowed', borrowed.toString(), Icons.book, Colors.orange.withOpacity(0.3))),
+              Expanded(
+                child: _buildStatCard(
+                  'Borrowed',
+                  borrowed.toString(),
+                  Icons.book,
+                  Colors.orange.withOpacity(0.3),
+                ),
+              ),
               const SizedBox(width: 12),
-              Expanded(child: _buildStatCard('Overdue', overdue.toString(), Icons.warning, Colors.red.withOpacity(0.3))),
+              Expanded(
+                child: _buildStatCard(
+                  'Overdue',
+                  overdue.toString(),
+                  Icons.warning,
+                  Colors.red.withOpacity(0.3),
+                ),
+              ),
             ],
           ),
         ],
@@ -131,7 +173,12 @@ class _HistoryPageState extends State<HistoryPage> {
     );
   }
 
-  Widget _buildStatCard(String title, String value, IconData icon, Color bgColor) {
+  Widget _buildStatCard(
+    String title,
+    String value,
+    IconData icon,
+    Color bgColor,
+  ) {
     return Container(
       padding: const EdgeInsets.all(12),
       decoration: BoxDecoration(
@@ -142,8 +189,22 @@ class _HistoryPageState extends State<HistoryPage> {
         children: [
           Icon(icon, color: Colors.white, size: 24),
           const SizedBox(height: 8),
-          Text(value, style: const TextStyle(color: Colors.white, fontSize: 20, fontWeight: FontWeight.bold)),
-          Text(title, style: TextStyle(color: Colors.white.withOpacity(0.9), fontSize: 12), textAlign: TextAlign.center),
+          Text(
+            value,
+            style: const TextStyle(
+              color: Colors.white,
+              fontSize: 20,
+              fontWeight: FontWeight.bold,
+            ),
+          ),
+          Text(
+            title,
+            style: TextStyle(
+              color: Colors.white.withOpacity(0.9),
+              fontSize: 12,
+            ),
+            textAlign: TextAlign.center,
+          ),
         ],
       ),
     );
@@ -200,7 +261,11 @@ class _HistoryPageState extends State<HistoryPage> {
         color: Colors.white,
         borderRadius: BorderRadius.circular(16),
         boxShadow: [
-          BoxShadow(color: Colors.grey.withOpacity(0.1), blurRadius: 8, offset: const Offset(0, 2)),
+          BoxShadow(
+            color: Colors.grey.withOpacity(0.1),
+            blurRadius: 8,
+            offset: const Offset(0, 2),
+          ),
         ],
       ),
       child: Row(
@@ -211,51 +276,81 @@ class _HistoryPageState extends State<HistoryPage> {
             decoration: BoxDecoration(
               color: book.coverColor,
               borderRadius: BorderRadius.circular(8),
-              image: book.coverImageUrl != null
-                  ? DecorationImage(
-                      image: NetworkImage(book.coverImageUrl!),
-                      fit: BoxFit.cover,
-                    )
-                  : null,
+              image:
+                  book.coverImageUrl != null
+                      ? DecorationImage(
+                        image: NetworkImage(book.coverImageUrl!),
+                        fit: BoxFit.cover,
+                      )
+                      : null,
             ),
-            child: book.coverImageUrl == null
-                ? Center(
-                    child: Icon(
-                      Icons.book,
-                      color: Colors.grey.shade600,
-                      size: 30,
-                    ),
-                  )
-                : null,
+            child:
+                book.coverImageUrl == null
+                    ? Center(
+                      child: Icon(
+                        Icons.book,
+                        color: Colors.grey.shade600,
+                        size: 30,
+                      ),
+                    )
+                    : null,
           ),
           const SizedBox(width: 16),
           Expanded(
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                Text(book.title, style: const TextStyle(fontSize: 16, fontWeight: FontWeight.w600, color: Colors.black)),
+                Text(
+                  book.title,
+                  style: const TextStyle(
+                    fontSize: 16,
+                    fontWeight: FontWeight.w600,
+                    color: Colors.black,
+                  ),
+                ),
                 const SizedBox(height: 4),
-                Text(book.author, style: TextStyle(fontSize: 14, color: Colors.grey.shade600)),
+                Text(
+                  book.author,
+                  style: TextStyle(fontSize: 14, color: Colors.grey.shade600),
+                ),
                 const SizedBox(height: 8),
                 _buildStatusChip(book.status),
                 const SizedBox(height: 8),
-                Text('Borrowed: ${_formatDate(book.borrowDate)}', style: TextStyle(fontSize: 12, color: Colors.grey.shade500)),
+                Text(
+                  'Borrowed: ${_formatDate(book.borrowDate)}',
+                  style: TextStyle(fontSize: 12, color: Colors.grey.shade500),
+                ),
                 Text(
                   'Due: ${_formatDate(book.returnDate)}',
-                  style: TextStyle(fontSize: 12, color: book.status == BookStatus.overdue ? Colors.red : Colors.grey.shade500),
+                  style: TextStyle(
+                    fontSize: 12,
+                    color:
+                        book.status == BookStatus.overdue
+                            ? Colors.red
+                            : Colors.grey.shade500,
+                  ),
                 ),
               ],
             ),
           ),
-          if (book.status == BookStatus.borrowed || book.status == BookStatus.overdue)
+          if (book.status == BookStatus.borrowed ||
+              book.status == BookStatus.overdue)
             ElevatedButton(
               onPressed: () => _returnBook(book),
               style: ElevatedButton.styleFrom(
                 backgroundColor: Colors.blue,
-                shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(8)),
-                padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
+                shape: RoundedRectangleBorder(
+                  borderRadius: BorderRadius.circular(8),
+                ),
+                padding: const EdgeInsets.symmetric(
+                  horizontal: 16,
+                  vertical: 8,
+                ),
               ),
-              child: const Text('Return', style: TextStyle(color: Colors.white, fontSize: 12)),
+              child: const Text(
+                'Return',
+                style: TextStyle(color: Colors.white, fontSize: 12),
+              ),
             ),
         ],
       ),
@@ -290,7 +385,11 @@ class _HistoryPageState extends State<HistoryPage> {
       ),
       child: Text(
         text,
-        style: TextStyle(color: color, fontSize: 12, fontWeight: FontWeight.w500),
+        style: TextStyle(
+          color: color,
+          fontSize: 12,
+          fontWeight: FontWeight.w500,
+        ),
       ),
     );
   }
@@ -319,7 +418,9 @@ class _HistoryPageState extends State<HistoryPage> {
                 Navigator.pop(context);
                 ScaffoldMessenger.of(context).showSnackBar(
                   SnackBar(
-                    content: Text('${book.title} has been returned successfully!'),
+                    content: Text(
+                      '${book.title} has been returned successfully!',
+                    ),
                     backgroundColor: Colors.green,
                   ),
                 );
@@ -342,7 +443,7 @@ class _HistoryPageState extends State<HistoryPage> {
         setState(() {
           _selectedIndex = index;
         });
-        
+
         // Handle navigation between screens
         if (index == 0) {
           // Navigate to Home
@@ -387,8 +488,4 @@ class BorrowedBook {
   });
 }
 
-enum BookStatus {
-  borrowed,
-  returned,
-  overdue,
-}
+enum BookStatus { borrowed, returned, overdue }

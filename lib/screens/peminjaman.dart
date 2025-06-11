@@ -1,7 +1,75 @@
+// ignore_for_file: unused_import
 import 'package:flutter/material.dart';
+import 'package:http/http.dart' as http;
+import 'dart:convert';
+import 'package:shared_preferences/shared_preferences.dart';
 
 class BookDetailScreen extends StatelessWidget {
   const BookDetailScreen({Key? key}) : super(key: key);
+
+  Future<void> pinjamBuku(BuildContext context, String title) async {
+    final url = Uri.parse(
+      'http://127.0.0.1:8000/api/peminjaman',
+    ); // ganti sesuai IP backend kamu
+
+    final prefs = await SharedPreferences.getInstance();
+    final namaPeminjam = prefs.getString('nama') ?? 'Pengguna';
+
+    final response = await http.post(
+      url,
+      headers: {'Content-Type': 'application/json'},
+      body: json.encode({
+        'judul_buku': title,
+        'nama_peminjam': namaPeminjam,
+        // ← Ganti ini nanti dengan data pengguna login
+        'status': 'process', // status awal
+      }),
+    );
+
+    if (response.statusCode == 200 || response.statusCode == 201) {
+      // Tampilkan dialog notifikasi
+      showDialog(
+        context: context,
+        builder:
+            (ctx) => AlertDialog(
+              title: const Text('Berhasil'),
+              content: const Text(
+                'Permintaan Peminjaman Buku Anda Telah Dikirim',
+              ),
+              actions: [
+                TextButton(
+                  onPressed: () {
+                    Navigator.of(ctx).pop(); // Tutup dialog
+                    Navigator.pushReplacementNamed(
+                      context,
+                      '/history',
+                    ); // arahkan ke halaman history
+                  },
+                  child: const Text('OK'),
+                ),
+              ],
+            ),
+      );
+    } else {
+      // Jika gagal
+      showDialog(
+        context: context,
+        builder:
+            (ctx) => AlertDialog(
+              title: const Text('Gagal'),
+              content: const Text(
+                'Terjadi kesalahan saat mengirim permintaan.',
+              ),
+              actions: [
+                TextButton(
+                  onPressed: () => Navigator.of(ctx).pop(),
+                  child: const Text('OK'),
+                ),
+              ],
+            ),
+      );
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -202,12 +270,26 @@ class BookDetailScreen extends StatelessWidget {
                         borderRadius: BorderRadius.circular(8),
                       ),
                       alignment: Alignment.center,
-                      child: const Text(
-                        'Pinjam',
-                        style: TextStyle(
-                          color: Colors.white,
-                          fontWeight: FontWeight.w600,
-                          fontSize: 16,
+
+                      child: GestureDetector(
+                        onTap: () {
+                          pinjamBuku(context, title); // ← panggil fungsi pinjam
+                        },
+                        child: Container(
+                          padding: const EdgeInsets.symmetric(vertical: 16),
+                          decoration: BoxDecoration(
+                            color: Colors.blue[600],
+                            borderRadius: BorderRadius.circular(8),
+                          ),
+                          alignment: Alignment.center,
+                          child: const Text(
+                            'Pinjam',
+                            style: TextStyle(
+                              color: Colors.white,
+                              fontWeight: FontWeight.w600,
+                              fontSize: 16,
+                            ),
+                          ),
                         ),
                       ),
                     ),
