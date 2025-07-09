@@ -64,7 +64,6 @@ class _ProfilePageState extends State<ProfilePage> {
           const SizedBox(height: 20),
           _buildProfileHeader(),
           const SizedBox(height: 30),
-          _buildCollectionSection(context),
           const SizedBox(height: 20),
           _buildPreferencesSection(),
         ],
@@ -151,66 +150,6 @@ class _ProfilePageState extends State<ProfilePage> {
           ),
         ],
       ),
-    );
-  }
-
-  Widget _buildCollectionSection(BuildContext context) {
-    return Column(
-      crossAxisAlignment: CrossAxisAlignment.start,
-      children: [
-        Padding(
-          padding: const EdgeInsets.symmetric(horizontal: 16.0),
-          child: Row(
-            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-            children: [
-              const Text(
-                'Koleksi saya',
-                style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
-              ),
-              TextButton(
-                onPressed: () {},
-                child: Text(
-                  'Lihat semua',
-                  style: TextStyle(
-                    color: Colors.blue[700],
-                    fontWeight: FontWeight.w500,
-                  ),
-                ),
-              ),
-            ],
-          ),
-        ),
-        const SizedBox(height: 12),
-        SizedBox(
-          height: 200,
-          child: ListView(
-            padding: const EdgeInsets.symmetric(horizontal: 16),
-            scrollDirection: Axis.horizontal,
-            children: [
-              _buildBookCard(
-                'Laskar Pelangi',
-                'Andrea Hirata',
-                'https://upload.wikimedia.org/wikipedia/id/8/8e/Laskar_pelangi_sampul.jpg',
-              ),
-              _buildBookCard(
-                'Atomic Habits',
-                'James Clear',
-                'https://m.media-amazon.com/images/I/51-nXsSRfZL._SY445_SX342_.jpg',
-              ),
-              _buildBookCard(
-                'Filosofi Teras',
-                'Henry Manampiring',
-                'https://cdn.gramedia.com/uploads/items/9786024246945_Filosofi-Teras.jpg',
-              ),
-              _buildBookCard(
-                'Rich Dad Poor Dad',
-                'Robert T. Kiyosaki',
-                'https://m.media-amazon.com/images/I/51AHZGhzZEL.jpg',
-              ),
-            ],
-          ),
-        ),
-      ],
     );
   }
 

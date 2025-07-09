@@ -23,12 +23,14 @@ class BorrowedBook {
       author: json['penulis'] ?? 'Unknown Author',
       borrowDate: DateTime.parse(json['tgl_pinjam']),
       returnDate:
-          json['tgl_kembali'] != null
+          json['tgl_kembali'] != null && json['tgl_kembali'] != ''
               ? DateTime.tryParse(json['tgl_kembali'])
               : null,
       status: json['status'] ?? 'borrowed',
       denda:
-          json['denda'] != null ? int.tryParse(json['denda'].toString()) : null,
+          json['denda'] != null && json['denda'] != ''
+              ? int.tryParse(json['denda'].toString())
+              : 0,
       coverImageUrl:
           json['gambar'] != null
               ? 'https://yourdomain.com/storage/${json['gambar']}'

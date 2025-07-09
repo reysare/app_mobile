@@ -169,17 +169,18 @@ class _LibraryPageState extends State<LibraryPage> {
                   child: Container(
                     width: double.infinity,
                     color: Colors.grey.shade200,
-                    child: book.gambar.isNotEmpty
-                        ? Image.asset(
-                            'assets/${book.gambar}',
-                            width: double.infinity,
-                            height: double.infinity,
-                            fit: BoxFit.cover,
-                            errorBuilder: (context, error, stackTrace) {
-                              return _buildDefaultCover(book.judul);
-                            },
-                          )
-                        : _buildDefaultCover(book.judul),
+                    child:
+                        book.gambar.isNotEmpty
+                            ? Image.network(
+                              'http://127.0.0.1:8000/public/images/${book.gambar}',
+                              width: double.infinity,
+                              height: double.infinity,
+                              fit: BoxFit.cover,
+                              errorBuilder: (context, error, stackTrace) {
+                                return _buildDefaultCover(book.judul);
+                              },
+                            )
+                            : _buildDefaultCover(book.judul),
                   ),
                 ),
               ],

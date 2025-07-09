@@ -38,7 +38,7 @@ class Book {
     );
   }
   // URL gambar buku
-  String? get coverUrl => gambar.isNotEmpty ? gambar : null;
+  String get fullImageUrl => 'http://127.0.0.1:8000/images/$gambar';
 
   Map<String, dynamic> toJson() {
     return {

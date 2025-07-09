@@ -324,39 +324,33 @@ class _HistoryPageState extends State<HistoryPage> {
                   style: TextStyle(
                     fontSize: 12,
                     color:
-                        book.status == 'overdue'
+                        book.status.toLowerCase() == 'overdue'
                             ? Colors.red
                             : Colors.grey.shade500,
                   ),
                 ),
-                if (book.denda != null && book.denda! > 0)
+                if (book.status.toLowerCase() == 'returned' &&
+                    book.returnDate != null)
                   Text(
-                    'Denda: Rp${book.denda}',
-                    style: const TextStyle(color: Colors.red),
+                    'Returned: ${_formatDate(book.returnDate)}',
+                    style: TextStyle(
+                      fontSize: 12,
+                      color: Colors.green.shade600,
+                    ),
                   ),
+                Text(
+                  'Denda: Rp${book.denda?.toStringAsFixed(0) ?? '0'}',
+                  style: TextStyle(
+                    fontSize: 12,
+                    color:
+                        (book.denda ?? 0) > 0
+                            ? Colors.red
+                            : Colors.grey.shade500,
+                  ),
+                ),
               ],
             ),
           ),
-          if (book.status == 'borrowed' || book.status == 'overdue')
-            ElevatedButton(
-              onPressed: () {
-                // Tambahkan return logic jika diperlukan
-              },
-              style: ElevatedButton.styleFrom(
-                backgroundColor: Colors.blue,
-                shape: RoundedRectangleBorder(
-                  borderRadius: BorderRadius.circular(8),
-                ),
-                padding: const EdgeInsets.symmetric(
-                  horizontal: 16,
-                  vertical: 8,
-                ),
-              ),
-              child: const Text(
-                'Return',
-                style: TextStyle(color: Colors.white, fontSize: 12),
-              ),
-            ),
         ],
       ),
     );
