@@ -2,7 +2,7 @@ class BorrowedBook {
   final String title;
   final String author;
   final DateTime borrowDate;
-  final DateTime returnDate;
+  final DateTime? returnDate;
   final String status;
   final int? denda;
   final String? coverImageUrl;
@@ -11,7 +11,7 @@ class BorrowedBook {
     required this.title,
     required this.author,
     required this.borrowDate,
-    required this.returnDate,
+    this.returnDate,
     required this.status,
     this.denda,
     this.coverImageUrl,
@@ -19,16 +19,19 @@ class BorrowedBook {
 
   factory BorrowedBook.fromJson(Map<String, dynamic> json) {
     return BorrowedBook(
-      title: json['judul'] ?? 'No Title',
+      title: json['judul'] ?? json['judul_buku'] ?? 'No Title',
       author: json['penulis'] ?? 'Unknown Author',
       borrowDate: DateTime.parse(json['tgl_pinjam']),
-      returnDate: DateTime.parse(json['tgl_kembali']),
+      returnDate:
+          json['tgl_kembali'] != null
+              ? DateTime.tryParse(json['tgl_kembali'])
+              : null,
       status: json['status'] ?? 'borrowed',
       denda:
           json['denda'] != null ? int.tryParse(json['denda'].toString()) : null,
       coverImageUrl:
           json['gambar'] != null
-              ? 'https://yourdomain.com/storage/${json['gambar']}' // atau URL sesuai backend kamu
+              ? 'https://yourdomain.com/storage/${json['gambar']}'
               : null,
     );
   }

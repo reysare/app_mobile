@@ -14,15 +14,21 @@ class BookDetailScreen extends StatelessWidget {
 
     final prefs = await SharedPreferences.getInstance();
     final namaPeminjam = prefs.getString('nama') ?? 'Pengguna';
+    final token = prefs.getString('token'); // ← ambil token di sini
 
     final response = await http.post(
       url,
-      headers: {'Content-Type': 'application/json'},
+      headers: {
+        'Content-Type': 'application/json',
+        'Accept': 'application/json',
+        'Authorization': 'Bearer $token', // ← pasang di sini
+      },
       body: json.encode({
         'judul_buku': title,
         'nama_peminjam': namaPeminjam,
-        // ← Ganti ini nanti dengan data pengguna login
-        'status': 'process', // status awal
+        'tgl_pinjam': DateTime.now().toIso8601String(),
+        'tgl_kembali': DateTime.now().add(Duration(days: 7)).toIso8601String(),
+        'status': 'process',
       }),
     );
 

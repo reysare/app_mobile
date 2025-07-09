@@ -1,4 +1,7 @@
 import 'package:flutter/material.dart';
+import '../models/history_models.dart';
+import '../service/history_service.dart';
+import '../service/auth_service.dart';
 
 class HistoryPage extends StatefulWidget {
   const HistoryPage({Key? key}) : super(key: key);
@@ -8,94 +11,97 @@ class HistoryPage extends StatefulWidget {
 }
 
 class _HistoryPageState extends State<HistoryPage> {
-  int _selectedIndex = 2; // Set to 2 since this is the History page
+  List<BorrowedBook> allBooks = [];
+  List<BorrowedBook> filteredBooks = [];
+  bool isLoading = true;
+  String currentFilter = 'All';
+  int _selectedIndex = 2;
 
-  List<BorrowedBook> borrowedBooks = [
-    BorrowedBook(
-      title: "Atomic Habits",
-      author: "James Clear",
-      borrowDate: DateTime(2024, 5, 1),
-      returnDate: DateTime(2024, 5, 15),
-      status: BookStatus.returned,
-      coverColor: Colors.orange.shade100,
-      coverImageUrl: 'https://covers.openlibrary.org/b/id/9259256-L.jpg',
-    ),
-    BorrowedBook(
-      title: "Sapiens",
-      author: "Yuval Noah Harari",
-      borrowDate: DateTime(2024, 5, 10),
-      returnDate: DateTime(2024, 5, 24),
-      status: BookStatus.borrowed,
-      coverColor: Colors.red.shade100,
-      coverImageUrl: 'https://covers.openlibrary.org/b/id/10512627-L.jpg',
-    ),
-    BorrowedBook(
-      title: "Si Putih",
-      author: "Tere Liye",
-      borrowDate: DateTime(2024, 5, 8),
-      returnDate: DateTime(2024, 5, 22),
-      status: BookStatus.borrowed,
-      coverColor: Colors.grey.shade200,
-      coverImageUrl: null,
-    ),
-    BorrowedBook(
-      title: "Bunking",
-      author: "Raditya Dika",
-      borrowDate: DateTime(2024, 4, 20),
-      returnDate: DateTime(2024, 5, 4),
-      status: BookStatus.overdue,
-      coverColor: Colors.purple.shade200,
-      coverImageUrl: null,
-    ),
-  ];
+  @override
+  void initState() {
+    super.initState();
+    fetchData();
+  }
+
+  Future<void> fetchData() async {
+    try {
+      final books = await HistoryService().fetchHistory();
+      setState(() {
+        allBooks = books;
+        _filterBooks(currentFilter);
+        isLoading = false;
+      });
+    } catch (e) {
+      setState(() => isLoading = false);
+      ScaffoldMessenger.of(
+        context,
+      ).showSnackBar(SnackBar(content: Text('Gagal memuat data histori: $e')));
+    }
+  }
+
+  void _filterBooks(String filter) {
+    setState(() {
+      currentFilter = filter;
+      if (filter == 'All') {
+        filteredBooks = allBooks;
+      } else {
+        filteredBooks =
+            allBooks
+                .where(
+                  (book) => book.status.toLowerCase() == filter.toLowerCase(),
+                )
+                .toList();
+      }
+    });
+  }
+
+  int _countByStatus(String status) {
+    return allBooks
+        .where((book) => book.status.toLowerCase() == status.toLowerCase())
+        .length;
+  }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: Colors.white,
       appBar: AppBar(
+        title: const Text('History'),
         backgroundColor: Colors.white,
-        elevation: 0,
-        title: const Text(
-          'History',
-          style: TextStyle(
-            color: Colors.black,
-            fontSize: 20,
-            fontWeight: FontWeight.w600,
-          ),
-        ),
+        foregroundColor: Colors.black,
         centerTitle: true,
+        elevation: 0,
       ),
-      body: SingleChildScrollView(
-        padding: const EdgeInsets.all(16),
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            _buildStatisticsSection(),
-            const SizedBox(height: 24),
-            _buildFilterTabs(),
-            const SizedBox(height: 16),
-            _buildBooksList(),
-          ],
-        ),
-      ),
+      body:
+          isLoading
+              ? const Center(child: CircularProgressIndicator())
+              : RefreshIndicator(
+                onRefresh: fetchData,
+                child: SingleChildScrollView(
+                  padding: const EdgeInsets.all(16),
+                  physics: const AlwaysScrollableScrollPhysics(),
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      _buildStatisticsSection(),
+                      const SizedBox(height: 24),
+                      _buildFilterTabs(),
+                      const SizedBox(height: 16),
+                      ...filteredBooks.map(_buildBookCard).toList(),
+                    ],
+                  ),
+                ),
+              ),
       bottomNavigationBar: _buildBottomNavigationBar(),
     );
   }
 
-  Widget _buildStatisticsSection() {
-    int totalBorrowed = borrowedBooks.length;
-    int returned =
-        borrowedBooks
-            .where((book) => book.status == BookStatus.returned)
-            .length;
-    int borrowed =
-        borrowedBooks
-            .where((book) => book.status == BookStatus.borrowed)
-            .length;
-    int overdue =
-        borrowedBooks.where((book) => book.status == BookStatus.overdue).length;
+  String _formatDate(DateTime? date) {
+    if (date == null) return '-';
+    return '${date.day}/${date.month}/${date.year}';
+  }
 
+  Widget _buildStatisticsSection() {
     return Container(
       padding: const EdgeInsets.all(20),
       decoration: BoxDecoration(
@@ -130,7 +136,7 @@ class _HistoryPageState extends State<HistoryPage> {
               Expanded(
                 child: _buildStatCard(
                   'Total Books',
-                  totalBorrowed.toString(),
+                  allBooks.length.toString(),
                   Icons.library_books,
                   Colors.white.withOpacity(0.2),
                 ),
@@ -139,7 +145,7 @@ class _HistoryPageState extends State<HistoryPage> {
               Expanded(
                 child: _buildStatCard(
                   'Returned',
-                  returned.toString(),
+                  _countByStatus('returned').toString(),
                   Icons.check_circle,
                   Colors.green.withOpacity(0.3),
                 ),
@@ -152,7 +158,7 @@ class _HistoryPageState extends State<HistoryPage> {
               Expanded(
                 child: _buildStatCard(
                   'Borrowed',
-                  borrowed.toString(),
+                  _countByStatus('borrowed').toString(),
                   Icons.book,
                   Colors.orange.withOpacity(0.3),
                 ),
@@ -161,7 +167,7 @@ class _HistoryPageState extends State<HistoryPage> {
               Expanded(
                 child: _buildStatCard(
                   'Overdue',
-                  overdue.toString(),
+                  _countByStatus('overdue').toString(),
                   Icons.warning,
                   Colors.red.withOpacity(0.3),
                 ),
@@ -203,7 +209,6 @@ class _HistoryPageState extends State<HistoryPage> {
               color: Colors.white.withOpacity(0.9),
               fontSize: 12,
             ),
-            textAlign: TextAlign.center,
           ),
         ],
       ),
@@ -211,45 +216,41 @@ class _HistoryPageState extends State<HistoryPage> {
   }
 
   Widget _buildFilterTabs() {
+    final filters = ['All', 'Borrowed', 'Returned', 'Overdue'];
     return Row(
-      children: [
-        _buildFilterChip('All', true),
-        const SizedBox(width: 8),
-        _buildFilterChip('Borrowed', false),
-        const SizedBox(width: 8),
-        _buildFilterChip('Returned', false),
-        const SizedBox(width: 8),
-        _buildFilterChip('Overdue', false),
-      ],
-    );
-  }
-
-  Widget _buildFilterChip(String label, bool isSelected) {
-    return Container(
-      padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
-      decoration: BoxDecoration(
-        color: isSelected ? Colors.blue : Colors.grey.shade200,
-        borderRadius: BorderRadius.circular(20),
-      ),
-      child: Text(
-        label,
-        style: TextStyle(
-          color: isSelected ? Colors.white : Colors.grey.shade600,
-          fontSize: 14,
-          fontWeight: FontWeight.w500,
-        ),
-      ),
-    );
-  }
-
-  Widget _buildBooksList() {
-    return ListView.builder(
-      shrinkWrap: true,
-      physics: const NeverScrollableScrollPhysics(),
-      itemCount: borrowedBooks.length,
-      itemBuilder: (context, index) {
-        return _buildBookCard(borrowedBooks[index]);
-      },
+      mainAxisAlignment: MainAxisAlignment.spaceAround,
+      children:
+          filters
+              .map(
+                (label) => GestureDetector(
+                  onTap: () => _filterBooks(label),
+                  child: Container(
+                    padding: const EdgeInsets.symmetric(
+                      horizontal: 16,
+                      vertical: 8,
+                    ),
+                    decoration: BoxDecoration(
+                      color:
+                          label == currentFilter
+                              ? Colors.blue
+                              : Colors.grey.shade200,
+                      borderRadius: BorderRadius.circular(20),
+                    ),
+                    child: Text(
+                      label,
+                      style: TextStyle(
+                        color:
+                            label == currentFilter
+                                ? Colors.white
+                                : Colors.grey.shade600,
+                        fontSize: 14,
+                        fontWeight: FontWeight.w500,
+                      ),
+                    ),
+                  ),
+                ),
+              )
+              .toList(),
     );
   }
 
@@ -274,7 +275,7 @@ class _HistoryPageState extends State<HistoryPage> {
             width: 60,
             height: 80,
             decoration: BoxDecoration(
-              color: book.coverColor,
+              color: Colors.grey.shade200,
               borderRadius: BorderRadius.circular(8),
               image:
                   book.coverImageUrl != null
@@ -305,10 +306,8 @@ class _HistoryPageState extends State<HistoryPage> {
                   style: const TextStyle(
                     fontSize: 16,
                     fontWeight: FontWeight.w600,
-                    color: Colors.black,
                   ),
                 ),
-                const SizedBox(height: 4),
                 Text(
                   book.author,
                   style: TextStyle(fontSize: 14, color: Colors.grey.shade600),
@@ -325,18 +324,24 @@ class _HistoryPageState extends State<HistoryPage> {
                   style: TextStyle(
                     fontSize: 12,
                     color:
-                        book.status == BookStatus.overdue
+                        book.status == 'overdue'
                             ? Colors.red
                             : Colors.grey.shade500,
                   ),
                 ),
+                if (book.denda != null && book.denda! > 0)
+                  Text(
+                    'Denda: Rp${book.denda}',
+                    style: const TextStyle(color: Colors.red),
+                  ),
               ],
             ),
           ),
-          if (book.status == BookStatus.borrowed ||
-              book.status == BookStatus.overdue)
+          if (book.status == 'borrowed' || book.status == 'overdue')
             ElevatedButton(
-              onPressed: () => _returnBook(book),
+              onPressed: () {
+                // Tambahkan return logic jika diperlukan
+              },
               style: ElevatedButton.styleFrom(
                 backgroundColor: Colors.blue,
                 shape: RoundedRectangleBorder(
@@ -357,23 +362,20 @@ class _HistoryPageState extends State<HistoryPage> {
     );
   }
 
-  Widget _buildStatusChip(BookStatus status) {
+  Widget _buildStatusChip(String status) {
     Color color;
-    String text;
-
-    switch (status) {
-      case BookStatus.borrowed:
+    switch (status.toLowerCase()) {
+      case 'borrowed':
         color = Colors.orange;
-        text = 'Borrowed';
         break;
-      case BookStatus.returned:
+      case 'returned':
         color = Colors.green;
-        text = 'Returned';
         break;
-      case BookStatus.overdue:
+      case 'overdue':
         color = Colors.red;
-        text = 'Overdue';
         break;
+      default:
+        color = Colors.grey;
     }
 
     return Container(
@@ -384,52 +386,13 @@ class _HistoryPageState extends State<HistoryPage> {
         border: Border.all(color: color.withOpacity(0.3)),
       ),
       child: Text(
-        text,
+        status[0].toUpperCase() + status.substring(1),
         style: TextStyle(
           color: color,
           fontSize: 12,
           fontWeight: FontWeight.w500,
         ),
       ),
-    );
-  }
-
-  String _formatDate(DateTime date) {
-    return '${date.day}/${date.month}/${date.year}';
-  }
-
-  void _returnBook(BorrowedBook book) {
-    showDialog(
-      context: context,
-      builder: (BuildContext context) {
-        return AlertDialog(
-          title: const Text('Return Book'),
-          content: Text('Are you sure you want to return "${book.title}"?'),
-          actions: [
-            TextButton(
-              onPressed: () => Navigator.pop(context),
-              child: const Text('Cancel'),
-            ),
-            ElevatedButton(
-              onPressed: () {
-                setState(() {
-                  book.status = BookStatus.returned;
-                });
-                Navigator.pop(context);
-                ScaffoldMessenger.of(context).showSnackBar(
-                  SnackBar(
-                    content: Text(
-                      '${book.title} has been returned successfully!',
-                    ),
-                    backgroundColor: Colors.green,
-                  ),
-                );
-              },
-              child: const Text('Return'),
-            ),
-          ],
-        );
-      },
     );
   }
 
@@ -444,17 +407,13 @@ class _HistoryPageState extends State<HistoryPage> {
           _selectedIndex = index;
         });
 
-        // Handle navigation between screens
         if (index == 0) {
-          // Navigate to Home
           Navigator.pushReplacementNamed(context, '/home');
         } else if (index == 1) {
-          // Navigate to Library page (changed from '/books' to '/library')
           Navigator.pushReplacementNamed(context, '/library');
         } else if (index == 2) {
-          // We're already on History page, no navigation needed
+          // Stay on this page
         } else if (index == 3) {
-          // Navigate to Account page
           Navigator.pushReplacementNamed(context, '/profil');
         }
       },
@@ -467,25 +426,3 @@ class _HistoryPageState extends State<HistoryPage> {
     );
   }
 }
-
-class BorrowedBook {
-  final String title;
-  final String author;
-  final DateTime borrowDate;
-  final DateTime returnDate;
-  BookStatus status;
-  final Color coverColor;
-  final String? coverImageUrl;
-
-  BorrowedBook({
-    required this.title,
-    required this.author,
-    required this.borrowDate,
-    required this.returnDate,
-    required this.status,
-    required this.coverColor,
-    this.coverImageUrl,
-  });
-}
-
-enum BookStatus { borrowed, returned, overdue }
